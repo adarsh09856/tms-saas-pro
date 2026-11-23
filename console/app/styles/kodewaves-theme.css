@@ -298,11 +298,21 @@ body[data-theme='dark'] .fleet-ops-control-hub-tone-blue {
 }
 
 /* Preserve the requested compact icon-only console mark without changing branding assets. */
-body[class*="console-"] .kodewaves-console-brand { width: 40px; min-width: 40px; gap: 0; margin-right: 0.5rem !important; }
-body[class*="console-"] .kodewaves-console-brand-name { display: none !important; }
+body[class*='console-'] .kodewaves-console-brand {
+    width: 40px;
+    min-width: 40px;
+    gap: 0;
+    margin-right: 0.5rem !important;
+}
+
+body[class*='console-'] .kodewaves-console-brand-name {
+    display: none !important;
+}
 
 /* Older compiled console bundles still contain the removed workspace intro block. */
-body[class*="console-"] .kodewaves-workspace-intro { display: none !important; }
+body[class*='console-'] .kodewaves-workspace-intro {
+    display: none !important;
+}
 
 /* Keep header controls above page drawers while leaving modal dialogs on top. */
 body[class*="console-"] header.next-view-header {
@@ -319,61 +329,61 @@ body[class*="console-"] header.next-view-header {
 
 /* Keep global navigation below full-screen panels, menus, and modal overlays. */
 @media (max-width: 767px) {
-    body[class*="console-"] .next-view-container > nav.next-sidebar {
+    body[class*='console-'] .next-view-container > nav.next-sidebar {
         z-index: 20 !important;
     }
 
-    body[class*="console-"] .next-mobile-navbar {
+    body[class*='console-'] .next-mobile-navbar {
         z-index: 30 !important;
     }
 }
 
-body[class*="console-"] .chat-inbox-overlay {
+body[class*='console-'] .chat-inbox-overlay {
     z-index: 1200 !important;
 }
 
-body[class*="console-"] .chat-compose-overlay {
+body[class*='console-'] .chat-compose-overlay {
     z-index: 1210 !important;
 }
 
-body[class*="console-"] .snm-customizer-backdrop {
+body[class*='console-'] .snm-customizer-backdrop {
     z-index: 10000 !important;
 }
 
-body[class*="console-"] .snm-customizer-panel {
+body[class*='console-'] .snm-customizer-panel {
     z-index: 10001 !important;
 }
 
 /* Keep FleetOps Map / Table / Board selection inside the Route Atlas palette. */
-body[class*="console-"] .next-map-container-view-switch > button.active {
+body[class*='console-'] .next-map-container-view-switch > button.active {
     background-color: var(--kodewaves-primary) !important;
     color: #fff !important;
 }
 
-body[class*="console-"] .next-map-container-view-switch > button:not(.active):hover,
-body[class*="console-"] .next-map-container-view-switch > button:not(.active):focus-visible {
+body[class*='console-'] .next-map-container-view-switch > button:not(.active):hover,
+body[class*='console-'] .next-map-container-view-switch > button:not(.active):focus-visible {
     background-color: var(--kodewaves-primary-soft) !important;
     color: var(--kodewaves-primary-deep) !important;
 }
 
 /* Keep the navigation customizer's selection and primary action on-brand. */
-body[class*="console-"] .snm-customizer-all-item.is-pinned,
-body[class*="console-"] .snm-customizer-all-item.is-pinned:hover {
+body[class*='console-'] .snm-customizer-all-item.is-pinned,
+body[class*='console-'] .snm-customizer-all-item.is-pinned:hover {
     background-color: var(--kodewaves-primary-soft) !important;
     border-color: color-mix(in srgb, var(--kodewaves-primary) 38%, #fff) !important;
     color: var(--kodewaves-primary-deep) !important;
 }
 
-body[class*="console-"] .snm-customizer-pinned-check {
+body[class*='console-'] .snm-customizer-pinned-check {
     color: var(--kodewaves-primary) !important;
 }
 
-body[class*="console-"] .snm-btn-primary,
-body[class*="console-"] .snm-btn-primary:hover {
+body[class*='console-'] .snm-btn-primary,
+body[class*='console-'] .snm-btn-primary:hover {
     background-color: var(--kodewaves-primary) !important;
     color: #fff !important;
 }
 
-body[class*="console-"] .snm-btn-primary:hover {
+body[class*='console-'] .snm-btn-primary:hover {
     background-color: var(--kodewaves-primary-deep) !important;
 }
