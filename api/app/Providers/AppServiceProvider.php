@@ -44,6 +44,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->booted(function () {
+            // The Fleetbase package registers this group during provider boot.
+            // Append after its session initializer; Kernel priority places the
+            // resolver before authorization and tenant billing checks.
+            $this->app['router']->pushMiddlewareToGroup(
+                'fleetbase.protected',
+                \App\Http\Middleware\ResolveVendorDomainTenant::class
+            );
+        });
+
         $this->configureOutboundHttpLogging();
         $this->configureTransactionTripwire();
     }

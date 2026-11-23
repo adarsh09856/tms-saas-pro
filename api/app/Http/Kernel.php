@@ -7,6 +7,32 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /**
+     * Keep hostname-derived tenant context after auth session initialization,
+     * and before Fleetbase permission and billing guards inspect the session.
+     *
+     * @var array<int, class-string|string>
+     */
+    protected $middlewarePriority = [
+        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
+        \Illuminate\Cookie\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        \Fleetbase\Http\Middleware\SetupFleetbaseSession::class,
+        \App\Http\Middleware\ResolveVendorDomainTenant::class,
+        \Fleetbase\Http\Middleware\AuthorizationGuard::class,
+        \Fleetbase\Http\Middleware\TrackPresence::class,
+        \Fleetbase\Http\Middleware\CheckBillingEntitlements::class,
+        \Fleetbase\Http\Middleware\ValidateETag::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+        \Illuminate\Contracts\Session\Middleware\AuthenticatesSessions::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
+    ];
+
+    /**
      * The application's global HTTP middleware stack.
      *
      * These middleware are run during every request to your application.

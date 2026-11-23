@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\VendorDomainClaim;
+use App\Http\Middleware\ResolveVendorDomainTenant;
 use App\Services\VendorDomainDnsTxtLookup;
 use App\Services\VendorDomainHostValidator;
 use Fleetbase\Http\Middleware\AdminGuard;
@@ -141,6 +142,90 @@ class VendorDomainManagementTest extends TestCase
         } catch (ValidationException) {
             $this->addToAssertionCount(1);
         }
+    }
+
+    public function test_verified_vendor_host_resolves_to_company_before_permissions_and_billing(): void
+    {
+        $this->withoutMiddleware();
+        DB::connection('mysql')->table('vendor_domain_claims')->insert([
+            'host' => 'north.vendors.example.com',
+            'kind' => 'platform_subdomain',
+            'company_uuid' => 'company-1',
+            'status' => 'verified',
+            'verification_token_hash' => hash('sha256', 'already-verified'),
+            'verification_expires_at' => now()->addHour(),
+            'verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DB::connection('mysql')->table('company_users')->insert([
+            'uuid' => 'membership-1',
+            'company_uuid' => 'company-1',
+            'user_uuid' => 'vendor-owner',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $request = Request::create('https://north.vendors.example.com/int/v1/orders');
+        $session = new \Illuminate\Session\Store('test-session', new \Illuminate\Session\ArraySessionHandler(120));
+        $session->start();
+        $request->setLaravelSession($session);
+        $request->setUserResolver(fn () => new \Fleetbase\Models\User(['uuid' => 'vendor-owner']));
+
+        $response = app(ResolveVendorDomainTenant::class)->handle($request, function ($request) {
+            return response()->json([
+                'company_uuid' => $request->session()->get('company'),
+                'context_company_uuid' => $request->attributes->get('vendor_domain_company_uuid'),
+            ]);
+        });
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame([
+            'company_uuid' => 'company-1',
+            'context_company_uuid' => 'company-1',
+        ], $response->getData(true));
+    }
+
+    public function test_vendor_host_rejects_inactive_claims_and_unprovisioned_platform_subdomains(): void
+    {
+        DB::connection('mysql')->table('vendor_domain_claims')->insert([
+            'host' => 'disabled.vendors.example.com',
+            'kind' => 'platform_subdomain',
+            'company_uuid' => 'company-1',
+            'status' => 'disabled',
+            'verification_token_hash' => hash('sha256', 'disabled'),
+            'verification_expires_at' => now()->addHour(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $middleware = app(ResolveVendorDomainTenant::class);
+        $session = new \Illuminate\Session\Store('test-session', new \Illuminate\Session\ArraySessionHandler(120));
+        $session->start();
+
+        foreach (['disabled.vendors.example.com', 'missing.vendors.example.com'] as $host) {
+            $request = Request::create('https://' . $host . '/int/v1/orders');
+            $request->setLaravelSession(clone $session);
+            $response = $middleware->handle($request, fn () => response()->json(['unexpected' => true]));
+            $this->assertSame(404, $response->getStatusCode());
+        }
+    }
+
+    public function test_vendor_context_is_registered_between_fleetbase_session_and_authorization(): void
+    {
+        $group = app('router')->getMiddlewareGroups()['fleetbase.protected'] ?? [];
+        $priority = app(\App\Http\Kernel::class)->getMiddlewarePriority();
+
+        $this->assertContains(ResolveVendorDomainTenant::class, $group);
+        $this->assertLessThan(
+            array_search(\Fleetbase\Http\Middleware\AuthorizationGuard::class, $priority, true),
+            array_search(ResolveVendorDomainTenant::class, $priority, true)
+        );
+        $this->assertGreaterThan(
+            array_search(\Fleetbase\Http\Middleware\SetupFleetbaseSession::class, $priority, true),
+            array_search(ResolveVendorDomainTenant::class, $priority, true)
+        );
     }
 
     public function test_dns_verification_checks_txt_proof_then_audits_status(): void
