@@ -1,0 +1,43 @@
+linkWorkspacePackages: deep
+preferWorkspacePackages: true
+publicHoistPattern:
+  - "*ember-core*"
+  - "*ember-ui*"
+  - "*fleetops-data*"
+overrides:
+  "@fleetbase/ai-engine": "file:../packages/ai"
+  "@fleetbase/dev-engine": "file:../packages/dev-engine"
+  "@fleetbase/ember-core": "file:../packages/ember-core"
+  "@fleetbase/ember-ui": "file:../packages/ember-ui"
+  "@fleetbase/fleetops-data": "file:../packages/fleetops-data"
+  "@fleetbase/fleetops-engine": "file:../packages/fleetops"
+  "@fleetbase/iam-engine": "file:../packages/iam-engine"
+  "@fleetbase/intl-lint": "file:../packages/intl-lint"
+  "@fleetbase/leaflet-routing-machine": "file:../packages/routing-machine"
+  "@fleetbase/ledger-engine": "file:../packages/ledger"
+  "@fleetbase/pallet-engine": "file:../packages/pallet"
+  "@fleetbase/registry-bridge-engine": "file:../packages/registry-bridge"
+  "@fleetbase/sdk": "file:../packages/sdk"
+  "@fleetbase/storefront": "file:../packages/storefront-sdk"
+  "@fleetbase/storefront-engine": "file:../packages/storefront"
+  "@fleetbase/valhalla-engine": "file:../packages/valhalla"
+  "@fleetbase/vroom-engine": "file:../packages/vroom"
+  "fleetbase-extensions-indexer": "file:../packages/fleetbase-extensions-indexer"
+allowBuilds:
+  "@fortawesome/fontawesome-common-types": false
+  "@fortawesome/fontawesome-svg-core": false
+  "@fortawesome/free-brands-svg-icons": false
+  "@fortawesome/free-solid-svg-icons": false
+  core-js: false
+  fsevents: false
+minimumReleaseAgeExclude:
+  - '@fleetbase/ember-core@0.3.26'
+  - '@fleetbase/ember-ui@0.4.6'
+  - '@fleetbase/fleetops-data@0.2.3'
+  - '@fleetbase/fleetops-engine@0.6.75'
+  - '@fleetbase/storefront-engine@0.4.31'
+  - '@fleetbase/ledger-engine@0.0.13'
+  - '@fleetbase/dev-engine@0.2.18'
+  - '@fleetbase/registry-bridge-engine@0.1.11'
+  - '@fleetbase/valhalla-engine@0.0.5'
+  - '@fleetbase/vroom-engine@0.0.5'

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="msapplication-TileColor" content="#294b3a" />
+    <meta name="theme-color" content="#294b3a" />
+    <title>Kodewaves TMS</title>
+
+    {{content-for "head"}}
+
+    <link rel="icon" type="image/svg+xml" href="/images/kodewaves-icon.svg?v=20261108-forest" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="mask-icon" href="/images/kodewaves-icon.svg?v=20261108-forest" color="#426b57" />
+    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/@fleetbase/console.css">
+    <link rel="stylesheet" href="{{rootURL}}kodewaves-header-route-atlas.css?v=20261108-header-green-3">
+
+    {{content-for "head-footer"}}
+  </head>
+  <body>
+    {{content-for "body"}}
+    <div id="boot-loader" class="overloader">
+      <div class="loader-container kodewaves-loader-container">
+        <img class="kodewaves-loader-logo" src="/images/kodewaves-icon.svg?v=20261108-forest" width="56" height="56" alt="" />
+        <span class="kodewaves-loading-route" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="loading-message">Preparing your workspace</div>
+      </div>
+    </div>
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/@fleetbase/console.js"></script>
+
+    {{content-for "body-footer"}}
+  </body>
+</html>

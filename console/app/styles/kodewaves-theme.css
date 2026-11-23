@@ -1,0 +1,379 @@
+:root {
+    --kodewaves-primary: #426b57;
+    --kodewaves-primary-deep: #294b3a;
+    --kodewaves-primary-soft: #e8efe8;
+    --kodewaves-warm: oklch(0.72 0.12 82);
+    --kodewaves-warm-soft: oklch(0.94 0.035 82);
+    --kodewaves-paper: oklch(0.975 0.008 140);
+    --kodewaves-ink: oklch(0.255 0.025 180);
+    --kodewaves-muted: oklch(0.47 0.025 170);
+    --kodewaves-line: oklch(0.885 0.014 150);
+    --brand-primary-color: var(--kodewaves-primary);
+}
+
+body[data-theme='light'] {
+    background-color: var(--kodewaves-paper);
+    color: var(--kodewaves-ink);
+}
+
+body[data-theme='light'] .next-view-header,
+body[data-theme='light'] .next-view-container,
+body[data-theme='light'] .next-view-container > nav.next-sidebar,
+body[data-theme='light'] .next-dd-menu {
+    background-color: #fff;
+}
+
+body[data-theme='light'] .next-view-header {
+    background-color: #294b3a;
+    border-bottom-color: #315641;
+    color: #f7faf6;
+}
+
+body[data-theme='light'] .next-view-header :is(a, button, [role='button'], .next-view-header-item) {
+    color: #f7faf6;
+}
+
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item:hover,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item.active,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'],
+body[data-theme='light'] .next-view-header-item.active,
+body[data-theme='light'] .snm-item.active,
+body[data-theme='light'] .next-dd-menu a.next-dd-item:hover,
+body[data-theme='light'] .next-dd-menu a.next-dd-item.active {
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item:hover svg,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item.active svg,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'] svg {
+    color: #fff !important;
+}
+
+body[data-theme='light'] .btn.btn-primary,
+body[data-theme='light'] a.btn.btn-primary,
+body[data-theme='light'] button.btn-primary,
+body[data-theme='light'] .fb-button-primary,
+body[data-theme='light'] a.fb-button-primary,
+body[data-theme='light'] button.fb-button-primary {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='light'] .next-sidebar-navigator-primary-action,
+body[data-theme='light'] .next-sidebar-navigator-primary-action:hover:not(:disabled) {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='light'] .next-sidebar-navigator-item.is-active,
+body[data-theme='light'] .next-sidebar-navigator-item.is-parent-active {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+body[data-theme='light'] .next-sidebar-navigator-item.is-active svg,
+body[data-theme='light'] .next-sidebar-navigator-item.is-parent-active svg,
+body[data-theme='light'] .next-view-header-item.active svg,
+body[data-theme='light'] .snm-item.active svg {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] [class~='text-blue-500'],
+body[data-theme='light'] [class~='text-blue-600'],
+body[data-theme='light'] [class~='text-sky-500'] {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] [class~='bg-blue-500'],
+body[data-theme='light'] [class~='bg-sky-500'] {
+    background-color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] .btn.btn-primary:hover:not(:disabled),
+body[data-theme='light'] a.btn.btn-primary:hover:not(:disabled),
+body[data-theme='light'] button.btn-primary:hover:not(:disabled),
+body[data-theme='light'] .fb-button-primary:hover:not(:disabled),
+body[data-theme='light'] a.fb-button-primary:hover:not(:disabled),
+body[data-theme='light'] button.fb-button-primary:hover:not(:disabled) {
+    border-color: var(--kodewaves-primary-deep) !important;
+    background-color: var(--kodewaves-primary-deep) !important;
+}
+
+body[data-theme='light'] .form-input:focus,
+body[data-theme='light'] .form-select:focus,
+body[data-theme='light'] input:focus-visible,
+body[data-theme='light'] textarea:focus-visible,
+body[data-theme='light'] select:focus-visible {
+    border-color: var(--kodewaves-primary) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kodewaves-primary) 18%, transparent) !important;
+    outline-color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] .console-dashboard-page {
+    border-bottom-color: var(--kodewaves-line);
+    background-color: #fff;
+}
+
+body[data-theme='dark'] {
+    --kodewaves-primary: #8eb99d;
+    --kodewaves-primary-deep: #d5e7d9;
+    --kodewaves-primary-soft: #26382e;
+    --kodewaves-warm: oklch(0.8 0.12 82);
+    --kodewaves-warm-soft: oklch(0.34 0.035 82);
+    --kodewaves-paper: oklch(0.19 0.018 190);
+    --kodewaves-ink: oklch(0.95 0.01 145);
+    --kodewaves-muted: oklch(0.76 0.018 150);
+    --kodewaves-line: oklch(0.39 0.025 175);
+    --brand-primary-color: var(--kodewaves-primary);
+}
+
+body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item:hover,
+body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item.active,
+body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'],
+body[data-theme='dark'] .next-view-header-item.active,
+body[data-theme='dark'] .snm-item.active,
+body[data-theme='dark'] .next-dd-menu a.next-dd-item:hover,
+body[data-theme='dark'] .next-dd-menu a.next-dd-item.active {
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .btn.btn-primary,
+body[data-theme='dark'] a.btn.btn-primary,
+body[data-theme='dark'] button.btn-primary,
+body[data-theme='dark'] .fb-button-primary,
+body[data-theme='dark'] a.fb-button-primary,
+body[data-theme='dark'] button.fb-button-primary {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .next-sidebar-navigator-primary-action,
+body[data-theme='dark'] .next-sidebar-navigator-primary-action:hover:not(:disabled) {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .next-sidebar-navigator-item.is-active,
+body[data-theme='dark'] .next-sidebar-navigator-item.is-parent-active {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: #e7f1e9 !important;
+}
+
+body[data-theme='dark'] .next-sidebar-navigator-item.is-active svg,
+body[data-theme='dark'] .next-sidebar-navigator-item.is-parent-active svg,
+body[data-theme='dark'] .next-view-header-item.active svg,
+body[data-theme='dark'] .snm-item.active svg {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='dark'] [class~='text-blue-400'],
+body[data-theme='dark'] [class~='text-blue-500'],
+body[data-theme='dark'] [class~='text-blue-600'],
+body[data-theme='dark'] [class~='text-sky-400'],
+body[data-theme='dark'] [class~='text-sky-500'] {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='dark'] [class~='bg-blue-500'],
+body[data-theme='dark'] [class~='bg-sky-500'] {
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .form-input:focus,
+body[data-theme='dark'] .form-select:focus,
+body[data-theme='dark'] input:focus-visible,
+body[data-theme='dark'] textarea:focus-visible,
+body[data-theme='dark'] select:focus-visible {
+    border-color: var(--kodewaves-primary) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kodewaves-primary) 24%, transparent) !important;
+    outline-color: var(--kodewaves-primary) !important;
+}
+
+.fleetbase-attribution-legal-link {
+    text-decoration: none;
+}
+
+/* Fleetbase console elements do not always carry a light/dark theme attribute. */
+.next-view-header-item.active,
+.snm-item.active,
+.next-sidebar-navigator-primary-action,
+.next-sidebar-navigator-primary-action:hover:not(:disabled) {
+    background-color: var(--kodewaves-primary) !important;
+    border-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[class*="console-"] header.next-view-header :is(a, button, [role='button'], .next-view-header-item) {
+    color: #f7faf6 !important;
+}
+
+body[class*="console-"] header.next-view-header .next-view-header-item:not(.active):not(.is-open) {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+body[class*="console-"] header.next-view-header .next-view-header-item:hover,
+body[class*="console-"] header.next-view-header .next-view-header-item.active,
+body[class*="console-"] header.next-view-header .next-view-header-item.is-open {
+    background-color: var(--kodewaves-primary) !important;
+    border-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[class*="console-"] header.next-view-header .next-view-header-item:focus-visible {
+    outline: 2px solid #f7faf6 !important;
+    outline-offset: 2px;
+}
+
+/* Keep navigation labels and the company switcher readable on the forest header. */
+body[class*="console-"] header.next-view-header .next-view-header-item,
+body[class*="console-"] header.next-view-header .next-view-header-item > *,
+body[class*="console-"] header.next-view-header .next-view-header-item svg,
+body[class*="console-"] header.next-view-header .next-org-button-trigger,
+body[class*="console-"] header.next-view-header .next-org-button-trigger .text-gray-800,
+body[class*="console-"] header.next-view-header .next-user-button-trigger {
+    color: #f7faf6 !important;
+}
+
+body[class*="console-"] header.next-view-header .next-org-button-trigger .org-badge {
+    border: 1px solid rgb(247 250 246 / 30%);
+    background-color: #426b57 !important;
+    color: #fff !important;
+}
+
+.next-sidebar-navigator-item.is-active,
+.next-sidebar-navigator-item.is-parent-active {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+/* Keep Fleet-Ops control-hub information accents inside the Kodewaves palette. */
+.fleet-ops-control-hub-tone-blue {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary) 12%, transparent), color-mix(in srgb, var(--kodewaves-primary) 3%, transparent) 52%, #fff 100%), #fff !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary) 28%, #fff) !important;
+}
+
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-action,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-action svg,
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-blue svg,
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-info svg,
+.fleet-ops-control-hub-kpi-action {
+    color: var(--kodewaves-primary) !important;
+}
+
+.fleet-ops-control-hub-kpi-icon,
+.fleet-ops-control-hub-link-icon {
+    color: var(--kodewaves-primary) !important;
+}
+
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-success svg {
+    color: var(--kodewaves-primary) !important;
+}
+
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-warning svg {
+    color: var(--kodewaves-warm) !important;
+}
+
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon {
+    background-color: var(--kodewaves-primary-soft) !important;
+}
+
+.fleet-ops-control-hub-link-icon {
+    background-color: var(--kodewaves-primary-soft) !important;
+}
+
+body[data-theme='dark'] .fleet-ops-control-hub-tone-blue {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary) 20%, transparent), color-mix(in srgb, var(--kodewaves-primary) 6%, transparent) 52%, #1f2937 100%), #1f2937 !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary) 45%, transparent) !important;
+}
+
+/* Preserve the requested compact icon-only console mark without changing branding assets. */
+body[class*="console-"] .kodewaves-console-brand { width: 40px; min-width: 40px; gap: 0; margin-right: 0.5rem !important; }
+body[class*="console-"] .kodewaves-console-brand-name { display: none !important; }
+
+/* Older compiled console bundles still contain the removed workspace intro block. */
+body[class*="console-"] .kodewaves-workspace-intro { display: none !important; }
+
+/* Keep header controls above page drawers while leaving modal dialogs on top. */
+body[class*="console-"] header.next-view-header {
+    position: relative;
+    z-index: 1000;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: var(--kodewaves-primary-deep) !important;
+    border-bottom-color: #315641 !important;
+    color: #f7faf6 !important;
+}
+
+/* Keep global navigation below full-screen panels, menus, and modal overlays. */
+@media (max-width: 767px) {
+    body[class*="console-"] .next-view-container > nav.next-sidebar {
+        z-index: 20 !important;
+    }
+
+    body[class*="console-"] .next-mobile-navbar {
+        z-index: 30 !important;
+    }
+}
+
+body[class*="console-"] .chat-inbox-overlay {
+    z-index: 1200 !important;
+}
+
+body[class*="console-"] .chat-compose-overlay {
+    z-index: 1210 !important;
+}
+
+body[class*="console-"] .snm-customizer-backdrop {
+    z-index: 10000 !important;
+}
+
+body[class*="console-"] .snm-customizer-panel {
+    z-index: 10001 !important;
+}
+
+/* Keep FleetOps Map / Table / Board selection inside the Route Atlas palette. */
+body[class*="console-"] .next-map-container-view-switch > button.active {
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[class*="console-"] .next-map-container-view-switch > button:not(.active):hover,
+body[class*="console-"] .next-map-container-view-switch > button:not(.active):focus-visible {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+/* Keep the navigation customizer's selection and primary action on-brand. */
+body[class*="console-"] .snm-customizer-all-item.is-pinned,
+body[class*="console-"] .snm-customizer-all-item.is-pinned:hover {
+    background-color: var(--kodewaves-primary-soft) !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary) 38%, #fff) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+body[class*="console-"] .snm-customizer-pinned-check {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[class*="console-"] .snm-btn-primary,
+body[class*="console-"] .snm-btn-primary:hover {
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[class*="console-"] .snm-btn-primary:hover {
+    background-color: var(--kodewaves-primary-deep) !important;
+}

@@ -1,0 +1,56 @@
+<div class="space-y-5">
+    <ContentPanel @title="Subscription" @open={{true}} @wrapperClass="bordered-classic">
+        {{#if this.load.isRunning}}
+            <Spinner @loadingMessage="Loading subscription details…" />
+        {{else}}
+            {{#if this.subscription}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div><div class="text-gray-500">Plan</div><div class="font-semibold">{{this.subscription.plan_name}}</div></div>
+                    <div><div class="text-gray-500">Status</div><div class="font-semibold capitalize">{{this.subscription.payment_gateway_status}}</div></div>
+                    <div><div class="text-gray-500">Renews / ends</div><div class="font-semibold">{{format-date this.subscription.current_period_end}}</div></div>
+                </div>
+            {{else}}
+                <p class="text-sm text-gray-600">Choose a plan to activate billing for this organization.</p>
+            {{/if}}
+            {{#if this.hasActiveSubscription}}
+                {{#if this.subscription.stripe_subscription_id}}
+                    <Button @type="primary" @icon="arrow-up-right-from-square" @text="Manage billing" @onClick={{this.openPortal}} class="mt-4" />
+                {{else}}
+                    <Button @type="default" @icon="xmark" @text="Cancel plan" @onClick={{this.cancelLocalPlan}} class="mt-4" />
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    </ContentPanel>
+
+    <ContentPanel @title="Plans" @open={{true}} @wrapperClass="bordered-classic">
+        {{#if this.plans.length}}
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {{#each this.plans as |plan|}}
+                    <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col">
+                        <h3 class="font-semibold text-base">{{plan.name}}</h3>
+                        <p class="text-sm text-gray-500 min-h-10">{{plan.description}}</p>
+                        <p class="text-2xl font-bold my-3">{{plan.formattedPrice}} <span class="text-sm font-normal">/ {{plan.interval}}</span></p>
+                        <p class="text-sm space-y-1 mb-4">{{plan.entitlementsText}}</p>
+                        {{#unless this.hasActiveSubscription}}
+                            <Button @type="primary" @icon="credit-card" @text="Select plan" @onClick={{fn this.choosePlan plan}} class="mt-auto" />
+                        {{/unless}}
+                    </div>
+                {{/each}}
+            </div>
+        {{else}}
+            <p class="text-sm text-gray-500">No active plans are published yet. Contact your platform administrator.</p>
+        {{/if}}
+    </ContentPanel>
+
+    <ContentPanel @title="Current period usage" @open={{true}} @wrapperClass="bordered-classic">
+        {{#if this.usage}}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                {{#each-in this.usage as |meter quantity|}}
+                    <div class="rounded bg-gray-50 dark:bg-gray-800 p-3"><div class="text-gray-500">{{humanize meter}}</div><div class="font-semibold">{{quantity}}</div></div>
+                {{/each-in}}
+            </div>
+        {{else}}
+            <p class="text-sm text-gray-500">Usage records will appear here as metered activity is enabled.</p>
+        {{/if}}
+    </ContentPanel>
+</div>

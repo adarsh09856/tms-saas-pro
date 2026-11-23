@@ -1,0 +1,36 @@
+<div class="auth-shell">
+    <main class="auth-shell-main">
+        <div class="auth-workspace">
+            <section class="auth-workspace-story" aria-label="Kodewaves TMS">
+                <a href="/" class="auth-workspace-brand" aria-label="Kodewaves TMS home">
+                    <img src="/images/kodewaves-logo.svg?v=20261108-forest" width="260" height="56" alt="Kodewaves Transport Management" />
+                </a>
+                <div class="auth-workspace-message">
+                    <h1>A clear route through your day.</h1>
+                    <p>Bookings, dispatch, fleet and delivery work, connected in your company workspace.</p>
+                </div>
+                <div class="auth-route-diagram" aria-hidden="true">
+                    <svg viewBox="0 0 460 190" fill="none">
+                        <path d="M32 142H142C170 142 168 54 198 54H322C352 54 344 142 378 142H430" stroke="currentColor" stroke-width="2" />
+                        <path d="M32 142H142C170 142 168 54 198 54H262" stroke="#c6793d" stroke-width="4" />
+                        <circle cx="32" cy="142" r="9" fill="currentColor" /><circle cx="32" cy="142" r="3" fill="#edf1ef" />
+                        <circle cx="198" cy="54" r="9" fill="#c6793d" /><circle cx="198" cy="54" r="3" fill="#edf1ef" />
+                        <circle cx="378" cy="142" r="9" fill="#edf1ef" stroke="currentColor" stroke-width="2" />
+                        <text x="22" y="177" fill="currentColor">Book</text><text x="172" y="27" fill="currentColor">Dispatch</text><text x="353" y="177" fill="currentColor">Deliver</text>
+                        <rect x="247" y="39" width="30" height="30" rx="6" fill="currentColor" />
+                        <path d="M256 54H268M263 49L268 54L263 59" stroke="#edf1ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <a href="/services" class="auth-workspace-link">Explore the transport platform <span aria-hidden="true">→</span></a>
+            </section>
+            <section class="auth-workspace-form" aria-label="Workspace access">
+                {{outlet}}
+            </section>
+        </div>
+    </main>
+    <footer class="auth-shell-footer">
+        <div class="auth-shell-footer-inner">
+            <FleetbaseAttribution @placement="footer" />
+        </div>
+    </footer>
+</div>

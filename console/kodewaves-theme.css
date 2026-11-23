@@ -1,0 +1,1163 @@
+:root {
+    --kodewaves-primary: #426b57;
+    --kodewaves-primary-deep: #294b3a;
+    --kodewaves-primary-soft: #e8efe8;
+    --kodewaves-warm: oklch(0.72 0.12 82);
+    --kodewaves-warm-soft: oklch(0.94 0.035 82);
+    --kodewaves-paper: oklch(0.975 0.008 140);
+    --kodewaves-ink: oklch(0.255 0.025 180);
+    --kodewaves-muted: oklch(0.47 0.025 170);
+    --kodewaves-line: oklch(0.885 0.014 150);
+    --brand-primary-color: var(--kodewaves-primary);
+    --kodewaves-surface: #fff;
+    --kodewaves-surface-raised: #f4f7f4;
+    --kodewaves-on-primary: #fff;
+    --kodewaves-radius: 0.625rem;
+}
+
+body[data-theme='light'] {
+    background-color: var(--kodewaves-paper);
+    color: var(--kodewaves-ink);
+}
+
+body[data-theme='light'] .next-view-header,
+body[data-theme='light'] .next-view-container,
+body[data-theme='light'] .next-view-container > nav.next-sidebar,
+body[data-theme='light'] .next-dd-menu {
+    background-color: #fff;
+}
+
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item:hover,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item.active,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'],
+body[data-theme='light'] .next-view-header-item.active,
+body[data-theme='light'] .snm-item.active,
+body[data-theme='light'] .next-dd-menu a.next-dd-item:hover,
+body[data-theme='light'] .next-dd-menu a.next-dd-item.active {
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item:hover svg,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item.active svg,
+body[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'] svg {
+    color: #fff !important;
+}
+
+body[data-theme='light'] .btn.btn-primary,
+body[data-theme='light'] a.btn.btn-primary,
+body[data-theme='light'] button.btn-primary,
+body[data-theme='light'] .fb-button-primary,
+body[data-theme='light'] a.fb-button-primary,
+body[data-theme='light'] button.fb-button-primary {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='light'] .next-sidebar-navigator-primary-action,
+body[data-theme='light'] .next-sidebar-navigator-primary-action:hover:not(:disabled) {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='light'] .next-sidebar-navigator-item.is-active,
+body[data-theme='light'] .next-sidebar-navigator-item.is-parent-active {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+body[data-theme='light'] .next-sidebar-navigator-item.is-active svg,
+body[data-theme='light'] .next-sidebar-navigator-item.is-parent-active svg,
+body[data-theme='light'] .next-view-header-item.active svg,
+body[data-theme='light'] .snm-item.active svg {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] [class~='text-blue-500'],
+body[data-theme='light'] [class~='text-blue-600'],
+body[data-theme='light'] [class~='text-sky-500'] {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] [class~='bg-blue-500'],
+body[data-theme='light'] [class~='bg-sky-500'] {
+    background-color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] .btn.btn-primary:hover:not(:disabled),
+body[data-theme='light'] a.btn.btn-primary:hover:not(:disabled),
+body[data-theme='light'] button.btn-primary:hover:not(:disabled),
+body[data-theme='light'] .fb-button-primary:hover:not(:disabled),
+body[data-theme='light'] a.fb-button-primary:hover:not(:disabled),
+body[data-theme='light'] button.fb-button-primary:hover:not(:disabled) {
+    border-color: var(--kodewaves-primary-deep) !important;
+    background-color: var(--kodewaves-primary-deep) !important;
+}
+
+body[data-theme='light'] .form-input:focus,
+body[data-theme='light'] .form-select:focus,
+body[data-theme='light'] input:focus-visible,
+body[data-theme='light'] textarea:focus-visible,
+body[data-theme='light'] select:focus-visible {
+    border-color: var(--kodewaves-primary) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kodewaves-primary) 18%, transparent) !important;
+    outline-color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='light'] .console-dashboard-page {
+    border-bottom-color: var(--kodewaves-line);
+    background-color: #fff;
+}
+
+body[data-theme='dark'] {
+    --kodewaves-surface: #192722;
+    --kodewaves-surface-raised: #22332b;
+    --kodewaves-on-primary: #17251f;
+    --kodewaves-primary: #8eb99d;
+    --kodewaves-primary-deep: #d5e7d9;
+    --kodewaves-primary-soft: #26382e;
+    --kodewaves-warm: oklch(0.8 0.12 82);
+    --kodewaves-warm-soft: oklch(0.34 0.035 82);
+    --kodewaves-paper: oklch(0.19 0.018 190);
+    --kodewaves-ink: oklch(0.95 0.01 145);
+    --kodewaves-muted: oklch(0.76 0.018 150);
+    --kodewaves-line: oklch(0.39 0.025 175);
+    --brand-primary-color: var(--kodewaves-primary);
+}
+
+body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item:hover,
+body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item.active,
+body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'],
+body[data-theme='dark'] .next-view-header-item.active,
+body[data-theme='dark'] .snm-item.active,
+body[data-theme='dark'] .next-dd-menu a.next-dd-item:hover,
+body[data-theme='dark'] .next-dd-menu a.next-dd-item.active {
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .btn.btn-primary,
+body[data-theme='dark'] a.btn.btn-primary,
+body[data-theme='dark'] button.btn-primary,
+body[data-theme='dark'] .fb-button-primary,
+body[data-theme='dark'] a.fb-button-primary,
+body[data-theme='dark'] button.fb-button-primary {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .next-sidebar-navigator-primary-action,
+body[data-theme='dark'] .next-sidebar-navigator-primary-action:hover:not(:disabled) {
+    border-color: var(--kodewaves-primary) !important;
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .next-sidebar-navigator-item.is-active,
+body[data-theme='dark'] .next-sidebar-navigator-item.is-parent-active {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: #e7f1e9 !important;
+}
+
+body[data-theme='dark'] .next-sidebar-navigator-item.is-active svg,
+body[data-theme='dark'] .next-sidebar-navigator-item.is-parent-active svg,
+body[data-theme='dark'] .next-view-header-item.active svg,
+body[data-theme='dark'] .snm-item.active svg {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='dark'] [class~='text-blue-400'],
+body[data-theme='dark'] [class~='text-blue-500'],
+body[data-theme='dark'] [class~='text-blue-600'],
+body[data-theme='dark'] [class~='text-sky-400'],
+body[data-theme='dark'] [class~='text-sky-500'] {
+    color: var(--kodewaves-primary) !important;
+}
+
+body[data-theme='dark'] [class~='bg-blue-500'],
+body[data-theme='dark'] [class~='bg-sky-500'] {
+    background-color: var(--kodewaves-primary) !important;
+    color: #17251f !important;
+}
+
+body[data-theme='dark'] .form-input:focus,
+body[data-theme='dark'] .form-select:focus,
+body[data-theme='dark'] input:focus-visible,
+body[data-theme='dark'] textarea:focus-visible,
+body[data-theme='dark'] select:focus-visible {
+    border-color: var(--kodewaves-primary) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kodewaves-primary) 24%, transparent) !important;
+    outline-color: var(--kodewaves-primary) !important;
+}
+
+.fleetbase-attribution-legal-link {
+    text-decoration: none;
+}
+
+/* Fleetbase console elements do not always carry a light/dark theme attribute. */
+.next-view-header-item.active,
+.snm-item.active,
+.next-sidebar-navigator-primary-action,
+.next-sidebar-navigator-primary-action:hover:not(:disabled) {
+    background-color: var(--kodewaves-primary) !important;
+    border-color: var(--kodewaves-primary) !important;
+    color: #fff !important;
+}
+
+.next-sidebar-navigator-item.is-active,
+.next-sidebar-navigator-item.is-parent-active {
+    background-color: var(--kodewaves-primary-soft) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+/* Keep Fleet-Ops control-hub information accents inside the Kodewaves palette. */
+.fleet-ops-control-hub-tone-blue {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary) 12%, transparent), color-mix(in srgb, var(--kodewaves-primary) 3%, transparent) 52%, #fff 100%), #fff !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary) 28%, #fff) !important;
+}
+
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-action,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-action svg,
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-blue svg,
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-info svg,
+.fleet-ops-control-hub-kpi-action {
+    color: var(--kodewaves-primary) !important;
+}
+
+.fleet-ops-control-hub-kpi-icon,
+.fleet-ops-control-hub-link-icon {
+    color: var(--kodewaves-primary) !important;
+}
+
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-success svg {
+    color: var(--kodewaves-primary) !important;
+}
+
+.fleet-ops-control-hub-action.fleet-ops-control-hub-tone-warning svg {
+    color: var(--kodewaves-warm) !important;
+}
+
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
+.fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon {
+    background-color: var(--kodewaves-primary-soft) !important;
+}
+
+.fleet-ops-control-hub-link-icon {
+    background-color: var(--kodewaves-primary-soft) !important;
+}
+
+body[data-theme='dark'] .fleet-ops-control-hub-tone-blue {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary) 20%, transparent), color-mix(in srgb, var(--kodewaves-primary) 6%, transparent) 52%, #1f2937 100%), #1f2937 !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary) 45%, transparent) !important;
+}
+
+/* Shared Admin and vendor components inherit the same surface system. */
+body .next-dd-menu,
+body .next-sidebar-navigator-search,
+body .next-view-header,
+body .next-view-container > nav.next-sidebar,
+body .next-view-section,
+body .next-view-section-header,
+body .next-content-panel {
+    background-color: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+    border-color: var(--kodewaves-line);
+}
+
+body .next-dd-menu,
+body .next-view-section,
+body .next-table-wrapper,
+body .table-wrapper {
+    border-radius: var(--kodewaves-radius);
+}
+
+body .next-dd-menu,
+body .next-sidebar-navigator-search-popover {
+    box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+}
+
+body .form-input,
+body .form-select,
+body .form-textarea,
+body input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+body select,
+body textarea {
+    background-color: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+    border-color: var(--kodewaves-line);
+    border-radius: var(--kodewaves-radius);
+}
+
+body .form-input:disabled,
+body .form-select:disabled,
+body .form-textarea:disabled {
+    background-color: var(--kodewaves-surface-raised);
+    color: var(--kodewaves-muted);
+    cursor: not-allowed;
+}
+
+body .table-wrapper:not(.table-fluid) {
+    border: 1px solid var(--kodewaves-line);
+    border-radius: var(--kodewaves-radius);
+}
+
+body .table-wrapper table thead tr th {
+    background-color: var(--kodewaves-surface-raised);
+    color: var(--kodewaves-muted);
+    border-color: var(--kodewaves-line);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+body .table-wrapper table tbody {
+    background-color: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+}
+
+body .table-wrapper table tbody tr td {
+    border-color: var(--kodewaves-line);
+}
+
+body .next-table-wrapper > table thead,
+body .next-table-wrapper > table thead th,
+body .next-table-wrapper table > thead {
+    background-color: var(--kodewaves-surface-raised);
+    color: var(--kodewaves-muted);
+}
+
+body .next-table-wrapper > table tbody,
+body .next-table-wrapper > table tbody td {
+    background-color: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+    border-color: var(--kodewaves-line);
+}
+
+body .btn.btn-secondary,
+body a.btn.btn-secondary,
+body button.btn-secondary {
+    background-color: var(--kodewaves-surface) !important;
+    border-color: var(--kodewaves-line) !important;
+    color: var(--kodewaves-ink) !important;
+}
+
+body .btn.btn-secondary:hover:not(:disabled),
+body a.btn.btn-secondary:hover:not(:disabled),
+body button.btn-secondary:hover:not(:disabled) {
+    background-color: var(--kodewaves-surface-raised) !important;
+    border-color: var(--kodewaves-primary) !important;
+}
+
+body .table-wrapper table tbody tr.is-selected td {
+    background-color: var(--kodewaves-primary-soft);
+    color: var(--kodewaves-ink);
+}
+
+body .flb--modal {
+    --flb-modal-bg: var(--kodewaves-surface);
+    --flb-modal-color: var(--kodewaves-ink);
+    --flb-modal-border-color: var(--kodewaves-line);
+    --flb-modal-border-radius: 0.875rem;
+    --flb-modal-footer-bg: var(--kodewaves-surface-raised);
+    --flb-modal-box-shadow: 0 24px 64px rgb(0 0 0 / 22%);
+}
+
+body[data-theme] .next-view-header-item.active svg,
+body[data-theme] .snm-item.active svg,
+body[data-theme] .next-sidebar-navigator-primary-action {
+    color: var(--kodewaves-on-primary) !important;
+}
+
+body :is(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--kodewaves-primary);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .next-dd-menu,
+    .next-sidebar-navigator-item,
+    .flb--modal {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* The shared layouts cover company operations and platform administration. */
+body[data-theme] .next-view-section-subheader {
+    border-color: var(--kodewaves-line);
+    background: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+}
+
+body[data-theme] .next-view-section-subheader-title {
+    color: var(--kodewaves-ink);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -.025em;
+}
+
+body[data-theme] .next-sidebar-navigator {
+    padding-inline: .75rem;
+}
+
+body[data-theme] .next-sidebar-navigator-item {
+    min-height: 40px;
+    border-radius: 8px;
+    color: var(--kodewaves-muted);
+}
+
+body[data-theme] .next-sidebar-navigator-item-label {
+    font-size: .8rem;
+    font-weight: 500;
+}
+
+body[data-theme] .next-sidebar-navigator-item.is-active,
+body[data-theme] .next-sidebar-navigator-item.is-parent-active {
+    background: var(--kodewaves-primary-soft) !important;
+    color: var(--kodewaves-primary-deep) !important;
+}
+
+body[data-theme] .next-sidebar-navigator-item.is-active .next-sidebar-navigator-item-label {
+    font-weight: 650;
+}
+
+body[data-theme] .next-sidebar-navigator-search {
+    border: 1px solid var(--kodewaves-line);
+    border-radius: 8px;
+    background: var(--kodewaves-surface);
+}
+
+body[data-theme] .next-sidebar-navigator-search input {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+body[data-theme] .next-sidebar-footer {
+    border-color: var(--kodewaves-line);
+    background: var(--kodewaves-surface-raised);
+}
+
+body[data-theme] .admin-dashboard-widget {
+    border-color: var(--kodewaves-line);
+    border-radius: 12px;
+    background: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+    box-shadow: none;
+}
+
+body[data-theme] .admin-dashboard-widget > div:first-child {
+    border-color: var(--kodewaves-line);
+}
+
+body[data-theme] .admin-kpi-tile {
+    background: var(--kodewaves-surface);
+}
+
+body[data-theme] .admin-kpi-tile > div {
+    padding: 1.25rem;
+}
+
+body[data-theme] .admin-kpi-tile .text-2xl {
+    color: var(--kodewaves-ink);
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -.035em;
+}
+
+body[data-theme] .next-content-panel-title {
+    color: var(--kodewaves-ink);
+    font-weight: 600;
+    letter-spacing: -.015em;
+}
+
+body[data-theme] .next-content-panel-header {
+    border-color: var(--kodewaves-line);
+}
+
+body[data-theme] .next-view-header .org-badge {
+    border-radius: 7px;
+    background: var(--kodewaves-primary-soft);
+    color: var(--kodewaves-primary-deep);
+    font-weight: 650;
+}
+
+/* Keep the public-facing sign-in on the light Kodewaves brand by default. */
+body.auth-login {
+    color-scheme: light;
+    --kodewaves-paper: #f4f5ef;
+    --kodewaves-surface: #fbfcf8;
+    --kodewaves-surface-raised: #eef2ec;
+    --kodewaves-ink: #203229;
+    --kodewaves-muted: #58685e;
+    --kodewaves-line: #dce3da;
+    background: #f4f5ef !important;
+    color: #203229 !important;
+}
+
+body.auth-login .auth-shell,
+body.auth-login .auth-workspace-form,
+body.auth-login .auth-workspace {
+    background: #fbfcf8 !important;
+    color: #203229 !important;
+}
+
+body.auth-login .auth-workspace-story {
+    background: #e8efe5 !important;
+    color: #294b3a !important;
+}
+
+body.auth-login .auth-workspace-message h1,
+body.auth-login .auth-login-heading h2,
+body.auth-login .auth-login-field label,
+body.auth-login .auth-login-form label {
+    color: #203229 !important;
+}
+
+body.auth-login .auth-workspace-message p,
+body.auth-login .auth-login-heading p {
+    color: #526b59 !important;
+}
+
+body.auth-login .auth-workspace-link {
+    color: #294b3a !important;
+}
+
+body.auth-login .auth-login-field input {
+    border-color: #cbd7cc !important;
+    background: #fff !important;
+    color: #203229 !important;
+}
+
+body.auth-login .auth-login-field input::placeholder {
+    color: #69776e !important;
+}
+
+body.auth-login .auth-login-form .btn.btn-primary {
+    border-color: #426b57 !important;
+    background: #426b57 !important;
+    color: #fff !important;
+}
+
+body.auth-login .auth-login-form .btn:not(.btn-primary) {
+    border-color: #dce3da !important;
+    background: #eef2ec !important;
+    color: #294b3a !important;
+}
+
+body.auth-login .auth-login-form a {
+    color: #294b3a !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+body.auth-login .auth-shell-footer {
+    border-color: #dce3da;
+    background: #fbfcf8;
+}
+
+body.auth-login .fleetbase-attribution-notice--footer {
+    color: #58685e;
+}
+
+body.auth-login .fleetbase-attribution-notice--footer .fleetbase-attribution-link {
+    color: #294b3a;
+}
+
+/* Wide, legible Kodewaves footer for authentication and invitation pages. */
+.auth-shell {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: var(--kodewaves-paper);
+    color: var(--kodewaves-ink);
+}
+
+.auth-shell-main {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+}
+
+.auth-workspace {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    width: min(100%, 72rem);
+    overflow: hidden;
+    border: 1px solid var(--kodewaves-line);
+    border-radius: 16px;
+    background: var(--kodewaves-surface);
+}
+
+.auth-workspace-story {
+    display: flex;
+    min-height: 41rem;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 3.5rem;
+    background: #e8efe5;
+    color: #294b3a;
+}
+
+.auth-workspace-brand img {
+    display: block;
+    width: 14.5rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.auth-workspace-message {
+    margin-top: 4.5rem;
+}
+
+.auth-workspace-message h1 {
+    max-width: 12ch;
+    margin: 0 0 1.25rem;
+    color: #203229;
+    font-size: clamp(2.5rem, 4vw, 3.45rem);
+    font-weight: 550;
+    letter-spacing: -.035em;
+    line-height: 1.08;
+    text-wrap: balance;
+}
+
+.auth-workspace-message p {
+    max-width: 33ch;
+    margin: 0;
+    color: #526b59;
+    font-size: .95rem;
+    line-height: 1.75;
+}
+
+.auth-route-diagram {
+    width: 100%;
+    margin-block: 2rem 1rem;
+}
+
+.auth-route-diagram svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.auth-route-diagram text {
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 550;
+}
+
+.auth-workspace-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-block: .75rem;
+    color: #294b3a;
+    font-size: .8rem;
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.auth-workspace-form {
+    align-self: center;
+    min-width: 0;
+    padding: 3.5rem;
+}
+
+.auth-login-heading h2 {
+    margin: 0 0 .75rem;
+    color: var(--kodewaves-ink);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -.03em;
+    line-height: 1.2;
+}
+
+.auth-login-heading p {
+    margin: 0;
+    color: var(--kodewaves-muted);
+    font-size: .875rem;
+    line-height: 1.6;
+}
+
+.auth-login-form {
+    margin-top: 2rem;
+}
+
+.auth-login-fields {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.auth-login-field label {
+    display: block;
+    margin-bottom: .5rem;
+    color: var(--kodewaves-ink);
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.auth-login-field input {
+    min-height: 46px;
+    padding: .75rem .875rem;
+    border: 1px solid var(--kodewaves-line);
+    border-radius: 7px;
+    background: var(--kodewaves-surface);
+    color: var(--kodewaves-ink);
+    font-size: .875rem;
+    line-height: 1.5;
+}
+
+.auth-login-field input::placeholder {
+    color: var(--kodewaves-muted);
+}
+
+.auth-login-form .btn {
+    min-height: 44px;
+}
+
+@media (max-width: 900px) {
+    .auth-workspace-story,
+    .auth-workspace-form {
+        padding: 2rem;
+    }
+
+    .auth-workspace-message h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .auth-shell-main {
+        padding: 1.25rem 1rem;
+    }
+
+    .auth-workspace {
+        grid-template-columns: 1fr;
+        max-width: 30rem;
+    }
+
+    .auth-workspace-story {
+        min-height: 0;
+        padding: 1.5rem;
+    }
+
+    .auth-workspace-brand img {
+        width: 12rem;
+    }
+
+    .auth-workspace-message,
+    .auth-route-diagram,
+    .auth-workspace-link {
+        display: none;
+    }
+
+    .auth-workspace-form {
+        padding: 2rem 1.5rem;
+    }
+}
+
+.auth-shell-footer {
+    border-top: 1px solid var(--kodewaves-line);
+    background: var(--kodewaves-surface);
+    padding: 1rem 1.5rem;
+}
+
+.auth-shell-footer-inner {
+    width: min(100%, 80rem);
+    margin-inline: auto;
+}
+
+.fleetbase-attribution-notice--footer {
+    justify-content: flex-end;
+    gap: 0.5rem;
+    color: var(--kodewaves-muted);
+    font-size: 0.8rem;
+    line-height: 1.25rem;
+}
+
+.fleetbase-attribution-notice--footer .fleetbase-attribution-link {
+    color: var(--kodewaves-ink);
+    font-weight: 700;
+}
+
+.fleetbase-attribution-notice--footer .fleetbase-attribution-version,
+.fleetbase-attribution-notice--footer .fleetbase-attribution-separator {
+    color: var(--kodewaves-muted);
+}
+
+.fleetbase-attribution-notice--footer .fleetbase-attribution-legal-link {
+    border-radius: 0.25rem;
+    color: var(--kodewaves-primary);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+}
+
+.fleetbase-attribution-notice--footer .fleetbase-attribution-legal-link:hover {
+    color: var(--kodewaves-primary-deep);
+    text-decoration: underline;
+}
+
+.fleetbase-attribution-notice--footer .fleetbase-attribution-legal-link:focus-visible {
+    outline: 2px solid var(--kodewaves-primary);
+    outline-offset: 3px;
+}
+
+.fleetbase-attribution-notice--standalone {
+    gap: 0.4rem;
+    color: var(--kodewaves-muted);
+    font-size: 0.78rem;
+    line-height: 1.25rem;
+}
+
+.fleetbase-attribution-notice--standalone .fleetbase-attribution-legal-link {
+    color: var(--kodewaves-primary);
+    text-underline-offset: 0.2em;
+}
+
+@media (max-width: 640px) {
+    .auth-shell-footer {
+        padding: 0.875rem 1rem;
+    }
+
+    .fleetbase-attribution-notice--footer {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+/* Shared Kodewaves workspace system, adapted from the companion app theme. */
+:root {
+    --kodewaves-primary: #426b57;
+    --kodewaves-primary-deep: #294b3a;
+    --kodewaves-primary-soft: #e8efe8;
+    --kodewaves-paper: #f4f5ef;
+    --kodewaves-ink: #203229;
+    --kodewaves-muted: #69776e;
+    --kodewaves-line: #dce3da;
+    --kodewaves-warm: #c99a51;
+    --kodewaves-warm-soft: #f4ead7;
+}
+
+body.fleetbase-console[data-theme='light'] {
+    background: var(--kodewaves-paper);
+    color: var(--kodewaves-ink);
+    font-family: Inter, 'Segoe UI', sans-serif;
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-container {
+    background: var(--kodewaves-paper);
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar {
+    background: #fbfcf8;
+    border-right: 1px solid var(--kodewaves-line);
+    box-shadow: 1px 0 0 rgb(41 75 58 / 2%);
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-header {
+    min-height: 58px;
+    border-bottom: 1px solid #315641;
+    background: #294b3a;
+    box-shadow: 0 5px 20px -20px rgb(32 50 41 / 45%);
+    color: #f7faf6;
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-header :is(a, button, [role='button'], .next-view-header-item) {
+    color: #f7faf6;
+}
+
+/* Keep the shared header controls above page drawers without covering modal dialogs. */
+body.fleetbase-console header.next-view-header {
+    position: relative;
+    z-index: 1000;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item {
+    min-height: 38px;
+    border-radius: 7px;
+    color: #536258;
+    font-weight: 500;
+    transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item:hover {
+    background: #eef2ec !important;
+    color: var(--kodewaves-primary-deep) !important;
+    transform: translateX(2px);
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item.active,
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'] {
+    background: var(--kodewaves-primary) !important;
+    color: #fff !important;
+    font-weight: 650;
+    box-shadow: 0 4px 10px rgb(41 75 58 / 14%);
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item.active svg,
+body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item[aria-current='page'] svg {
+    color: #fff !important;
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-section,
+body.fleetbase-console[data-theme='light'] .next-content-panel {
+    border-color: var(--kodewaves-line);
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-section-header {
+    border-color: var(--kodewaves-line);
+}
+
+body.fleetbase-console[data-theme='light'] .next-view-section-header h1,
+body.fleetbase-console[data-theme='light'] .next-view-section-header h2,
+body.fleetbase-console[data-theme='light'] .console-dashboard-title h1 {
+    color: var(--kodewaves-ink);
+    letter-spacing: -.035em;
+}
+
+body.fleetbase-console[data-theme='light'] .next-table-wrapper,
+body.fleetbase-console[data-theme='light'] .table-wrapper,
+body.fleetbase-console[data-theme='light'] .table-fluid {
+    border-color: var(--kodewaves-line);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: none;
+}
+
+body.fleetbase-console[data-theme='light'] .next-table-wrapper thead,
+body.fleetbase-console[data-theme='light'] .table-wrapper thead,
+body.fleetbase-console[data-theme='light'] .table-fluid thead {
+    background: #f3f5ef;
+}
+
+body.fleetbase-console[data-theme='light'] .next-table-wrapper th,
+body.fleetbase-console[data-theme='light'] .table-wrapper th,
+body.fleetbase-console[data-theme='light'] .table-fluid th {
+    color: #5e6b61;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .065em;
+    text-transform: uppercase;
+}
+
+body.fleetbase-console[data-theme='light'] .next-table-wrapper tbody tr:hover,
+body.fleetbase-console[data-theme='light'] .table-wrapper tbody tr:hover,
+body.fleetbase-console[data-theme='light'] .table-fluid tbody tr:hover {
+    background: #f8faf6;
+}
+
+body.fleetbase-console[data-theme='light'] :is(.form-input, .form-select, .form-textarea, input, select, textarea) {
+    border-color: #d4ddd3;
+    border-radius: 7px;
+    background-color: #fff;
+}
+
+body.fleetbase-console[data-theme='light'] :is(.form-input, .form-select, .form-textarea, input, select, textarea):focus {
+    border-color: var(--kodewaves-primary);
+    box-shadow: 0 0 0 3px rgb(66 107 87 / 12%);
+}
+
+body.fleetbase-console[data-theme='light'] .btn.btn-primary,
+body.fleetbase-console[data-theme='light'] .fb-button-primary {
+    border-radius: 7px;
+    background: var(--kodewaves-primary) !important;
+    box-shadow: 0 3px 8px rgb(41 75 58 / 12%);
+    transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+body.fleetbase-console[data-theme='light'] .btn.btn-primary:hover:not(:disabled),
+body.fleetbase-console[data-theme='light'] .fb-button-primary:hover:not(:disabled) {
+    background: var(--kodewaves-primary-deep) !important;
+    box-shadow: 0 5px 12px rgb(41 75 58 / 16%);
+    transform: translateY(-1px);
+}
+
+body.fleetbase-console[data-theme='light'] .flb--modal-content {
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 24px 70px rgb(25 43 33 / 22%);
+}
+
+::selection {
+    background: #cbdcc7;
+    color: #203229;
+}
+
+/* Kodewaves loading state for startup and in-app actions. */
+body .fleetbase-loader {
+    border-color: #cbdcc7;
+    border-top-color: #426b57;
+    border-right-color: #426b57;
+}
+
+body .btn-primary .fleetbase-loader {
+    border-color: rgb(255 255 255 / 35%);
+    border-top-color: #fff;
+    border-right-color: #fff;
+}
+
+body #boot-loader {
+    position: fixed;
+    background: #f4f5ef;
+}
+
+body #boot-loader > .loader-container {
+    display: flex;
+    min-width: 190px;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+}
+
+body #boot-loader > .loader-container::before {
+    display: block;
+    width: 62px;
+    height: 62px;
+    background: url('/images/kodewaves-icon.svg') center / contain no-repeat;
+    content: '';
+}
+
+body #boot-loader .fleetbase-loader {
+    width: 26px;
+    height: 26px;
+    border-width: 3px;
+}
+
+body #boot-loader > .loader-container > .loading-message {
+    margin: 0;
+    color: #294b3a;
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body .fleetbase-loader {
+        animation: none;
+        border-color: #426b57;
+    }
+    body .btn-primary .fleetbase-loader {
+        border-color: #fff;
+    }
+}
+
+body {
+    scrollbar-color: #a6b6a6 var(--kodewaves-paper);
+    scrollbar-width: thin;
+    caret-color: var(--kodewaves-primary);
+}
+
+body :is(input, textarea, td, .admin-kpi-tile) {
+    font-variant-numeric: tabular-nums;
+}
+
+body.fleetbase-console[data-theme='dark'] {
+    --kodewaves-primary: #9ac2a6;
+    --kodewaves-primary-deep: #d5e7d9;
+    --kodewaves-primary-soft: #26382e;
+    --kodewaves-paper: #18251f;
+    --kodewaves-ink: #e8eee8;
+    --kodewaves-muted: #b2beb4;
+    --kodewaves-line: #35453b;
+    --kodewaves-warm: #dfb975;
+    --kodewaves-warm-soft: #3d3628;
+}
+
+body.fleetbase-console[data-theme='dark'] .next-view-container {
+    background: var(--kodewaves-paper);
+}
+
+body.fleetbase-console[data-theme='dark'] .next-view-container > nav.next-sidebar,
+body.fleetbase-console[data-theme='dark'] .next-view-header {
+    border-color: var(--kodewaves-line);
+    background: #1c2b23;
+}
+
+body.fleetbase-console[data-theme='dark'] .next-table-wrapper,
+body.fleetbase-console[data-theme='dark'] .table-wrapper,
+body.fleetbase-console[data-theme='dark'] .table-fluid {
+    border-color: var(--kodewaves-line);
+    border-radius: 10px;
+}
+
+body.fleetbase-console[data-theme='dark'] .next-table-wrapper thead,
+body.fleetbase-console[data-theme='dark'] .table-wrapper thead,
+body.fleetbase-console[data-theme='dark'] .table-fluid thead {
+    background: #22342a;
+}
+
+@media (max-width: 767px) {
+    body.fleetbase-console[data-theme='light'] .next-view-container > nav.next-sidebar a.next-nav-item:hover {
+        transform: none;
+    }
+
+    body.fleetbase-console .next-view-section-subheader {
+        display: flex;
+        flex: 0 0 auto;
+        flex-wrap: wrap;
+        gap: .75rem;
+        height: auto;
+        min-height: 57px;
+        max-height: none;
+        padding: .875rem 1rem;
+    }
+
+    body.fleetbase-console .next-view-section-subheader-left,
+    body.fleetbase-console .next-view-section-subheader-actions {
+        min-width: 0;
+        flex: 1 1 100%;
+    }
+
+    body.fleetbase-console .next-view-section-subheader-actions {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: .5rem;
+    }
+
+    body.fleetbase-console .next-view-section-subheader-actions input.form-input {
+        width: min(100%, 20rem);
+        max-width: 100%;
+        min-height: 40px;
+    }
+
+    body.fleetbase-console .next-table-wrapper,
+    body.fleetbase-console .table-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.fleetbase-console .flb--modal-dialog {
+        width: auto;
+        max-width: calc(100% - 2rem);
+        margin-inline: auto;
+    }
+
+    body.fleetbase-console .next-mobile-navbar-tab-item {
+        min-height: 44px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.fleetbase-console .next-view-container > nav.next-sidebar a.next-nav-item,
+    body.fleetbase-console .btn.btn-primary,
+    body.fleetbase-console .fb-button-primary {
+        transition: none;
+    }
+}

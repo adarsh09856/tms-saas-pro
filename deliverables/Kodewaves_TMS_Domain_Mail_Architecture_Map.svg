@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1280" viewBox="0 0 1600 1280" role="img" aria-labelledby="title desc">
+  <title id="title">Kodewaves TMS vendor domain and SMTP architecture map</title>
+  <desc id="desc">Four maps describe the central TMS, vendor public sites, hostname and DNS setup, domain lifecycle, and SMTP sender flow. The vendor console remains centralized and the customer portal is excluded.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#78909c"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#172b36}.title{font-size:30px;font-weight:700;fill:#0f3446}.subtitle{font-size:15px;fill:#687a86}.section{font-size:18px;font-weight:700;fill:#0f3446}.label{font-size:14px;font-weight:700}.body{font-size:12px;fill:#415563}.small{font-size:11px;fill:#687a86}.card{fill:#fff;stroke:#d7e0e5;stroke-width:1.4}.blue{fill:#eaf4f8;stroke:#156082}.green{fill:#edf6ef;stroke:#196b24}.orange{fill:#fff2ea;stroke:#e97132}.purple{fill:#f7eff7;stroke:#a02b93}.dark{fill:#0f3446;stroke:#0f3446}.darktext{fill:#fff}.line{stroke:#78909c;stroke-width:2;fill:none;marker-end:url(#arrow)}.thin{stroke:#b6c4ca;stroke-width:1.4;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1600" height="1280" fill="#f7f9fa"/>
+  <text x="48" y="49" class="title">KODEWAVES TMS  /  VENDOR DOMAINS + SMTP</text>
+  <text x="48" y="76" class="subtitle">Target architecture map • central Admin control • tenant-scoped vendor public sites • no Customer Portal</text>
+
+  <!-- Map 1: platform architecture -->
+  <rect x="32" y="98" width="1536" height="344" rx="18" fill="#fff" stroke="#d7e0e5"/>
+  <text x="58" y="132" class="section">1. Platform and public-site architecture</text>
+  <rect x="62" y="162" width="255" height="76" rx="12" class="blue"/><text x="82" y="190" class="label">Central staff console</text><text x="82" y="214" class="body">tms.touratbhutan.info</text>
+  <rect x="62" y="266" width="255" height="106" rx="12" class="green"/><text x="82" y="294" class="label">Vendor public sites</text><text x="82" y="318" class="body">&lt;slug&gt;.tms.touratbhutan.info</text><text x="82" y="341" class="body">or verified vendor-domain.com</text><text x="82" y="360" class="small">Profile • services • contact • public tracking</text>
+  <rect x="380" y="183" width="265" height="151" rx="12" class="orange"/><text x="402" y="213" class="label">Trusted HTTPS ingress</text><text x="402" y="239" class="body">Proxy host allowlist</text><text x="402" y="260" class="body">Certificate issue / renew / revoke</text><text x="402" y="281" class="body">Original Host from trusted proxy</text><text x="402" y="310" class="small">Unknown or inactive host → fail closed</text>
+  <rect x="710" y="183" width="270" height="151" rx="12" class="purple"/><text x="732" y="213" class="label">Tenant host resolver</text><text x="732" y="239" class="body">Exact verified-domain lookup</text><text x="732" y="260" class="body">Reserved slug wildcard lookup</text><text x="732" y="281" class="body">Resolve host → company_uuid</text><text x="732" y="310" class="small">Never select a default tenant</text>
+  <rect x="1045" y="157" width="250" height="82" rx="12" class="blue"/><text x="1067" y="187" class="label">Central TMS console</text><text x="1067" y="211" class="body">Login • roles • Admin + vendor</text>
+  <rect x="1045" y="260" width="250" height="82" rx="12" class="green"/><text x="1067" y="290" class="label">Vendor public renderer</text><text x="1067" y="314" class="body">Approved company fields only</text>
+  <rect x="1360" y="165" width="175" height="71" rx="12" class="blue"/><text x="1380" y="193" class="label">TMS API</text><text x="1380" y="216" class="body">Tenant policy</text>
+  <rect x="1360" y="258" width="175" height="71" rx="12" class="green"/><text x="1380" y="286" class="label">Shared data</text><text x="1380" y="309" class="body">company_uuid scope</text>
+  <path d="M317 200 H370" class="line"/><path d="M317 319 H370" class="line"/><path d="M645 250 H700" class="line"/><path d="M980 230 H1035" class="line"/><path d="M980 292 H1035" class="line"/><path d="M1295 198 H1350" class="line"/><path d="M1295 301 H1350" class="line"/>
+  <text x="1048" y="378" class="small">Public domain does not host the vendor console, customer login, or private records.</text>
+
+  <!-- Map 2: DNS -->
+  <rect x="32" y="458" width="1536" height="255" rx="18" fill="#fff" stroke="#d7e0e5"/>
+  <text x="58" y="492" class="section">2. DNS and hostname map</text>
+  <rect x="62" y="520" width="335" height="145" rx="12" class="blue"/><text x="84" y="550" class="label">Platform DNS zone</text><text x="84" y="578" class="body">A  tms.touratbhutan.info → ingress IP</text><text x="84" y="601" class="body">A  *.tms.touratbhutan.info → ingress IP</text><text x="84" y="624" class="body">TLS wildcard: DNS-01 certificate flow</text><text x="84" y="647" class="small">Generated subdomains need no vendor DNS edits</text>
+  <rect x="445" y="520" width="335" height="145" rx="12" class="green"/><text x="467" y="550" class="label">Vendor custom domain</text><text x="467" y="578" class="body">A / ALIAS apex → ingress IP</text><text x="467" y="601" class="body">TXT verification → unique claim token</text><text x="467" y="624" class="body">Optional www CNAME → canonical host</text><text x="467" y="647" class="small">DNS pointing alone is not proof of ownership</text>
+  <rect x="828" y="520" width="315" height="145" rx="12" class="orange"/><text x="850" y="550" class="label">Mail sender DNS</text><text x="850" y="578" class="body">SPF authorizes platform relay</text><text x="850" y="601" class="body">DKIM selector signs outbound mail</text><text x="850" y="624" class="body">DMARC alignment/policy guidance</text><text x="850" y="647" class="small">Separate from website A/TXT verification</text>
+  <rect x="1190" y="520" width="345" height="145" rx="12" class="purple"/><text x="1212" y="550" class="label">Central routing boundary</text><text x="1212" y="578" class="body">tms host → central console/API</text><text x="1212" y="601" class="body">verified vendor host → public renderer</text><text x="1212" y="624" class="body">Unknown, pending, suspended → reject</text><text x="1212" y="647" class="small">No fallback tenant, no shared session cookie</text>
+  <path d="M397 592 H434" class="thin"/><path d="M780 592 H817" class="thin"/><path d="M1143 592 H1180" class="thin"/>
+
+  <!-- Map 3: lifecycle -->
+  <rect x="32" y="729" width="1536" height="213" rx="18" fill="#fff" stroke="#d7e0e5"/>
+  <text x="58" y="763" class="section">3. Vendor domain lifecycle and ownership</text>
+  <g>
+    <rect x="62" y="792" width="210" height="92" rx="12" class="blue"/><text x="82" y="822" class="label">1. Register vendor</text><text x="82" y="847" class="body">Create company + slug</text><text x="82" y="867" class="small">Provision default public host</text>
+    <rect x="319" y="792" width="210" height="92" rx="12" class="green"/><text x="339" y="822" class="label">2. Request domain</text><text x="339" y="847" class="body">Vendor enters hostname</text><text x="339" y="867" class="small">Status: dns_pending</text>
+    <rect x="576" y="792" width="210" height="92" rx="12" class="orange"/><text x="596" y="822" class="label">3. Verify DNS</text><text x="596" y="847" class="body">A/ALIAS + TXT proof</text><text x="596" y="867" class="small">Exact host and ownership</text>
+    <rect x="833" y="792" width="210" height="92" rx="12" class="purple"/><text x="853" y="822" class="label">4. Admin approves</text><text x="853" y="847" class="body">Plan + tenant + audit</text><text x="853" y="867" class="small">Admin controls activation</text>
+    <rect x="1090" y="792" width="210" height="92" rx="12" class="green"/><text x="1110" y="822" class="label">5. Issue HTTPS</text><text x="1110" y="847" class="body">Certificate valid</text><text x="1110" y="867" class="small">Renewal monitoring on</text>
+    <rect x="1347" y="792" width="188" height="92" rx="12" class="dark"/><text x="1367" y="822" class="label darktext">6. Activate site</text><text x="1367" y="847" class="body darktext">Exact host → tenant</text><text x="1367" y="867" class="small darktext">Admin can suspend/remove</text>
+  </g>
+  <path d="M272 838 H309" class="line"/><path d="M529 838 H566" class="line"/><path d="M786 838 H823" class="line"/><path d="M1043 838 H1080" class="line"/><path d="M1300 838 H1337" class="line"/>
+
+  <!-- Map 4: SMTP -->
+  <rect x="32" y="958" width="1536" height="288" rx="18" fill="#fff" stroke="#d7e0e5"/>
+  <text x="58" y="992" class="section">4. SMTP mail delivery and sender-domain control</text>
+  <rect x="62" y="1022" width="230" height="93" rx="12" class="blue"/><text x="82" y="1052" class="label">TMS event</text><text x="82" y="1077" class="body">Invite • booking • POD • invoice</text><text x="82" y="1098" class="small">Company-scoped event</text>
+  <rect x="345" y="1022" width="230" height="93" rx="12" class="green"/><text x="365" y="1052" class="label">Outbox + queue</text><text x="365" y="1077" class="body">Retry • idempotency</text><text x="365" y="1098" class="small">Delivery state and correlation ID</text>
+  <rect x="628" y="1022" width="230" height="93" rx="12" class="orange"/><text x="648" y="1052" class="label">Admin mail policy</text><text x="648" y="1077" class="body">Select verified From identity</text><text x="648" y="1098" class="small">Secrets stay server-side</text>
+  <rect x="911" y="1022" width="230" height="93" rx="12" class="purple"/><text x="931" y="1052" class="label">SMTP relay</text><text x="931" y="1077" class="body">TLS + authenticated submit</text><text x="931" y="1098" class="small">Platform-managed default sender</text>
+  <rect x="1194" y="1022" width="341" height="93" rx="12" class="blue"/><text x="1214" y="1052" class="label">Recipient + delivery monitor</text><text x="1214" y="1077" class="body">Accepted / bounced / suppressed</text><text x="1214" y="1098" class="small">Admin can inspect and control</text>
+  <path d="M292 1068 H335" class="line"/><path d="M575 1068 H618" class="line"/><path d="M858 1068 H901" class="line"/><path d="M1141 1068 H1184" class="line"/>
+  <rect x="190" y="1150" width="540" height="58" rx="12" class="green"/><text x="210" y="1175" class="label">Platform fallback From</text><text x="405" y="1175" class="body">verified Kodewaves sender • available before vendor setup</text>
+  <rect x="870" y="1150" width="540" height="58" rx="12" class="orange"/><text x="890" y="1175" class="label">Optional vendor From</text><text x="1085" y="1175" class="body">SPF + DKIM verified • DMARC guidance • Admin enabled</text>
+</svg>

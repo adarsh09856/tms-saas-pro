@@ -1,0 +1,28 @@
+<div class="space-y-5">
+    <ContentPanel @title="Plan catalog" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-600 mb-4">Plan edits publish a new version. Existing subscriptions keep their saved entitlement snapshot. Use a Stripe Price ID for paid plans; zero-price plans activate directly.</p>
+        <div class="table-wrapper table-fluid"><table class="table table-striped table-hover"><thead><tr><th>Plan</th><th>Price</th><th>Version</th><th>Entitlements</th><th>Status</th><th></th></tr></thead><tbody>
+            {{#each this.plans as |plan|}}
+                <tr><td><strong>{{plan.name}}</strong><div class="text-xs text-gray-500">{{plan.slug}}</div></td><td>{{plan.displayAmount}} / {{plan.interval}}</td><td>{{plan.version}}</td><td class="text-xs">{{plan.entitlementSummary}}</td><td>{{if plan.is_active "Published" "Archived"}}</td><td><Button @type="default" @size="xs" @icon="edit" @text="Edit" @onClick={{fn this.edit plan}} /></td></tr>
+            {{else}}<tr><td colspan="6" class="text-center text-gray-500">No SaaS plans yet.</td></tr>{{/each}}
+        </tbody></table></div>
+    </ContentPanel>
+
+    <ContentPanel @title={{if this.form.id "Publish plan version" "Create plan"}} @open={{true}} @wrapperClass="bordered-classic">
+        <form class="space-y-3" {{on "submit" this.save}}>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <InputGroup @name="Plan name"><Input @value={{this.form.name}} {{on "input" (fn this.update "name")}} required /></InputGroup>
+                <InputGroup @name="Unique slug"><Input @value={{this.form.slug}} {{on "input" (fn this.update "slug")}} required /></InputGroup>
+                <InputGroup @name="Price (major currency units)"><Input @type="number" min="0" step="0.01" @value={{this.form.amount}} {{on "input" (fn this.update "amount")}} required /></InputGroup>
+                <InputGroup @name="Currency"><Input @value={{this.form.currency}} maxlength="3" {{on "input" (fn this.update "currency")}} required /></InputGroup>
+                <InputGroup @name="Billing interval"><select class="form-select form-input" value={{this.form.interval}} {{on "change" (fn this.update "interval")}}><option value="month">Monthly</option><option value="year">Yearly</option></select></InputGroup>
+                <InputGroup @name="Trial days"><Input @type="number" min="0" max="365" step="1" @value={{this.form.trial_days}} {{on "input" (fn this.update "trial_days")}} /></InputGroup>
+                <InputGroup @name="Stripe Price ID"><Input @value={{this.form.stripe_price_id}} placeholder="price_… (blank for free plan)" {{on "input" (fn this.update "stripe_price_id")}} /></InputGroup>
+            </div>
+            <InputGroup @name="Description"><Textarea @value={{this.form.description}} rows="2" {{on "input" (fn this.update "description")}} /></InputGroup>
+            <InputGroup @name="Entitlements JSON" @helpText="Resource limits and module switches are saved with the subscription. Keys: seats, drivers, storage_bytes, api_requests, modules."><Textarea @value={{this.form.entitlements}} rows="8" class="font-mono text-xs" {{on "input" (fn this.update "entitlements")}} /></InputGroup>
+            <label class="flex items-center gap-2 text-sm"><Input @type="checkbox" @checked={{this.form.is_active}} {{on "change" (fn this.update "is_active")}} /> Publish for new subscriptions</label>
+            <div class="flex justify-end gap-2"><Button @type="default" @text="Reset" @onClick={{this.reset}} /><Button @type="primary" @icon="save" @text={{if this.form.id "Publish version" "Create plan"}} @buttonType="submit" /></div>
+        </form>
+    </ContentPanel>
+</div>

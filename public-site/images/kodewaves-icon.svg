@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112" role="img" aria-labelledby="title">
+  <title id="title">Kodewaves TMS</title>
+  <rect x="8" y="8" width="96" height="96" rx="25" fill="#294b3a"/>
+  <path d="M31 35v42M31 56h15c19 0 16-21 35-21M46 56c19 0 16 21 35 21" fill="none" stroke="#edf1ef" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="31" cy="35" r="5" fill="#d2b47a"/><circle cx="81" cy="35" r="5" fill="#93b79a"/><circle cx="81" cy="77" r="5" fill="#d2b47a"/>
+</svg>

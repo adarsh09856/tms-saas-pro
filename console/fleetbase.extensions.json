@@ -1,0 +1,6 @@
+{
+    "disabled": [
+        "@fleetbase/customer-portal-engine",
+        "@fleetbase/storefront-engine"
+    ]
+}

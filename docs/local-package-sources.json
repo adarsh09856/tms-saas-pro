@@ -1,0 +1,52 @@
+{
+  "countries": {
+    "source": "api/vendor/fleetbase/countries",
+    "name": "fleetbase/countries",
+    "version": "0.8.3"
+  },
+  "mysql-spatial": {
+    "source": "api/vendor/fleetbase/laravel-mysql-spatial",
+    "name": "fleetbase/laravel-mysql-spatial",
+    "version": "1.0.3"
+  },
+  "twilio": {
+    "source": "api/vendor/fleetbase/twilio",
+    "name": "fleetbase/twilio",
+    "version": "5.0.1"
+  },
+  "routing-machine": {
+    "source": "console/node_modules/@fleetbase/leaflet-routing-machine",
+    "name": "@fleetbase/leaflet-routing-machine",
+    "version": "3.2.17"
+  },
+  "intl-lint": {
+    "source": "console/node_modules/@fleetbase/intl-lint",
+    "name": "@fleetbase/intl-lint",
+    "version": "0.0.1"
+  },
+  "sdk": {
+    "source": "apps/navigator-app/node_modules/@fleetbase/sdk",
+    "name": "@fleetbase/sdk",
+    "version": "1.2.13"
+  },
+  "storefront-sdk": {
+    "source": "apps/navigator-app/node_modules/@fleetbase/storefront",
+    "name": "@fleetbase/storefront",
+    "version": "1.2.0"
+  },
+  "extensions-indexer-local": {
+    "source": "console/node_modules/fleetbase-extensions-indexer",
+    "name": "fleetbase-extensions-indexer",
+    "version": "0.0.5"
+  },
+  "valhalla": {
+    "source": "api/vendor/fleetbase/valhalla-api",
+    "name": "fleetbase/valhalla-api",
+    "version": "0.0.5"
+  },
+  "vroom": {
+    "source": "api/vendor/fleetbase/vroom-api",
+    "name": "fleetbase/vroom-api",
+    "version": "0.0.5"
+  }
+}

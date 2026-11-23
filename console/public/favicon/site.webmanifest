@@ -1,0 +1,10 @@
+{
+    "name": "Kodewaves Transport ERP",
+    "short_name": "Kodewaves",
+    "theme_color": "#294b3a",
+    "background_color": "#f6f6ef",
+    "icons": [
+        { "src": "/images/kodewaves-icon.svg?v=20261108-forest", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    ],
+    "display": "standalone"
+}

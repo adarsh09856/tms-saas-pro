@@ -1,0 +1,82 @@
+x-runtime-environment: &runtime-environment
+  APP_NAME: Kodewaves Transport ERP
+  APP_ENV: production
+  APP_KEY: ${APP_KEY:?APP_KEY must be set in deployment .env}
+  APP_DEBUG: "false"
+  APP_URL: https://tms.touratbhutan.info
+  CONSOLE_HOST: https://tms.touratbhutan.info
+  SESSION_DOMAIN: tms.touratbhutan.info
+  SESSION_SECURE_COOKIE: "true"
+  DATABASE_URL: ${DATABASE_URL:?DATABASE_URL must be set in deployment .env}
+  DB_CONNECTION: mysql
+  BROADCAST_DRIVER: socketcluster
+  CACHE_DRIVER: redis
+  QUEUE_CONNECTION: redis
+  FILESYSTEM_DRIVER: local
+  LOG_CHANNEL: stdout
+  LOG_LEVEL: info
+  MAIL_MAILER: log
+  BILLING_ENFORCEMENT_ENABLED: "false"
+  OSRM_HOST: https://router.project-osrm.org
+  SOCKETCLUSTER_ORIGIN: https://tms.touratbhutan.info
+services:
+  database:
+    ports: !override []
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD must be set in deployment .env}
+      MYSQL_DATABASE: fleetbase
+      MYSQL_USER: ${DB_USERNAME:?DB_USERNAME must be set in deployment .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in deployment .env}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+  socket:
+    ports: !override ["127.0.0.1:38080:8000"]
+    environment:
+      SOCKETCLUSTER_OPTIONS: '{"origins":"https://tms.touratbhutan.info:*,wss://tms.touratbhutan.info:*"}'
+      SOCKETCLUSTER_AUTH_MODE: log
+  scheduler:
+    entrypoint: []
+    image: kodewaves/transport-erp-scheduler:prod-test
+    build:
+      target: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    environment:
+      <<: *runtime-environment
+  queue:
+    entrypoint: []
+    image: kodewaves/transport-erp-queue:prod-test
+    build:
+      target: events
+    environment:
+      <<: *runtime-environment
+  console:
+    image: kodewaves/transport-erp-console:prod-test-white-label
+    build:
+      args:
+        ENVIRONMENT: production
+    environment:
+      API_HOST: https://tms.touratbhutan.info
+      API_NAMESPACE: int/v1
+      DISABLE_FLEETBASE_ATTRIBUTION: "true"
+      SOCKETCLUSTER_HOST: tms.touratbhutan.info
+      SOCKETCLUSTER_PATH: /socketcluster/
+      SOCKETCLUSTER_SECURE: "true"
+      SOCKETCLUSTER_PORT: "443"
+    ports: !override ["127.0.0.1:14200:4200"]
+    volumes: !override
+      - ./releases/ui-20261106-theme3/console-stage:/usr/share/nginx/html:ro
+  application:
+    image: kodewaves/transport-erp-api:api-scope-candidate-20261107-v3
+    build:
+      target: app-release
+    command: ["sh", "-c", "php artisan octane:frankenphp --max-requests=1000 --port=8000 --host=0.0.0.0"]
+    environment:
+      <<: *runtime-environment
+      ENVIRONMENT: production
+      REGISTRY_PREINSTALLED_EXTENSIONS: "true"
+  httpd:
+    ports: !override ["127.0.0.1:18080:80"]

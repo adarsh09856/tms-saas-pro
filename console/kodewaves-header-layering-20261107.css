@@ -1,0 +1,34 @@
+/* Preserve the global header above page drawers while keeping modal dialogs on top. */
+body.fleetbase-console header.next-view-header {
+    position: relative;
+    z-index: 1000;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #294b3a !important;
+    border-bottom-color: #315641 !important;
+    color: #f7faf6 !important;
+}
+
+body.fleetbase-console header.next-view-header :is(a, button, [role='button'], .next-view-header-item) {
+    color: #f7faf6 !important;
+}
+
+body.fleetbase-console header.next-view-header .next-view-header-item:not(.active):not(.is-open) {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+body.fleetbase-console header.next-view-header .next-view-header-item:hover,
+body.fleetbase-console header.next-view-header .next-view-header-item.active,
+body.fleetbase-console header.next-view-header .next-view-header-item.is-open {
+    background-color: #426b57 !important;
+    border-color: #426b57 !important;
+    color: #fff !important;
+}
+
+body.fleetbase-console header.next-view-header .next-view-header-item:focus-visible {
+    outline: 2px solid #f7faf6 !important;
+    outline-offset: 2px;
+}

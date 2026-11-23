@@ -1,0 +1,44 @@
+/* Keep the shared transport navigation in the approved Route Atlas palette. */
+body[class*="console-"] header.next-view-header {
+    background-color: #294b3a !important;
+    border-bottom-color: #315641 !important;
+    color: #f7faf6 !important;
+}
+
+body[class*="console-"] header.next-view-header :is(a, button, [role='button'], .next-view-header-item) {
+    color: #f7faf6 !important;
+}
+
+body[class*="console-"] header.next-view-header .next-view-header-item:not(.active, .is-open) {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+body[class*="console-"] header.next-view-header .next-view-header-item:hover,
+body[class*="console-"] header.next-view-header .next-view-header-item.active,
+body[class*="console-"] header.next-view-header .next-view-header-item.is-open {
+    background-color: #426b57 !important;
+    border-color: #426b57 !important;
+    color: #fff !important;
+}
+
+body[class*="console-"] header.next-view-header .next-view-header-item:focus-visible {
+    outline: 2px solid #f7faf6 !important;
+    outline-offset: 2px;
+}
+
+/* Keep navigation labels and the company switcher readable on the forest header. */
+body[class*="console-"] header.next-view-header .next-view-header-item,
+body[class*="console-"] header.next-view-header .next-view-header-item > *,
+body[class*="console-"] header.next-view-header .next-view-header-item svg,
+body[class*="console-"] header.next-view-header .next-org-button-trigger,
+body[class*="console-"] header.next-view-header .next-org-button-trigger .text-gray-800,
+body[class*="console-"] header.next-view-header .next-user-button-trigger {
+    color: #f7faf6 !important;
+}
+
+body[class*="console-"] header.next-view-header .next-org-button-trigger .org-badge {
+    border: 1px solid rgb(247 250 246 / 30%);
+    background-color: #426b57 !important;
+    color: #fff !important;
+}
