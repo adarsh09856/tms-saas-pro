@@ -1,0 +1,45 @@
+<Modal::Default @modalIsOpened={{@modalIsOpened}} @options={{@options}} @confirm={{@onConfirm}} @decline={{@onDecline}} @modalClass="flb-resource-modal">
+    <div class="modal-body-container fleetbase-legal-notice-content">
+        <div class="fleetbase-legal-notice-hero">
+            <div class="fleetbase-legal-notice-hero-main">
+                <img
+                    src="/images/transport-diary-icon.svg?v=20261124-brand"
+                    alt="Transport Diary"
+                    width="40"
+                    height="40"
+                    class="fleetbase-legal-notice-logo rounded-lg shadow-md"
+                />
+                <div>
+                    <h3>Open-source notices</h3>
+                    <p>Third-party copyright and license information</p>
+                </div>
+            </div>
+            <span>Copyright © {{format-date-fns (now) "yyyy"}} Fleetbase Pte. Ltd.</span>
+        </div>
+
+        <div class="fleetbase-legal-notice-section">
+            <h4>Open Source License</h4>
+            <p>
+                This platform includes Fleetbase open-source components licensed under the GNU Affero General Public License v3.0 or later. The copyright holder is identified below.
+            </p>
+        </div>
+
+        <div class="fleetbase-legal-notice-section">
+            <h4>No Warranty</h4>
+            <p>
+                This program is distributed without warranty. You may convey and modify it under the terms of the AGPL-3.0-or-later.
+            </p>
+        </div>
+
+        <div class="fleetbase-legal-notice-links">
+            <a href="https://github.com/fleetbase/fleetbase" target="_blank" rel="noopener noreferrer">
+                <FaIcon @icon="arrow-up-right-from-square" class="fleetbase-legal-notice-link-icon" />
+                <span>View source code</span>
+            </a>
+            <a href="https://github.com/fleetbase/fleetbase/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">
+                <FaIcon @icon="arrow-up-right-from-square" class="fleetbase-legal-notice-link-icon" />
+                <span>View AGPL license</span>
+            </a>
+        </div>
+    </div>
+</Modal::Default>

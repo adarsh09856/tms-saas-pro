@@ -64,8 +64,8 @@ for (const file of visibleSourceFiles) {
 }
 
 const appConfig = await readFile(path.join(root, 'api/config/app.php'), 'utf8');
-if (!appConfig.includes("env('APP_NAME', 'Kodewaves Transport ERP')")) {
-    failures.push('api/config/app.php: Kodewaves must remain the default application name');
+if (!appConfig.includes("env('APP_NAME', 'Transport Diary')")) {
+    failures.push('api/config/app.php: Transport Diary must remain the default application name');
 }
 
 // Branding must never erase the upstream legal record. The legal dialog is intentionally
@@ -83,4 +83,4 @@ if (failures.length) {
     process.exit(1);
 }
 
-console.log('Product branding verification passed: Kodewaves customer copy is active and upstream legal provenance is preserved.');
+console.log('Product branding verification passed: Transport Diary customer copy is active and upstream legal provenance is preserved.');

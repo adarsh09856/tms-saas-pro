@@ -1,0 +1,52 @@
+<header class="next-view-header" ...attributes>
+    <div class="next-view-header-left">
+        <LinkToExternal @route="console.home" class="logo navbar-logo kodewaves-console-brand mr-4" aria-label="Transport Diary home">
+            <img src="/images/transport-diary-icon.svg?v=20261124-brand" alt="" width="40" height="40" class="kodewaves-console-mark" />
+        </LinkToExternal>
+        {{#if (and @showSidebarToggle (not (media "isMobile")))}}
+            <Layout::Header::SidebarToggle class="mr-2" @onToggle={{@onSidebarToggle}} @disabled={{eq @sidebarToggleEnabled false}} />
+        {{/if}}
+        {{#unless (media "isMobile")}}
+            <Layout::Header::SmartNavMenu class="next-catalog-menu-items mr-4" @maxVisible={{or @maxVisibleNavItems 5}} @mutateMenuItems={{@mutateMenuItems}} />
+        {{/unless}}
+        <div id="view-header-left-content-a"></div>
+        {{yield}}
+        <div id="view-header-left-content-b"></div>
+    </div>
+    <div class="next-view-header-right">
+        <Layout::Header::LoadingIndicator />
+        <div id="view-header-actions"></div>
+        <div class="flex items-center justify-between">
+            <div id="view-header-tray-items" class="flex-1 flex items-center pr-1 gap-1">
+                <RegistryYield @registry="header-tray-items" as |RegistryComponent|>
+                    <RegistryComponent @header={{this}} />
+                </RegistryYield>
+                <LocaleSelectorTray />
+                <NotificationTray @registerAPI={{@registerNotificationTrayApi}} @onClickNotification={{@onClickNotification}} />
+                <ChatTray />
+            </div>
+            <div class="flex-1 flex items-center pr-1">
+                <Layout::Header::Dropdown @items={{this.organizationMenuItems}} @onAction={{@onAction}} class="flex-shrink-0" @triggerClass="flex-shrink-0" as |dd|>
+                    <div class="next-org-button-trigger flex-shrink-0 {{if dd.isOpen 'is-open'}}">
+                        <div class="org-badge">{{first-char this.currentUser.companyName}}</div>
+                        <div class="text-sm w-10 md:w-14 lg:w-10/12 truncate flex-shrink-0 text-gray-800 dark:text-white">{{this.currentUser.companyName}}</div>
+                    </div>
+                </Layout::Header::Dropdown>
+            </div>
+            <div class="flex-1 flex items-center justify-end">
+                <Layout::Header::Dropdown @items={{this.userMenuItems}} @onAction={{@onAction}} class="flex-shrink-0" @triggerClass="flex-shrink-0" as |dd|>
+                    <div class="next-user-button-trigger flex-shrink-0 {{if dd.isOpen 'is-open'}}">
+                        <Image
+                            class="rounded-full h-5 w-5 shadow-sm flex-shrink-0"
+                            height="20"
+                            width="20"
+                            src={{this.currentUser.avatarUrl}}
+                            @fallbackSrc="/images/kodewaves-avatar.svg?v=20261123-transport-diary"
+                            alt={{this.currentUser.name}}
+                        />
+                    </div>
+                </Layout::Header::Dropdown>
+            </div>
+        </div>
+    </div>
+</header>

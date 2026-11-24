@@ -37,7 +37,7 @@ const newFile = path.resolve(dist, `.${newSrc}`);
 const integrity = ['sha256','sha512'].map(name=>`${name}-${crypto.createHash(name).update(content).digest('base64')}`).join(' ');
 fs.writeFileSync(newFile, content);
 html = html.replace(script[0], `<script src="${newSrc}" integrity="${integrity}"></script>`);
-html = html.replace('initial-scale=1, maximum-scale=1','initial-scale=1').replace('<title>Kodewaves Transport ERP</title>','<title>Kodewaves TMS</title>').replace('content="#0b1220"','content="#294b3a"').replace('color="#16b8a6"','color="#426b57"');
+html = html.replace('initial-scale=1, maximum-scale=1','initial-scale=1').replace('<title>Kodewaves Transport ERP</title>','<title>Transport Diary</title>').replace('<title>Kodewaves TMS</title>','<title>Transport Diary</title>').replace('content="#0b1220"','content="#294b3a"').replace('color="#16b8a6"','color="#426b57"');
 const themeName = `kodewaves-theme-${releaseId}.css`;
 fs.copyFileSync('console/app/styles/kodewaves-theme.css', path.join(dist,themeName));
 html = html.replace(/<link[^>]*id="kodewaves-theme-link"[^>]*>/g,'');
