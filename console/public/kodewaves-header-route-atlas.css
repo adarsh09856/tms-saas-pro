@@ -1,44 +1,345 @@
 /* Keep the shared transport navigation in the approved Route Atlas palette. */
-body[class*="console-"] header.next-view-header {
+body[class*='console-'] header.next-view-header {
     background-color: #294b3a !important;
     border-bottom-color: #315641 !important;
     color: #f7faf6 !important;
 }
 
-body[class*="console-"] header.next-view-header :is(a, button, [role='button'], .next-view-header-item) {
+body[class*='console-'] header.next-view-header :is(a, button, [role='button'], .next-view-header-item) {
     color: #f7faf6 !important;
 }
 
-body[class*="console-"] header.next-view-header .next-view-header-item:not(.active, .is-open) {
+body[class*='console-'] header.next-view-header .next-view-header-item:not(.active, .is-open) {
     background-color: transparent !important;
     border-color: transparent !important;
 }
 
-body[class*="console-"] header.next-view-header .next-view-header-item:hover,
-body[class*="console-"] header.next-view-header .next-view-header-item.active,
-body[class*="console-"] header.next-view-header .next-view-header-item.is-open {
+body[class*='console-'] header.next-view-header .next-view-header-item:hover,
+body[class*='console-'] header.next-view-header .next-view-header-item.active,
+body[class*='console-'] header.next-view-header .next-view-header-item.is-open {
     background-color: #426b57 !important;
     border-color: #426b57 !important;
     color: #fff !important;
 }
 
-body[class*="console-"] header.next-view-header .next-view-header-item:focus-visible {
+body[class*='console-'] header.next-view-header .next-view-header-item:focus-visible {
     outline: 2px solid #f7faf6 !important;
     outline-offset: 2px;
 }
 
+/* stylelint-disable no-descending-specificity -- independent header and FleetOps selectors share SVG descendants only. */
+
 /* Keep navigation labels and the company switcher readable on the forest header. */
-body[class*="console-"] header.next-view-header .next-view-header-item,
-body[class*="console-"] header.next-view-header .next-view-header-item > *,
-body[class*="console-"] header.next-view-header .next-view-header-item svg,
-body[class*="console-"] header.next-view-header .next-org-button-trigger,
-body[class*="console-"] header.next-view-header .next-org-button-trigger .text-gray-800,
-body[class*="console-"] header.next-view-header .next-user-button-trigger {
+body[class*='console-'] header.next-view-header .next-view-header-item,
+body[class*='console-'] header.next-view-header .next-view-header-item > *,
+body[class*='console-'] header.next-view-header .next-view-header-item svg,
+body[class*='console-'] header.next-view-header .next-org-button-trigger,
+body[class*='console-'] header.next-view-header .next-org-button-trigger .text-gray-800,
+body[class*='console-'] header.next-view-header .next-user-button-trigger {
     color: #f7faf6 !important;
 }
 
-body[class*="console-"] header.next-view-header .next-org-button-trigger .org-badge {
+body[class*='console-'] header.next-view-header .next-org-button-trigger .org-badge {
     border: 1px solid rgb(247 250 246 / 30%);
     background-color: #426b57 !important;
     color: #fff !important;
+}
+
+/* Header dropdowns use a light floating surface, so keep their labels dark. */
+body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer .next-dd-menu .next-dd-item {
+    color: #22342c !important;
+}
+
+body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer .next-dd-menu .next-dd-item:hover,
+body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer .next-dd-menu .next-dd-item:focus-visible {
+    background-color: #426b57 !important;
+    border-color: #426b57 !important;
+    color: #fff !important;
+}
+
+/* The account menus and navigation customizer render through body-level portals. */
+body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer {
+    z-index: 1100 !important;
+}
+
+body[class*='console-'] .snm-customizer-backdrop {
+    z-index: 10000 !important;
+}
+
+body[class*='console-'] .snm-customizer-panel {
+    z-index: 10001 !important;
+}
+
+/* This stylesheet loads after the compiled engine CSS, so active states win in both themes. */
+body[class*='console-'] .next-map-container-view-switch > button.active,
+body[class*='console-'][data-theme='dark'] .next-map-container-view-switch > button.active {
+    background-color: var(--kodewaves-primary, #426b57) !important;
+    border-color: var(--kodewaves-primary, #426b57) !important;
+    color: #fff !important;
+}
+
+body[data-theme='dark'][class*='console-'] .next-map-container-view-switch > button.active {
+    color: #17251f !important;
+}
+
+body[class*='console-'] .next-map-container-view-switch > button:not(.active):hover,
+body[class*='console-'] .next-map-container-view-switch > button:not(.active):focus-visible {
+    background-color: var(--kodewaves-primary-soft, #e8efe8) !important;
+    color: var(--kodewaves-primary-deep, #294b3a) !important;
+}
+
+body[class*='console-'] .ui-tabs > ul .nav-item.active,
+body[class*='console-'] .ui-tabs > nav .nav-item.active,
+body[class*='console-'] .ui-tabs > ul .ui-tab.active,
+body[class*='console-'] .ui-tabs > nav .ui-tab.active,
+body[class*='console-'] .nav-tabs .nav-link.active {
+    background-color: var(--kodewaves-primary-soft, #e8efe8) !important;
+    border-color: var(--kodewaves-line, #d8dfd3) !important;
+    border-bottom-color: transparent !important;
+    color: var(--kodewaves-primary-deep, #294b3a) !important;
+}
+
+body[class*='console-'] .ui-tabs > ul .nav-item:not(.active):hover,
+body[class*='console-'] .ui-tabs > nav .nav-item:not(.active):hover,
+body[class*='console-'] .ui-tabs > ul .ui-tab:not(.active):hover,
+body[class*='console-'] .ui-tabs > nav .ui-tab:not(.active):hover,
+body[class*='console-'] .nav-tabs .nav-link:not(.active):hover {
+    color: var(--kodewaves-primary, #426b57) !important;
+}
+
+body[data-theme='dark'][class*='console-'] .ui-tabs > ul .nav-item.active,
+body[data-theme='dark'][class*='console-'] .ui-tabs > nav .nav-item.active,
+body[data-theme='dark'][class*='console-'] .ui-tabs > ul .ui-tab.active,
+body[data-theme='dark'][class*='console-'] .ui-tabs > nav .ui-tab.active,
+body[data-theme='dark'][class*='console-'] .nav-tabs .nav-link.active {
+    background-color: var(--kodewaves-primary-soft, #26382e) !important;
+    border-color: var(--kodewaves-line, #53635a) !important;
+    border-bottom-color: transparent !important;
+    color: var(--kodewaves-primary, #8eb99d) !important;
+}
+
+/* Informational FleetOps surfaces use forest green; status tones keep their meaning. */
+body[class*='console-'] .fleet-ops-control-hub-tone-blue {
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary, #426b57) 12%, transparent), color-mix(in srgb, var(--kodewaves-primary, #426b57) 3%, transparent) 52%, #fff 100%),
+        #fff !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary, #426b57) 28%, #fff) !important;
+}
+
+body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
+body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon,
+body[class*='console-'] .fleet-ops-control-hub-action.fleet-ops-control-hub-tone-blue svg,
+body[class*='console-'] .fleet-ops-control-hub-action.fleet-ops-control-hub-tone-info svg {
+    color: var(--kodewaves-primary, #426b57) !important;
+}
+
+body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
+body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon {
+    background-color: var(--kodewaves-primary-soft, #e8efe8) !important;
+}
+
+body[data-theme='dark'][class*='console-'] .fleet-ops-control-hub-tone-blue {
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--kodewaves-primary, #8eb99d) 20%, transparent),
+            color-mix(in srgb, var(--kodewaves-primary, #8eb99d) 6%, transparent) 52%,
+            #1f2937 100%
+        ),
+        #1f2937 !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary, #8eb99d) 45%, transparent) !important;
+}
+/* stylelint-enable no-descending-specificity */
+
+/* Keep the desktop header contents from colliding as the viewport narrows. */
+body[class*='console-'] header.next-view-header,
+body[class*='console-'] header.next-view-header .next-view-header-left,
+body[class*='console-'] header.next-view-header .next-view-header-right {
+    min-width: 0;
+}
+
+@media (width <= 1100px) {
+    body[class*='console-'] header.next-view-header {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    body[class*='console-'] header.next-view-header .next-view-header-left {
+        flex: 1 1 auto;
+        overflow: visible;
+    }
+
+    body[class*='console-'] header.next-view-header .next-view-header-right {
+        flex: 0 1 auto;
+    }
+
+    body[class*='console-'] header.next-view-header .next-catalog-menu-items {
+        min-width: 0;
+    }
+}
+
+@media (width <= 767px) {
+    body[class*='console-'] .next-view-container > nav.next-sidebar {
+        z-index: 20 !important;
+    }
+
+    body[class*='console-'] .next-mobile-navbar {
+        z-index: 30 !important;
+    }
+}
+
+body[class*='console-'] .next-content-overlay {
+    z-index: 1200 !important;
+}
+
+body[class*='console-'] .modal {
+    z-index: 1300 !important;
+}
+
+body[class*='console-'] .chat-inbox-overlay {
+    z-index: 1250 !important;
+}
+
+body[class*='console-'] .chat-compose-overlay {
+    z-index: 1260 !important;
+}
+
+/* Route Atlas control tokens apply after dynamically loaded engine styles. */
+body[class*='console-'] {
+    --route-atlas-primary: #426b57;
+    --route-atlas-primary-hover: #294b3a;
+    --route-atlas-primary-soft: #e8efe8;
+    --route-atlas-primary-border: #315641;
+    --route-atlas-focus: rgb(66 107 87 / 38%);
+}
+
+body[data-theme='dark'][class*='console-'] {
+    --route-atlas-primary: #8eb99d;
+    --route-atlas-primary-hover: #a7c9b1;
+    --route-atlas-primary-soft: #26382e;
+    --route-atlas-primary-border: #536b5b;
+    --route-atlas-focus: rgb(142 185 157 / 42%);
+}
+
+/* Shared primary actions, excluding status-specific success/warning/danger classes. */
+body[class*='console-'] .btn.btn-primary:not(.btn-success, .btn-warning, .btn-danger),
+body[class*='console-'] a.btn.btn-primary:not(.btn-success, .btn-warning, .btn-danger),
+body[class*='console-'] button.btn-primary:not(.btn-success, .btn-warning, .btn-danger),
+body[class*='console-'] .fb-button-primary,
+body[class*='console-'] .next-sidebar-navigator-primary-action,
+body[class*='console-'] .fleet-ops-control-hub-primary-action,
+body[class*='console-'] .next-sidebar-navigator-primary-action.fleet-ops-sidebar-primary-action {
+    background-color: var(--route-atlas-primary) !important;
+    border-color: var(--route-atlas-primary) !important;
+    color: #fff !important;
+}
+
+body[data-theme='dark'][class*='console-'] .btn.btn-primary:not(.btn-success, .btn-warning, .btn-danger),
+body[data-theme='dark'][class*='console-'] .fb-button-primary,
+body[data-theme='dark'][class*='console-'] .next-sidebar-navigator-primary-action,
+body[data-theme='dark'][class*='console-'] .fleet-ops-control-hub-primary-action,
+body[data-theme='dark'][class*='console-'] .next-sidebar-navigator-primary-action.fleet-ops-sidebar-primary-action {
+    color: #17251f !important;
+}
+
+body[class*='console-'] .btn.btn-primary:hover:not(:disabled, .btn-success, .btn-warning, .btn-danger),
+body[class*='console-'] .fb-button-primary:hover:not(:disabled),
+body[class*='console-'] .next-sidebar-navigator-primary-action:hover:not(:disabled),
+body[class*='console-'] .fleet-ops-control-hub-primary-action:hover,
+body[class*='console-'] .next-sidebar-navigator-primary-action.fleet-ops-sidebar-primary-action:hover {
+    background-color: var(--route-atlas-primary-hover) !important;
+    border-color: var(--route-atlas-primary-hover) !important;
+    color: #fff !important;
+}
+
+body[data-theme='dark'][class*='console-'] .btn.btn-primary:hover:not(:disabled, .btn-success, .btn-warning, .btn-danger),
+body[data-theme='dark'][class*='console-'] .fb-button-primary:hover:not(:disabled),
+body[data-theme='dark'][class*='console-'] .next-sidebar-navigator-primary-action:hover:not(:disabled),
+body[data-theme='dark'][class*='console-'] .fleet-ops-control-hub-primary-action:hover,
+body[data-theme='dark'][class*='console-'] .next-sidebar-navigator-primary-action.fleet-ops-sidebar-primary-action:hover {
+    color: #17251f !important;
+}
+
+/* Primary keyboard focus and form focus use the same visible forest ring. */
+body[class*='console-'] :is(button, a, input, select, textarea, [role='button']):focus-visible {
+    outline: 2px solid var(--route-atlas-primary) !important;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--route-atlas-focus) !important;
+}
+
+body[class*='console-'] .form-input:focus,
+body[class*='console-'] .form-select:focus,
+body[class*='console-'] input:focus-visible,
+body[class*='console-'] textarea:focus-visible,
+body[class*='console-'] select:focus-visible {
+    border-color: var(--route-atlas-primary) !important;
+}
+
+/* Map drawing controls use green only for actionable hover states. */
+body[class*='console-'] .next-map-container.next-map-container-layout-map .next-map-container-toolbar-container .toolbar-button.is-action:hover,
+body[class*='console-'] .next-map-container.next-map-container-layout-map .next-map-container-toolbar-container .toolbar-button.is-action:hover svg {
+    background-color: var(--route-atlas-primary) !important;
+    color: #fff !important;
+}
+
+/* The blue info panel and selected records are branded accents, not status colors. */
+body[class*='console-'] .ui-input-info-block:not(.success, .warning, .danger, .error, .magic) {
+    background-color: var(--route-atlas-primary-soft) !important;
+    border-color: var(--route-atlas-primary-border) !important;
+    color: var(--kodewaves-ink, #27372d) !important;
+}
+
+body[class*='console-'] .ui-input-info-block.info:not(.success, .warning, .danger, .error, .magic),
+body[class*='console-'] .ui-input-info-block.base:not(.success, .warning, .danger, .error, .magic) {
+    background-color: var(--route-atlas-primary-soft) !important;
+    border-color: var(--route-atlas-primary-border) !important;
+    color: var(--kodewaves-ink, #27372d) !important;
+}
+
+body[class*='console-'] .ui-input-info-block:not(.success, .warning, .danger, .error, .magic) p {
+    color: var(--kodewaves-ink, #27372d) !important;
+}
+
+body[class*='console-'] .ui-input-info-block.info:not(.success, .warning, .danger, .error, .magic) p,
+body[class*='console-'] .ui-input-info-block.base:not(.success, .warning, .danger, .error, .magic) p {
+    color: var(--kodewaves-ink, #27372d) !important;
+}
+
+body[class*='console-'] .fleetbase-pagination .direction-button:focus,
+body[class*='console-'] .fleetbase-pagination .page-item:focus,
+body[class*='console-'] .fleetbase-pagination .page-item-arrow:focus {
+    border-color: var(--route-atlas-primary) !important;
+    outline: 2px solid var(--route-atlas-primary) !important;
+    outline-offset: 2px;
+}
+
+body[class*='console-'] .fleetbase-pagination .page-item.active,
+body[class*='console-'] .fleetbase-pagination .direction-button.active,
+body[class*='console-'] .fleetbase-pagination .page-item-arrow.active {
+    background-color: var(--route-atlas-primary-soft) !important;
+    border-color: var(--route-atlas-primary) !important;
+    color: var(--kodewaves-primary-deep, #294b3a) !important;
+}
+
+body[data-theme='dark'][class*='console-'] .fleetbase-pagination .page-item.active,
+body[data-theme='dark'][class*='console-'] .fleetbase-pagination .direction-button.active,
+body[data-theme='dark'][class*='console-'] .fleetbase-pagination .page-item-arrow.active {
+    color: var(--route-atlas-primary) !important;
+}
+
+body[class*='console-'] .order-filter-chip.active,
+body[class*='console-'] .filter-row.filter-is-active .filter-row-header {
+    background-color: var(--route-atlas-primary-soft) !important;
+    border-color: var(--route-atlas-primary) !important;
+    color: var(--kodewaves-primary-deep, #294b3a) !important;
+}
+
+body[data-theme='dark'][class*='console-'] .order-filter-chip.active,
+body[data-theme='dark'][class*='console-'] .filter-row.filter-is-active .filter-row-header {
+    color: var(--route-atlas-primary) !important;
+}
+
+body[class*='console-'] .next-content-overlay-panel.orders-panel .order-listings-row.selected {
+    background-color: var(--route-atlas-primary-soft) !important;
+    color: var(--kodewaves-ink, #27372d) !important;
 }

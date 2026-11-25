@@ -6,6 +6,13 @@
 - Verified `/fleet-ops` returns HTTP 200, the new versioned stylesheet is linked and returns HTTP 200, and the stylesheet contains the route-class selector with the stale selector removed. Authenticated browser view now shows the forest-green full navigation header with legible ivory labels and the map/sidebar intact.
 # Verified workspace status
 
+## 2026-11-25 Transport Diary public-site deployment
+
+- Deployed the current local `public-site/` pages and stylesheet to `/www/wwwroot/tms.touratbhutan.info/public-site/`. The pages use the live `/public-assets/` alias for versioned CSS, Transport Diary logo/icon assets, the Inter font, and the AGPL notice.
+- Backed up the previous HTML and CSS at `/www/wwwroot/tms.touratbhutan.info/releases/publicsite-20261125/backup/live-publicsite-before.tar.gz`. The existing source archive was preserved; its verified SHA-256 is `99f08be7455e7e35d549801a85c71f4abf52d6a6aa70818c360203eb3fa0c163`.
+- Added trailing-slash redirects for `/services/`, `/about/`, `/contact/`, and `/legal/` in the external aaPanel Nginx vhost. The previous vhost is backed up at `/www/wwwroot/tms.touratbhutan.info/releases/publicsite-20261125/backup/tms.vhost.before-trailing-slash.conf`; `nginx -t` succeeded before reload. Live checks confirmed HTTP 301 for those variants and HTTP 200 for each target page, CSS, logo, AGPL text, and source archive.
+- This is a public-site deployment, not a full TMS release. The console tablet header CSS now allows the responsive SmartNavMenu to measure and overflow items instead of clipping its left section; a fresh console build is in progress and browser-width acceptance remains open. API feature tests stall during Laravel/PHPUnit bootstrap after partial output, so they are not passing evidence. The current changes have not yet been committed or pushed.
+
 ## 2026-11-23 recovered checkout push and verification state
 
 - Recovered the existing local bundle history into this checkout and pushed the current 106-file source snapshot to `https://github.com/adarsh09856/tms-saas-pro.git` on `main`. The remote branch head was verified with `git ls-remote` at `16da49e6241f0de306b2a7acaf8fee8be4aa7238`. The first ordinary push could not traverse a missing historical parent (`b3b385db48949d579cfbf6c230d3c9d82d374e70`); because the destination repository was empty, a clean root snapshot was pushed without force. Recovered history remains in local branch `recovered-custom-history`; this push does not claim to reconstruct all prior upstream commit ancestry.
