@@ -68,6 +68,15 @@ class FastagImportSafetyTest extends TestCase
         $this->assertSame('', $this->invoke('resolveStatementProviderAccount', null, null));
     }
 
+    #[Test]
+    public function fastag_import_accepts_only_inr_currency_rows(): void
+    {
+        $this->assertTrue($this->invoke('isInrCurrency', 'INR'));
+        $this->assertTrue($this->invoke('isInrCurrency', ' inr '));
+        $this->assertFalse($this->invoke('isInrCurrency', 'USD'));
+        $this->assertFalse($this->invoke('isInrCurrency', null));
+    }
+
     private function invoke(string $method, mixed ...$arguments): mixed
     {
         $reflection = new ReflectionMethod($this->controller, $method);

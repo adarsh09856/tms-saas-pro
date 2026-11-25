@@ -151,18 +151,18 @@ module('Unit | Controller | console', function (hooks) {
         const options = this.modals.lastOptions;
         assert.strictEqual(this.modals.shown.at(-1), 'modals/create-or-join-org');
         assert.strictEqual(options.action, 'join', 'it opens on the join tab');
-        assert.strictEqual(options.currency, 'SGD');
+        assert.strictEqual(options.currency, 'INR', 'organization creation remains India-only even when legacy company data has another currency');
         assert.strictEqual(options.country, 'SG');
         assert.strictEqual(options.timezone, 'Asia/Singapore');
     });
 
-    test('createOrJoinOrg falls back to USD and the whois timezone without a company', function (assert) {
+    test('createOrJoinOrg defaults to INR and the whois timezone without a company', function (assert) {
         this.controller.currentUser.company = null;
 
         this.controller.createOrJoinOrg();
 
         const options = this.modals.lastOptions;
-        assert.strictEqual(options.currency, 'USD', 'currency falls back to USD');
+        assert.strictEqual(options.currency, 'INR', 'currency is fixed to INR');
         assert.strictEqual(options.timezone, 'Asia/Singapore', 'the timezone comes from whois');
     });
 
