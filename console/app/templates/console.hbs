@@ -25,6 +25,9 @@
         @onAction={{this.onAction}}
     />
 </Layout::Container>
+{{#if (media "isMobile")}}
+    <Layout::Header::SmartNavMenu class="console-mobile-nav-customizer" @maxVisible={{5}} />
+{{/if}}
 <ChatContainer />
 <ConsoleWormhole />
 <ImpersonatorTray />

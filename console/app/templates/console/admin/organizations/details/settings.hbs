@@ -4,33 +4,10 @@
     <section class="rounded-md border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <h2 class="text-xs font-bold uppercase text-gray-900 dark:text-white">Organization Settings</h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Core organization profile, phone, and currency fields.</p>
+                <h2 class="text-xs font-bold uppercase text-gray-900 dark:text-white">Organization Profile</h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Review company details on Overview, or edit the profile here.</p>
             </div>
-            <Button @icon="edit" @text="Edit" @size="xs" @type="primary" @onClick={{this.editOrganization}} />
-        </div>
-
-        <div class="mt-3 space-y-2 text-sm">
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-500 dark:text-gray-400">Name</span>
-                <span class="text-right font-medium text-gray-900 dark:text-white">{{@model.name}}</span>
-            </div>
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-500 dark:text-gray-400">Description</span>
-                <span class="text-right font-medium text-gray-900 dark:text-white">{{n-a @model.description}}</span>
-            </div>
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-500 dark:text-gray-400">Phone</span>
-                <span class="text-right font-medium text-gray-900 dark:text-white">{{n-a @model.phone}}</span>
-            </div>
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-500 dark:text-gray-400">Currency</span>
-                <span class="text-right font-medium text-gray-900 dark:text-white">INR — Indian Rupee</span>
-            </div>
-            <div class="flex justify-between gap-4">
-                <span class="text-gray-500 dark:text-gray-400">Timezone</span>
-                <span class="text-right font-medium text-gray-900 dark:text-white">{{n-a @model.timezone}}</span>
-            </div>
+            <Button @icon="edit" @text="Edit Profile" @size="xs" @type="primary" @onClick={{this.editOrganization}} />
         </div>
     </section>
 

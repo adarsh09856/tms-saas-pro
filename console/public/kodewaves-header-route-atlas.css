@@ -59,7 +59,11 @@ body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-la
 
 /* The account menus and navigation customizer render through body-level portals. */
 body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer {
-    z-index: 1100 !important;
+    /* Keep account/profile menus above drawers and chat, below modal dialogs. */
+    z-index: 1270 !important;
+    max-height: min(80vh, 40rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 body[class*='console-'] .snm-customizer-backdrop {

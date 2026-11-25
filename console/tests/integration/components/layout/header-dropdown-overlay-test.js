@@ -34,7 +34,7 @@ module('Integration | Component | layout/header/dropdown overlay', function (hoo
         const content = find('.next-header-menu-item-dd-content');
         assert.ok(content, 'the menu is rendered');
         assert.notOk(content.closest('.next-view-header'), 'the menu is portaled outside the header so it cannot be clipped');
-        assert.strictEqual(window.getComputedStyle(find('.console-header-dropdown-layer')).zIndex, '1100', 'the menu sits above the header');
+        assert.strictEqual(window.getComputedStyle(find('.console-header-dropdown-layer')).zIndex, '1270', 'the menu sits above drawers and chat overlays');
     });
 
     test('mobile account menus use the same elevated portal layer', async function (assert) {
@@ -57,7 +57,7 @@ module('Integration | Component | layout/header/dropdown overlay', function (hoo
         const content = find('.next-header-menu-item-dd-content.is-mobile');
         assert.ok(content, 'the mobile menu is rendered');
         assert.notOk(content.closest('.next-view-header'), 'the mobile menu is portaled outside the header');
-        assert.strictEqual(window.getComputedStyle(find('.console-header-dropdown-layer')).zIndex, '1100', 'mobile menu stays above the header');
+        assert.strictEqual(window.getComputedStyle(find('.console-header-dropdown-layer')).zIndex, '1270', 'mobile menu stays above drawers and chat overlays');
     });
 
     test('the navigation customizer portal remains above the console content stack', async function (assert) {
