@@ -188,6 +188,26 @@ body[class*='console-'] header.next-view-header .next-view-header-right {
     }
 }
 
+/* Keep the full header useful on tablets: preserve icon actions and move labels
+   into SmartNavMenu's accessible overflow list instead of clipping the logo. */
+@media (width >= 768px) and (width <= 1100px) {
+    body[class*='console-'] header.next-view-header .snm-item {
+        width: 38px;
+        min-width: 38px;
+        margin-right: 4px;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    body[class*='console-'] header.next-view-header .snm-item > span {
+        display: none;
+    }
+
+    body[class*='console-'] header.next-view-header .kodewaves-console-brand {
+        margin-right: 8px;
+    }
+}
+
 body[class*='console-'] .next-content-overlay {
     z-index: 1200 !important;
 }
