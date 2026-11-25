@@ -15,11 +15,6 @@ body.fleetbase-console header.next-view-header :is(a, button, [role='button'], .
     color: #f7faf6 !important;
 }
 
-body.fleetbase-console header.next-view-header .next-view-header-item:not(.active):not(.is-open) {
-    background-color: transparent !important;
-    border-color: transparent !important;
-}
-
 body.fleetbase-console header.next-view-header .next-view-header-item:hover,
 body.fleetbase-console header.next-view-header .next-view-header-item.active,
 body.fleetbase-console header.next-view-header .next-view-header-item.is-open {
@@ -31,4 +26,9 @@ body.fleetbase-console header.next-view-header .next-view-header-item.is-open {
 body.fleetbase-console header.next-view-header .next-view-header-item:focus-visible {
     outline: 2px solid #f7faf6 !important;
     outline-offset: 2px;
+}
+
+body.fleetbase-console header.next-view-header .next-view-header-item:not(.active, .is-open) {
+    background-color: transparent !important;
+    border-color: transparent !important;
 }

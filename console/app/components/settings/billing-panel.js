@@ -25,7 +25,7 @@ export default class SettingsBillingPanelComponent extends Component {
         const [plans, current] = yield Promise.all([this.fetch.get('billing/plans'), this.fetch.get('billing/subscription')]);
         this.plans = (plans?.plans || []).map((plan) => ({
             ...plan,
-            formattedPrice: new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(
+            formattedPrice: new Intl.NumberFormat('en-IN', { style: 'currency', currency: String(plan.currency || 'INR').toUpperCase() }).format(
                 Number(plan.amount || 0) / currencyDivisor(plan.currency)
             ),
             entitlementsText: Object.entries(plan.entitlements || {})

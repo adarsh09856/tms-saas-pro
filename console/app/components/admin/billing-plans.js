@@ -36,7 +36,7 @@ export default class AdminBillingPlansComponent extends Component {
         const result = yield this.fetch.get('billing/admin/plans');
         this.plans = (result?.plans || []).map((plan) => ({
             ...plan,
-            displayAmount: new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(
+            displayAmount: new Intl.NumberFormat('en-IN', { style: 'currency', currency: String(plan.currency || 'INR').toUpperCase() }).format(
                 Number(plan.amount || 0) / currencyDivisor(plan.currency)
             ),
             entitlementSummary: Object.entries(plan.entitlements || {})
@@ -54,7 +54,7 @@ export default class AdminBillingPlansComponent extends Component {
             amount: (Number(plan.amount || 0) / currencyDivisor(plan.currency)).toFixed(
                 THREE_DECIMAL_CURRENCIES.has(String(plan.currency || '').toUpperCase()) ? 3 : ZERO_DECIMAL_CURRENCIES.has(String(plan.currency || '').toUpperCase()) ? 0 : 2
             ),
-            currency: 'INR',
+            currency: String(plan.currency || 'INR').toUpperCase(),
             interval: plan.interval || 'month',
             trial_days: String(plan.trial_days || 0),
             stripe_price_id: plan.stripe_price_id || '',
