@@ -1,0 +1,1480 @@
+diff --git a/addon/components/chat-tray.hbs b/addon/components/chat-tray.hbs
+index 324d772..f2a5fe4 100644
+--- a/addon/components/chat-tray.hbs
++++ b/addon/components/chat-tray.hbs
+@@ -15,56 +15,60 @@
+     </button>
+ 
+     {{#if this.isInboxOpen}}
+-        <Overlay
+-            @isOpen={{this.isInboxOpen}}
+-            @position="right"
+-            @width={{this.inboxWidth}}
+-            @fullHeight={{true}}
+-            @noBackdrop={{true}}
+-            @overlayClass="chat-inbox-overlay"
+-            @containerClass="chat-inbox-overlay-container"
+-            @onClose={{this.closeInbox}}
+-        >
+-            <ChatTray::InboxPanel
+-                @channels={{this.filteredChannels}}
+-                @searchQuery={{this.searchQuery}}
+-                @unreadCount={{this.unreadCount}}
+-                @isLoading={{not this.chat.loadChannels.isIdle}}
+-                @setSearchQuery={{this.setSearchQuery}}
+-                @openChannel={{this.openChannel}}
+-                @removeChannel={{this.removeChannel}}
+-                @startChat={{this.startChat}}
+-                @close={{this.closeInbox}}
+-            />
+-        </Overlay>
++        <EmberWormhole @to="application-root-wormhole">
++            <Overlay
++                @isOpen={{this.isInboxOpen}}
++                @position="right"
++                @width={{this.inboxWidth}}
++                @fullHeight={{true}}
++                @noBackdrop={{true}}
++                @overlayClass="chat-inbox-overlay"
++                @containerClass="chat-inbox-overlay-container"
++                @onClose={{this.closeInbox}}
++            >
++                <ChatTray::InboxPanel
++                    @channels={{this.filteredChannels}}
++                    @searchQuery={{this.searchQuery}}
++                    @unreadCount={{this.unreadCount}}
++                    @isLoading={{not this.chat.loadChannels.isIdle}}
++                    @setSearchQuery={{this.setSearchQuery}}
++                    @openChannel={{this.openChannel}}
++                    @removeChannel={{this.removeChannel}}
++                    @startChat={{this.startChat}}
++                    @close={{this.closeInbox}}
++                />
++            </Overlay>
++        </EmberWormhole>
+     {{/if}}
+ 
+     {{#if this.isComposeOpen}}
+-        <Overlay
+-            @isOpen={{this.isComposeOpen}}
+-            @position="right"
+-            @width={{this.composeWidth}}
+-            @fullHeight={{true}}
+-            @noBackdrop={{true}}
+-            @overlayClass="chat-compose-overlay {{if this.isInboxOpen 'has-inbox'}}"
+-            @containerClass="chat-compose-overlay-container"
+-            @onClose={{this.closeCompose}}
+-        >
+-            <ChatTray::ComposePanel
+-                @users={{this.availableUsers}}
+-                @selectedUsers={{this.selectedUsers}}
+-                @searchQuery={{this.contactSearchQuery}}
+-                @channelName={{this.newChatName}}
+-                @isLoading={{not this.loadAvailableUsers.isIdle}}
+-                @isSaving={{not this.createChat.isIdle}}
+-                @canCreate={{this.canCreateChat}}
+-                @setSearchQuery={{this.setContactSearchQuery}}
+-                @setChannelName={{this.setNewChatName}}
+-                @toggleUser={{this.toggleSelectedUser}}
+-                @removeSelectedUser={{this.removeSelectedUser}}
+-                @create={{perform this.createChat}}
+-                @close={{this.closeCompose}}
+-            />
+-        </Overlay>
++        <EmberWormhole @to="application-root-wormhole">
++            <Overlay
++                @isOpen={{this.isComposeOpen}}
++                @position="right"
++                @width={{this.composeWidth}}
++                @fullHeight={{true}}
++                @noBackdrop={{true}}
++                @overlayClass="chat-compose-overlay {{if this.isInboxOpen 'has-inbox'}}"
++                @containerClass="chat-compose-overlay-container"
++                @onClose={{this.closeCompose}}
++            >
++                <ChatTray::ComposePanel
++                    @users={{this.availableUsers}}
++                    @selectedUsers={{this.selectedUsers}}
++                    @searchQuery={{this.contactSearchQuery}}
++                    @channelName={{this.newChatName}}
++                    @isLoading={{not this.loadAvailableUsers.isIdle}}
++                    @isSaving={{not this.createChat.isIdle}}
++                    @canCreate={{this.canCreateChat}}
++                    @setSearchQuery={{this.setContactSearchQuery}}
++                    @setChannelName={{this.setNewChatName}}
++                    @toggleUser={{this.toggleSelectedUser}}
++                    @removeSelectedUser={{this.removeSelectedUser}}
++                    @create={{perform this.createChat}}
++                    @close={{this.closeCompose}}
++                />
++            </Overlay>
++        </EmberWormhole>
+     {{/if}}
+ </div>
+diff --git a/addon/components/currency-select.js b/addon/components/currency-select.js
+index 6a89d03..450103d 100644
+--- a/addon/components/currency-select.js
++++ b/addon/components/currency-select.js
+@@ -1,40 +1,37 @@
+ import Component from '@glimmer/component';
+ import { tracked } from '@glimmer/tracking';
+-import { inject as service } from '@ember/service';
+ import { action } from '@ember/object';
+ import getCurrency from '../utils/get-currency';
+ 
+ export default class CurrencySelectComponent extends Component {
+-    @service currentUser;
+-    @tracked currencies = getCurrency();
++    @tracked currencies = [getCurrency('INR')];
+     @tracked currency;
+     @tracked currencyData;
+ 
+     constructor() {
+         super(...arguments);
+ 
+-        let whois = this.currentUser.getOption('whois');
+-
+-        this.currency = this.args.currency ?? this.args.value ?? whois?.currency?.code ?? 'USD';
+-        this.currencyData = this.args.currencyData ?? getCurrency(this.currency);
++        this.currency = 'INR';
++        this.currencyData = getCurrency('INR');
+     }
+ 
+     @action onChange(currency) {
+         const { onChange, onCurrencyChange, onSelect } = this.args;
+ 
+-        this.currency = currency.code;
+-        this.currencyData = currency;
++        const inr = getCurrency('INR');
++        this.currency = inr.code;
++        this.currencyData = inr;
+ 
+         if (typeof onCurrencyChange === 'function') {
+-            onCurrencyChange(currency.code, currency);
++            onCurrencyChange(inr.code, inr);
+         }
+ 
+         if (typeof onSelect === 'function') {
+-            onSelect(currency.code, currency);
++            onSelect(inr.code, inr);
+         }
+ 
+         if (typeof onChange === 'function') {
+-            onChange(currency);
++            onChange(inr);
+         }
+     }
+ 
+diff --git a/addon/components/custom-field/input.hbs b/addon/components/custom-field/input.hbs
+index d7290f0..2f47080 100644
+--- a/addon/components/custom-field/input.hbs
++++ b/addon/components/custom-field/input.hbs
+@@ -27,7 +27,7 @@
+             </InputGroup>
+         {{else if (eq this.customFieldComponent "money-input")}}
+             <InputGroup @name={{this.customField.label}} @required={{this.customField.required}} @helpText={{this.customField.help_text}}>
+-                <MoneyInput class="w-full" @wrapperClass="x-fleetops-input-height shadow-md" @value={{this.value}} @canSelectCurrency={{@canSelectCurrency}} @currency={{or @currency "USD"}} @onChange={{this.onChangeHandler}} />
++                <MoneyInput class="w-full" @wrapperClass="x-fleetops-input-height shadow-md" @value={{this.value}} @currency={{or @currency "INR"}} @onChange={{this.onChangeHandler}} />
+             </InputGroup>
+         {{else if (eq this.customFieldComponent "date-time-input")}}
+             <InputGroup @name={{this.customField.label}} @required={{this.customField.required}} @helpText={{this.customField.help_text}}>
+@@ -115,4 +115,4 @@
+             </InputGroup>
+         {{/if}}
+     </div>
+-{{/if}}
+\ No newline at end of file
++{{/if}}
+diff --git a/addon/components/dashboard.hbs b/addon/components/dashboard.hbs
+index 9a87b82..51216d9 100644
+--- a/addon/components/dashboard.hbs
++++ b/addon/components/dashboard.hbs
+@@ -1,6 +1,14 @@
+ <div class="fleetbase-dashboard-grid {{if @stickyHeader 'fleetbase-dashboard-grid--sticky'}}" ...attributes>
+     <div class="left-section {{@leftHeaderWrapperClass}}">
+-        <h1 class="text-lg font-bold">{{this.dashboard.currentDashboard.name}}</h1>
++        <h1 class="text-lg font-bold">
++            {{#if this.dashboard.currentDashboard.name}}
++                {{this.dashboard.currentDashboard.name}}
++            {{else if this.dashboard.loadDashboards.isRunning}}
++                {{t "component.dashboard.loading"}}
++            {{else}}
++                {{t "component.dashboard.select-dashboard"}}
++            {{/if}}
++        </h1>
+     </div>
+     <div class="fleetbase-dashboard-actions right-section {{@rightHeaderWrapperClass}} flex items-center space-x-2">
+         {{yield}}
+@@ -85,6 +93,23 @@
+     </div>
+ </div>
+ 
++{{#if this.dashboard.loadError}}
++    <div class="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#b4873a] bg-[#fff5df] px-4 py-3 text-sm text-[#27372d]" role="alert">
++        <span>{{t "component.dashboard.load-error"}}</span>
++        <Button @type="primary" @size="xs" @icon="rotate" @text={{t "component.dashboard.retry-loading"}} @onClick={{this.retryLoadDashboards}} />
++    </div>
++{{else if this.dashboard.loadDashboards.isRunning}}
++    <div class="mb-3 flex items-center rounded-lg border border-[#d8dfd3] bg-[#e8efe8] px-4 py-3 text-sm text-[#27372d]" role="status" aria-live="polite">
++        <span class="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-[#426b57] border-t-transparent motion-reduce:animate-none" aria-hidden="true"></span>
++        {{t "component.dashboard.loading"}}
++    </div>
++{{else if (not this.dashboard.currentDashboard)}}
++    <div class="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#d8dfd3] bg-[#e8efe8] px-4 py-3 text-sm text-[#27372d]" role="alert">
++        <span>{{t "component.dashboard.unavailable"}}</span>
++        <Button @type="primary" @size="xs" @icon="rotate" @text={{t "component.dashboard.retry-loading"}} @onClick={{this.retryLoadDashboards}} />
++    </div>
++{{/if}}
++
+ <div class="{{@createWrapperClass}}">
+     {{yield to="body"}}
+     <Dashboard::Create
+diff --git a/addon/components/dashboard.js b/addon/components/dashboard.js
+index b76bd6b..3ce0202 100644
+--- a/addon/components/dashboard.js
++++ b/addon/components/dashboard.js
+@@ -56,6 +56,11 @@ export default class DashboardComponent extends Component {
+         this.dashboard.selectDashboard.perform(dashboard);
+     }
+ 
++    /** Retry the saved-dashboard request using the component's current scope. */
++    @action retryLoadDashboards() {
++        this.dashboard.loadDashboards.perform(this.dashboard.lastLoadOptions);
++    }
++
+     /**
+      * Sets the context for the widget selector panel.
+      * @param {Object} widgetSelectorContext - The context object for the widget selector.
+diff --git a/addon/components/fleetbase-attribution.hbs b/addon/components/fleetbase-attribution.hbs
+index 93f3f06..771b8d0 100644
+--- a/addon/components/fleetbase-attribution.hbs
++++ b/addon/components/fleetbase-attribution.hbs
+@@ -7,8 +7,6 @@
+             <span class="fleetbase-attribution-version">{{this.appVersion}}</span>
+         {{/if}}
+         <span class="fleetbase-attribution-separator" aria-hidden="true">·</span>
+-        <button type="button" class="fleetbase-attribution-legal-link" {{on "click" this.openLegalNotice}}>
+-            Legal
+-        </button>
++        <a class="fleetbase-attribution-legal-link" href="/legal">Open-source notices</a>
+     </div>
+ {{/unless}}
+diff --git a/addon/components/fleetbase-attribution.js b/addon/components/fleetbase-attribution.js
+index 3f8a035..886a1c8 100644
+--- a/addon/components/fleetbase-attribution.js
++++ b/addon/components/fleetbase-attribution.js
+@@ -1,11 +1,7 @@
+ import Component from '@glimmer/component';
+-import { inject as service } from '@ember/service';
+-import { action } from '@ember/object';
+ import config from 'ember-get-config';
+ 
+ export default class FleetbaseAttributionComponent extends Component {
+-    @service modalsManager;
+-
+     get disabled() {
+         return config.APP?.disableFleetbaseAttribution === true;
+     }
+@@ -14,13 +10,4 @@ export default class FleetbaseAttributionComponent extends Component {
+         return config.version ? `v${config.version}` : null;
+     }
+ 
+-    @action openLegalNotice() {
+-        this.modalsManager.show('modals/fleetbase-legal-notice', {
+-            title: 'Open-source Legal Notices',
+-            acceptButtonText: 'Done',
+-            acceptButtonIcon: 'check',
+-            hideDeclineButton: true,
+-            modalClass: 'modal-md fleetbase-legal-notice-modal',
+-        });
+-    }
+ }
+diff --git a/addon/components/layout/header.hbs b/addon/components/layout/header.hbs
+index 0f85afe..6c49b2e 100644
+--- a/addon/components/layout/header.hbs
++++ b/addon/components/layout/header.hbs
+@@ -1,7 +1,8 @@
+ <header class="next-view-header" ...attributes>
+     <div class="next-view-header-left">
+-        <LinkToExternal @route="console" class="logo navbar-logo mr-4">
+-            <LogoIcon @brand={{@brand}} @size="8" />
++        <LinkToExternal @route="console.home" class="logo navbar-logo kodewaves-console-brand mr-4" aria-label="Kodewaves TMS home">
++            <img src="/images/kodewaves-icon.svg?v=20261108-forest" alt="" width="40" height="40" class="kodewaves-console-mark" />
++            <span class="kodewaves-console-brand-name">Kodewaves <small>TMS</small></span>
+         </LinkToExternal>
+         {{#if (and @showSidebarToggle (not (media "isMobile")))}}
+             <Layout::Header::SidebarToggle class="mr-2" @onToggle={{@onSidebarToggle}} @disabled={{eq @sidebarToggleEnabled false}} />
+@@ -54,7 +55,7 @@
+                             height="20"
+                             width="20"
+                             src={{this.currentUser.avatarUrl}}
+-                            @fallbackSrc="https://s3.ap-southeast-1.amazonaws.com/flb-assets/static/no-avatar.png"
++                            @fallbackSrc="/images/kodewaves-avatar.svg?v=20261108-forest"
+                             alt={{this.currentUser.name}}
+                         />
+                     </div>
+@@ -62,4 +63,4 @@
+             </div>
+         </div>
+     </div>
+-</header>
+\ No newline at end of file
++</header>
+diff --git a/addon/components/layout/header.js b/addon/components/layout/header.js
+index 98f8bbb..879232f 100644
+--- a/addon/components/layout/header.js
++++ b/addon/components/layout/header.js
+@@ -21,7 +21,6 @@ export default class LayoutHeaderComponent extends Component {
+     @service currentUser;
+     @service abilities;
+     @service fetch;
+-    @service docsPanel;
+     @tracked company;
+     // Each of these is assigned by the constructor before anything reads it.
+     /* istanbul ignore next */
+@@ -234,35 +233,6 @@ export default class LayoutHeaderComponent extends Component {
+             });
+         }
+ 
+-        // Add more static menu items
+-        const supportMenuItems = [
+-            {
+-                id: 'discord',
+-                href: 'https://discord.gg/MJQgxHwN',
+-                target: '_discord',
+-                text: 'Join Discord Community',
+-                icon: 'arrow-up-right-from-square',
+-            },
+-            {
+-                id: 'support-user-nav-item',
+-                wrapperClass: 'support-user-nav-item',
+-                href: 'https://github.com/fleetbase/fleetbase/issues',
+-                target: '_support',
+-                text: 'Help & Support',
+-                icon: 'arrow-up-right-from-square',
+-            },
+-            {
+-                id: 'docs-user-nav-item',
+-                wrapperClass: 'docs-user-nav-item',
+-                text: 'Documentation',
+-                icon: 'book-open',
+-                onClick: () => this.docsPanel.open('https://www.fleetbase.io/docs', { title: 'Fleetbase Documentation', source: 'user-menu' }),
+-            },
+-        ];
+-
+-        // Push support menu items
+-        menuItems.push(...supportMenuItems);
+-
+         // Push items from universe registry
+         const universeUserMenuItems = this.universe.userMenuItems;
+         if (isArray(universeUserMenuItems) && universeUserMenuItems.length) {
+diff --git a/addon/components/layout/header/dropdown.hbs b/addon/components/layout/header/dropdown.hbs
+index a0d17db..7560fbf 100644
+--- a/addon/components/layout/header/dropdown.hbs
++++ b/addon/components/layout/header/dropdown.hbs
+@@ -6,7 +6,7 @@
+         @calculatePosition={{this.calculatePosition}}
+         @verticalPosition={{@verticalPosition}}
+         @horizontalPosition={{@horizontalPosition}}
+-        @renderInPlace={{or @renderInPlace (not (media "isMobile"))}}
++        @renderInPlace={{@renderInPlace}}
+         @initiallyOpened={{@initiallyOpened}}
+         as |dd|
+     >
+@@ -21,4 +21,4 @@
+             </div>
+         </dd.Content>
+     </BasicDropdown>
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/layout/header/smart-nav-menu.hbs b/addon/components/layout/header/smart-nav-menu.hbs
+index 2bfc8e5..4cc23a5 100644
+--- a/addon/components/layout/header/smart-nav-menu.hbs
++++ b/addon/components/layout/header/smart-nav-menu.hbs
+@@ -70,11 +70,14 @@
+ 
+ {{! ── Customiser panel ────────────────────────────────────────────────── }}
+ {{#if this.isCustomizerOpen}}
+-    <Layout::Header::SmartNavMenu::Customizer
+-        @allItems={{this.allItems}}
+-        @pinnedIds={{this.pinnedIds}}
+-        @maxVisible={{this.maxVisible}}
+-        @onApply={{this.applyCustomization}}
+-        @onClose={{this.closeCustomizer}}
+-    />
++    {{! Escape header and route stacking contexts, as the overflow menu does. }}
++    <EmberWormhole @to="application-root-wormhole">
++        <Layout::Header::SmartNavMenu::Customizer
++            @allItems={{this.allItems}}
++            @pinnedIds={{this.pinnedIds}}
++            @maxVisible={{this.maxVisible}}
++            @onApply={{this.applyCustomization}}
++            @onClose={{this.closeCustomizer}}
++        />
++    </EmberWormhole>
+ {{/if}}
+diff --git a/addon/components/layout/mobile-navbar.hbs b/addon/components/layout/mobile-navbar.hbs
+index da73656..c6d29f6 100644
+--- a/addon/components/layout/mobile-navbar.hbs
++++ b/addon/components/layout/mobile-navbar.hbs
+@@ -13,10 +13,10 @@
+                     </LinkToExternal>
+                 {{/each}}
+             </div>
+-            <a href="javascript:;" class="next-mobile-navbar-tab-item menu-toggle" role="menuitem" {{on "click" this.toggleSidebar}}>
++            <button type="button" class="next-mobile-navbar-tab-item menu-toggle" role="menuitem" aria-expanded={{this.sidebar.isVisible}} {{on "click" this.toggleSidebar}}>
+                 <FaIcon @icon="bars" @size="lg" class="text-gray-800 dark:text-gray-100" />
+                 <span>Menu</span>
+-            </a>
++            </button>
+         </div>
+     </div>
+-{{/if}}
+\ No newline at end of file
++{{/if}}
+diff --git a/addon/components/layout/mobile-navbar.js b/addon/components/layout/mobile-navbar.js
+index 7d742dc..00b3ed1 100644
+--- a/addon/components/layout/mobile-navbar.js
++++ b/addon/components/layout/mobile-navbar.js
+@@ -45,14 +45,14 @@ export default class LayoutMobileNavbarComponent extends Component {
+             }
+         }
+ 
+-        // Merge additionals
+-        visibleMenuItems.push(...menuItems);
+-
+-        // Callback to allow mutation of menu items
++        // Apply extension changes before merging, without mutating the caller's array.
++        const additionalItems = [...menuItems];
+         if (typeof this.args.mutateMenuItems === 'function') {
+-            this.args.mutateMenuItems(menuItems);
++            this.args.mutateMenuItems(additionalItems);
+         }
+ 
++        visibleMenuItems.push(...additionalItems);
++
+         return visibleMenuItems;
+     }
+ 
+diff --git a/addon/components/layout/resource/tabular.hbs b/addon/components/layout/resource/tabular.hbs
+index d8f7676..a358380 100644
+--- a/addon/components/layout/resource/tabular.hbs
++++ b/addon/components/layout/resource/tabular.hbs
+@@ -25,10 +25,10 @@
+             @buttonWrapperClass={{@filterPickerButtonClass}}
+             @gridCols={{@filterPickerGridCols}}
+             @width={{@filterPickerWidth}}
+-            @iconOnly={{true}}
++            @iconOnly={{false}}
+         />
+         {{#unless @hideColumnsPicker}}
+-            <VisibleColumnPicker @columns={{this.columns}} @onChange={{this.setColumns}} @iconOnly={{true}} class={{@columnPickerButtonClass}} />
++            <VisibleColumnPicker @columns={{this.columns}} @onChange={{this.setColumns}} @iconOnly={{false}} class={{@columnPickerButtonClass}} />
+         {{/unless}}
+         {{#if (safe-has this.table "selectedRows")}}
+             <Layout::Resource::BulkActions @actions={{this.bulkActions}} @iconOnly={{@bulkActionIconOnly}} @buttonWrapperClass={{@bulkActionButtonClass}} />
+@@ -38,10 +38,10 @@
+             <Button @icon="plus" @iconPrefix="fas" @type="primary" @text={{t "common.new"}} class={{@newButtonClass}} @onClick={{@onPressNew}} />
+         {{/if}}
+         {{#if @onPressImport}}
+-            <Button @icon="upload" @type="magic" @text={{t "common.import"}} @wrapperClass="hidden md:flex" class={{@importButtonClass}} @onClick={{@onPressImport}} />
++            <Button @icon="upload" @type="magic" @text={{t "common.import"}} class={{@importButtonClass}} @onClick={{@onPressImport}} />
+         {{/if}}
+         {{#if @onPressExport}}
+-            <Button @icon="long-arrow-up" @iconClass="rotate-icon-45" @wrapperClass="hidden md:flex" @text={{t "common.export"}} class={{@exportButtonClass}} @onClick={{@onPressExport}} />
++            <Button @icon="long-arrow-up" @iconClass="rotate-icon-45" @text={{t "common.export"}} class={{@exportButtonClass}} @onClick={{@onPressExport}} />
+         {{/if}}
+     </Layout::Section::Header>
+ {{/unless}}
+diff --git a/addon/components/logo-icon.hbs b/addon/components/logo-icon.hbs
+index 8f40d3b..80f303a 100644
+--- a/addon/components/logo-icon.hbs
++++ b/addon/components/logo-icon.hbs
+@@ -1,3 +1,3 @@
+ {{#if this.ready}}
+-    <Image src={{this.brand.icon_url}} @fallbackSrc="/images/kodewaves-icon.svg" height={{this.px}} width={{this.px}} class="w-{{this.size}} h-{{this.size}}" alt="Kodewaves" ...attributes />
++    <Image src={{this.brand.icon_url}} @fallbackSrc="/images/kodewaves-icon.svg?v=20261108-forest" height={{this.px}} width={{this.px}} class="w-{{this.size}} h-{{this.size}}" alt="Kodewaves" ...attributes />
+ {{/if}}
+diff --git a/addon/components/modals/fleetbase-legal-notice.hbs b/addon/components/modals/fleetbase-legal-notice.hbs
+index 6240481..62ec149 100644
+--- a/addon/components/modals/fleetbase-legal-notice.hbs
++++ b/addon/components/modals/fleetbase-legal-notice.hbs
+@@ -3,15 +3,15 @@
+         <div class="fleetbase-legal-notice-hero">
+             <div class="fleetbase-legal-notice-hero-main">
+                 <img
+-                    src="https://fleetbase.io/images/filled-icon.png"
+-                    alt="Fleetbase"
++                    src="/images/kodewaves-icon.svg?v=20261108-forest"
++                    alt="Kodewaves TMS"
+                     width="40"
+                     height="40"
+                     class="fleetbase-legal-notice-logo rounded-lg shadow-md"
+                 />
+                 <div>
+-                    <h3>Fleetbase</h3>
+-                    <p>Open source and commercial licensing</p>
++                    <h3>Open-source notices</h3>
++                    <p>Third-party copyright and license information</p>
+                 </div>
+             </div>
+             <span>Copyright © {{format-date-fns (now) "yyyy"}} Fleetbase Pte. Ltd.</span>
+@@ -20,7 +20,7 @@
+         <div class="fleetbase-legal-notice-section">
+             <h4>Open Source License</h4>
+             <p>
+-                Fleetbase is licensed under the GNU Affero General Public License v3.0 or later, unless you have a separate commercial license from Fleetbase.
++                This platform includes Fleetbase open-source components licensed under the GNU Affero General Public License v3.0 or later. The copyright holder is identified below.
+             </p>
+         </div>
+ 
+@@ -31,23 +31,7 @@
+             </p>
+         </div>
+ 
+-        <div class="fleetbase-legal-notice-section">
+-            <h4>Commercial License</h4>
+-            <p>
+-                Need to keep proprietary modifications private, build a SaaS product, or white-label Fleetbase? A Fleetbase Commercial License removes AGPL copyleft obligations for covered
+-                commercial use.
+-            </p>
+-        </div>
+-
+         <div class="fleetbase-legal-notice-links">
+-            <a href="https://www.fleetbase.io/licensing" target="_blank" rel="noopener noreferrer">
+-                <FaIcon @icon="arrow-up-right-from-square" class="fleetbase-legal-notice-link-icon" />
+-                <span>View licensing options</span>
+-            </a>
+-            <a href="https://www.fleetbase.io/licensing/commercial" target="_blank" rel="noopener noreferrer">
+-                <FaIcon @icon="arrow-up-right-from-square" class="fleetbase-legal-notice-link-icon" />
+-                <span>View commercial license</span>
+-            </a>
+             <a href="https://github.com/fleetbase/fleetbase" target="_blank" rel="noopener noreferrer">
+                 <FaIcon @icon="arrow-up-right-from-square" class="fleetbase-legal-notice-link-icon" />
+                 <span>View source code</span>
+diff --git a/addon/components/money-input.js b/addon/components/money-input.js
+index 638626b..eb17678 100644
+--- a/addon/components/money-input.js
++++ b/addon/components/money-input.js
+@@ -18,10 +18,8 @@ export default class MoneyInputComponent extends Component {
+     constructor() {
+         super(...arguments);
+ 
+-        let whois = this.currentUser.getOption('whois');
+-
+-        this.currency = this.args.currency ?? whois?.currency?.code ?? 'USD';
+-        this.currencyData = getCurrency(this.currency);
++        this.currency = 'INR';
++        this.currencyData = getCurrency('INR');
+     }
+ 
+     @action autoNumerize(element) {
+@@ -74,6 +72,7 @@ export default class MoneyInputComponent extends Component {
+     }
+ 
+     #applyCurrency(currency) {
++        currency = getCurrency('INR');
+         /* istanbul ignore else -- autoNumerize runs from {{did-insert}} on the amount field, so
+            the instance exists before the currency selector can be reached */
+         if (this.autonumeric) {
+@@ -128,6 +127,6 @@ export default class MoneyInputComponent extends Component {
+      * @action
+      */
+     @action handleCurrencyChanges(el, [currency]) {
+-        this.#applyCurrency(getCurrency(currency));
++        this.#applyCurrency(getCurrency('INR'));
+     }
+ }
+diff --git a/addon/components/widget/count.js b/addon/components/widget/count.js
+index f90710b..5827b98 100644
+--- a/addon/components/widget/count.js
++++ b/addon/components/widget/count.js
+@@ -49,7 +49,7 @@ export default class WidgetCountComponent extends Component {
+             return;
+         }
+ 
+-        let { format, currency, dateFormat, value } = options;
++        let { format, dateFormat, value } = options;
+ 
+         // These are plain utils with real positional parameters, not Ember helpers — they were
+         // being called with an array of positional params. `formatCurrency([value, currency])`
+@@ -59,7 +59,10 @@ export default class WidgetCountComponent extends Component {
+         // to a number in the arithmetic those utils happen to perform.
+         switch (format) {
+             case 'money':
+-                value = formatCurrency(value, currency);
++                // The Kodewaves TMS dashboards report financial values in INR.
++                // Ignore stale per-widget USD/EUR defaults so zero-value tiles
++                // cannot silently fall back to dollars.
++                value = formatCurrency(value, 'INR');
+                 break;
+ 
+             case 'meters':
+diff --git a/addon/helpers/format-currency.js b/addon/helpers/format-currency.js
+index 5fda8a1..bcde1cb 100644
+--- a/addon/helpers/format-currency.js
++++ b/addon/helpers/format-currency.js
+@@ -1,6 +1,6 @@
+ import { helper } from '@ember/component/helper';
+ import formatCurrencyUtil from '../utils/format-currency';
+ 
+-export default helper(function formatCurrency([amount = 0, currencyCode = 'USD']) {
++export default helper(function formatCurrency([amount = 0, currencyCode = 'INR']) {
+     return formatCurrencyUtil(amount, currencyCode);
+ });
+diff --git a/addon/services/dashboard.js b/addon/services/dashboard.js
+index d29fcc4..4a1ea88 100644
+--- a/addon/services/dashboard.js
++++ b/addon/services/dashboard.js
+@@ -26,6 +26,9 @@ export default class DashboardService extends Service {
+      */
+     @tracked dashboards = [];
+ 
++    /** The last dashboard-list failure, exposed so the workspace can show recovery. */
++    @tracked loadError = null;
++
+     /**
+      * Tracked property representing the currently selected dashboard.
+      * @type {Object}
+@@ -65,20 +68,28 @@ export default class DashboardService extends Service {
+      */
+     @task({ drop: true }) *loadDashboards({ defaultDashboardId = 'dashboard', defaultDashboardName = 'Default Dashboard', extension = 'core', slot = null } = {}) {
+         this.lastLoadOptions = { defaultDashboardId, defaultDashboardName, extension, slot };
++        this.loadError = null;
+         this.universe.registerDashboard(defaultDashboardId);
+ 
+-        const dashboards = yield this.store.query('dashboard', { limit: -1, extension });
+-        if (isArray(dashboards)) {
+-            const savedDashboards = typeof dashboards.toArray === 'function' ? dashboards.toArray() : dashboards;
+-            const systemDashboards = this._createSystemDashboards({ defaultDashboardId, defaultDashboardName, extension, slot });
++        const systemDashboards = this._createSystemDashboards({ defaultDashboardId, defaultDashboardName, extension, slot });
++
++        try {
++            const dashboards = yield this.store.query('dashboard', { limit: -1, extension });
++            const savedDashboards = isArray(dashboards) ? (typeof dashboards.toArray === 'function' ? dashboards.toArray() : dashboards) : [];
+ 
+             this.dashboards = [...systemDashboards, ...savedDashboards];
++            this.currentDashboard = this._getNextDashboard({ defaultDashboardId, slot }) ?? systemDashboards[0] ?? null;
++        } catch (error) {
++            // A saved-dashboard API outage should not blank the workspace. Keep
++            // the local system dashboard available and expose the failure so the
++            // user can retry without losing the rest of the console.
++            this.dashboards = systemDashboards;
++            this.currentDashboard = this._getNextDashboard({ defaultDashboardId, slot }) ?? systemDashboards[0] ?? null;
++            this.loadError = error;
++        }
+ 
+-            // Set the current dashboard
+-            this.currentDashboard = this._getNextDashboard({ defaultDashboardId, slot });
+-            if (this.currentDashboard && this.currentDashboard.widgets.length === 0 && this.showPanelWhenZeroWidgets === true) {
+-                this.onAddingWidget(true);
+-            }
++        if (this.currentDashboard && this.currentDashboard.widgets.length === 0 && this.showPanelWhenZeroWidgets === true) {
++            this.onAddingWidget(true);
+         }
+     }
+ 
+@@ -190,6 +201,7 @@ export default class DashboardService extends Service {
+     reset() {
+         this.currentDashboard = null;
+         this.dashboards = [];
++        this.loadError = null;
+ 
+         // Defer the store.unloadAll() pair to the next runloop tick. reset() is
+         // invoked from DashboardComponent's constructor, which itself runs
+diff --git a/addon/styles/components/fleetbase-attribution.css b/addon/styles/components/fleetbase-attribution.css
+index eb642f5..ce2c302 100644
+--- a/addon/styles/components/fleetbase-attribution.css
++++ b/addon/styles/components/fleetbase-attribution.css
+@@ -53,6 +53,8 @@
+     border: 0;
+     cursor: pointer;
+     padding: 0;
++    display: inline-flex;
++    align-items: center;
+ }
+ 
+ .fleetbase-legal-notice-content {
+diff --git a/addon/styles/components/smart-nav-menu.css b/addon/styles/components/smart-nav-menu.css
+index 4602dc9..313aa75 100644
+--- a/addon/styles/components/smart-nav-menu.css
++++ b/addon/styles/components/smart-nav-menu.css
+@@ -490,7 +490,7 @@ a.snm-dropdown-card,
+ .snm-customizer-backdrop {
+     position: fixed;
+     inset: 0;
+-    z-index: 700;
++    z-index: 10000;
+     background: rgba(0, 0, 0, 0.35);
+ }
+ 
+@@ -501,7 +501,7 @@ a.snm-dropdown-card,
+     top: 57px; /* height of .next-view-header */
+     left: 50%;
+     transform: translateX(-50%);
+-    z-index: 710;
++    z-index: 10001;
+     width: 680px;
+     max-width: calc(100vw - 2rem);
+     max-height: 60vh;
+diff --git a/addon/styles/layout/mobile.css b/addon/styles/layout/mobile.css
+index 76b58f5..d24a3e0 100644
+--- a/addon/styles/layout/mobile.css
++++ b/addon/styles/layout/mobile.css
+@@ -7,7 +7,8 @@
+         left: 0;
+         top: 0;
+         bottom: 0;
+-        z-index: 999;
++        /* Keep the drawer above page content, but below dialogs and overlays. */
++        z-index: 20;
+         @apply transition duration-500 ease-in-out;
+     }
+ 
+diff --git a/addon/styles/layout/next.css b/addon/styles/layout/next.css
+index 88da733..04e6934 100644
+--- a/addon/styles/layout/next.css
++++ b/addon/styles/layout/next.css
+@@ -43,7 +43,8 @@ body.next-sidebar-is-resizing {
+ 
+ .next-mobile-navbar {
+     @apply flex h-16 bg-white border-t border-gray-200 flex-shrink-0;
+-    z-index: 999;
++    /* Page navigation stays below modal surfaces and full-screen overlays. */
++    z-index: 30;
+ }
+ 
+ .next-mobile-navbar .next-mobile-navbar-tabs {
+diff --git a/addon/utils/format-currency.js b/addon/utils/format-currency.js
+index 117974d..1b973a0 100644
+--- a/addon/utils/format-currency.js
++++ b/addon/utils/format-currency.js
+@@ -1,14 +1,11 @@
+ import getCurrency from './get-currency';
+ import formatMoney from '@fleetbase/ember-accounting/utils/format-money';
+ 
+-export default function formatCurrency(amount = 0, currencyCode = 'USD') {
+-    let currency = getCurrency(currencyCode) ?? {
+-        code: currencyCode,
+-        symbol: `${currencyCode} `,
+-        precision: 2,
+-        thousandSeparator: ',',
+-        decimalSeparator: '.',
+-    };
++export default function formatCurrency(amount = 0, _currencyCode = 'INR') {
++    // Kodewaves TMS presents money in INR across every tenant and panel. Keep the
++    // optional second parameter for existing call sites, but never let a legacy
++    // record's currency code change the platform display unit.
++    const currency = getCurrency('INR');
+ 
+     return formatMoney(!currency.decimalSeparator ? amount : amount / 100, currency.symbol, currency.precision, currency.thousandSeparator, currency.decimalSeparator);
+ }
+diff --git a/index.js b/index.js
+index cea35e3..4d7e37c 100644
+--- a/index.js
++++ b/index.js
+@@ -113,7 +113,7 @@ module.exports = {
+     },
+ 
+     treeForIntlTelInput: function () {
+-        const intlTelInputPath = path.dirname(require.resolve('intl-tel-input')).replace(/build\/js$/, '');
++        const intlTelInputPath = path.resolve(path.dirname(require.resolve('intl-tel-input')), '..', '..');
+         const trees = [
+             new Funnel(`${intlTelInputPath}/build/js`, {
+                 include: ['utils.js'],
+diff --git a/tests/integration/components/chat-tray-test.js b/tests/integration/components/chat-tray-test.js
+index 0853a4e..95abfcf 100644
+--- a/tests/integration/components/chat-tray-test.js
++++ b/tests/integration/components/chat-tray-test.js
+@@ -9,6 +9,11 @@ module('Integration | Component | chat-tray', function (hooks) {
+     setupRenderingTest(hooks);
+ 
+     hooks.beforeEach(function () {
++        const wormhole = document.createElement('div');
++        wormhole.id = 'application-root-wormhole';
++        this.element.appendChild(wormhole);
++        this.wormhole = wormhole;
++
+         const channels = [
+             {
+                 id: 'chat-1',
+@@ -128,6 +133,10 @@ module('Integration | Component | chat-tray', function (hooks) {
+         this.owner.register('service:notifications', NotificationsStub);
+     });
+ 
++    hooks.afterEach(function () {
++        this.wormhole?.remove();
++    });
++
+     test('opens a conversation inbox overlay from the tray button', async function (assert) {
+         await render(hbs`<ChatTray />`);
+ 
+diff --git a/tests/integration/components/currency-select-test.js b/tests/integration/components/currency-select-test.js
+index 924280f..dbe19b4 100644
+--- a/tests/integration/components/currency-select-test.js
++++ b/tests/integration/components/currency-select-test.js
+@@ -8,28 +8,28 @@ import { selectChoose } from 'ember-power-select/test-support';
+ module('Integration | Component | currency-select', function (hooks) {
+     setupRenderingTest(hooks);
+ 
+-    test('it defaults the selection to USD', async function (assert) {
++    test('it defaults the selection to INR', async function (assert) {
+         await render(hbs`<CurrencySelect />`);
+ 
+-        assert.dom('.ember-power-select-trigger').containsText('USD');
++        assert.dom('.ember-power-select-trigger').containsText('INR');
+     });
+ 
+-    test('it preselects the currency provided by @value', async function (assert) {
++    test('it keeps INR even when an old record contains another currency', async function (assert) {
+         await render(hbs`<CurrencySelect @value="EUR" />`);
+ 
+-        assert.dom('.ember-power-select-trigger').containsText('EUR');
++        assert.dom('.ember-power-select-trigger').containsText('INR');
+     });
+ 
+-    test('it defaults to the current user whois currency when available', async function (assert) {
++    test('it defaults to INR even when the detected country uses another currency', async function (assert) {
+         const currentUser = this.owner.lookup('service:current-user');
+         currentUser.setOption('whois', { currency: { code: 'GBP' } });
+ 
+         await render(hbs`<CurrencySelect />`);
+ 
+-        assert.dom('.ember-power-select-trigger').containsText('GBP');
++        assert.dom('.ember-power-select-trigger').containsText('INR');
+     });
+ 
+-    test('selecting a currency fires the change callbacks with the code and currency', async function (assert) {
++    test('the selector exposes only INR and change callbacks preserve the INR policy', async function (assert) {
+         const calls = [];
+         this.set('onCurrencyChange', (code, currency) => calls.push({ method: 'onCurrencyChange', code, currency }));
+         this.set('onSelect', (code, currency) => calls.push({ method: 'onSelect', code, currency }));
+@@ -38,28 +38,28 @@ module('Integration | Component | currency-select', function (hooks) {
+         await render(hbs`<CurrencySelect @onCurrencyChange={{this.onCurrencyChange}} @onSelect={{this.onSelect}} @onChange={{this.onChange}} />`);
+ 
+         await clickTrigger();
+-        await typeInSearch('EUR');
+-        await selectChoose('.ember-power-select-trigger', 'EUR');
++        await typeInSearch('INR');
++        await selectChoose('.ember-power-select-trigger', 'INR');
+ 
+         assert.deepEqual(
+             calls.map((call) => call.method),
+             ['onCurrencyChange', 'onSelect', 'onChange'],
+             'all change callbacks fired'
+         );
+-        assert.strictEqual(calls[0].code, 'EUR');
+-        assert.strictEqual(calls[0].currency.code, 'EUR');
+-        assert.strictEqual(calls[2].currency.code, 'EUR');
+-        assert.dom('.ember-power-select-trigger').containsText('EUR');
++        assert.strictEqual(calls[0].code, 'INR');
++        assert.strictEqual(calls[0].currency.code, 'INR');
++        assert.strictEqual(calls[2].currency.code, 'INR');
++        assert.dom('.ember-power-select-trigger').containsText('INR');
+     });
+ 
+     test('selecting a currency with no callbacks at all is harmless', async function (assert) {
+         await render(hbs`<CurrencySelect />`);
+ 
+         await clickTrigger();
+-        await typeInSearch('EUR');
+-        await selectChoose('.ember-power-select-trigger', 'EUR');
++        await typeInSearch('INR');
++        await selectChoose('.ember-power-select-trigger', 'INR');
+ 
+-        assert.dom('.ember-power-select-trigger').containsText('EUR', 'the selection still lands');
++        assert.dom('.ember-power-select-trigger').containsText('INR', 'INR remains selected');
+     });
+ 
+     test('it yields the currency in block form for custom option rendering', async function (assert) {
+@@ -70,7 +70,7 @@ module('Integration | Component | currency-select', function (hooks) {
+         `);
+ 
+         await clickTrigger();
+-        await typeInSearch('USD');
++        await typeInSearch('INR');
+ 
+         assert.dom('.ember-power-select-option [data-test-currency-code]').exists();
+     });
+diff --git a/tests/integration/components/dashboard-test.js b/tests/integration/components/dashboard-test.js
+index e2bbeb8..488b61a 100644
+--- a/tests/integration/components/dashboard-test.js
++++ b/tests/integration/components/dashboard-test.js
+@@ -18,6 +18,7 @@ class DashboardStubService extends Service {
+     @tracked isEditingDashboard = false;
+     @tracked isAddingWidget = false;
+     @tracked showPanelWhenZeroWidgets = false;
++    @tracked loadError = null;
+ 
+     currentWidgetSourceDashboardId = 'widget-source-dashboard';
+ 
+@@ -156,7 +157,27 @@ module('Integration | Component | dashboard', function (hooks) {
+         await render(hbs`<Dashboard />`);
+ 
+         assert.dom('.ember-basic-dropdown-trigger button').hasAttribute('title', 'component.dashboard.select-dashboard');
+-        assert.dom('.fleetbase-dashboard-grid .left-section h1').hasText('');
++        assert.dom('.fleetbase-dashboard-grid .left-section h1').hasText('component.dashboard.select-dashboard');
++    });
++
++    test('it shows a loading state while dashboards are being fetched', async function (assert) {
++        this.dashboardService.loadDashboards.isRunning = true;
++
++        await render(hbs`<Dashboard />`);
++
++        assert.dom('[role="status"]').exists('a visible loading state replaces the blank workspace');
++    });
++
++    test('it shows a recoverable error and retries dashboard loading', async function (assert) {
++        this.dashboardService.currentDashboard = makeDashboard('dashboard', 'Default Dashboard', 'system');
++        this.dashboardService.loadError = new Error('dashboard request failed');
++
++        await render(hbs`<Dashboard />`);
++
++        assert.dom('[role="alert"]').exists('the failed request is visible to the user');
++        await click('[role="alert"] button');
++
++        assert.strictEqual(this.dashboardService.calls.filter((call) => call.method === 'loadDashboards').length, 1, 'retry starts another dashboard request');
+     });
+ 
+     test('it lists every dashboard and check-marks the current one', async function (assert) {
+diff --git a/tests/integration/components/fleetbase-attribution-test.js b/tests/integration/components/fleetbase-attribution-test.js
+index 9fb2bd8..13c0319 100644
+--- a/tests/integration/components/fleetbase-attribution-test.js
++++ b/tests/integration/components/fleetbase-attribution-test.js
+@@ -1,6 +1,6 @@
+ import { module, test } from 'qunit';
+ import { setupRenderingTest } from 'dummy/tests/helpers';
+-import { render, click } from '@ember/test-helpers';
++import { render } from '@ember/test-helpers';
+ import { hbs } from 'ember-cli-htmlbars';
+ import config from 'ember-get-config';
+ 
+@@ -9,12 +9,13 @@ const NOTICE = '.fleetbase-attribution-notice';
+ module('Integration | Component | fleetbase-attribution', function (hooks) {
+     setupRenderingTest(hooks);
+ 
+-    test('it renders the product brand and a legal button', async function (assert) {
++    test('it renders the product brand and a link to open-source notices', async function (assert) {
+         await render(hbs`<FleetbaseAttribution />`);
+ 
+         assert.dom(NOTICE).exists();
+         assert.dom('.fleetbase-attribution-link').hasText('Kodewaves');
+-        assert.dom('.fleetbase-attribution-legal-link').hasText('Legal');
++        assert.dom('.fleetbase-attribution-legal-link').hasText('Open-source notices');
++        assert.dom('.fleetbase-attribution-legal-link').hasAttribute('href', '/legal');
+     });
+ 
+     test('it is styled standalone unless a placement is given', async function (assert) {
+@@ -69,16 +70,8 @@ module('Integration | Component | fleetbase-attribution', function (hooks) {
+         }
+     });
+ 
+-    test('the legal button opens the legal-notice modal', async function (assert) {
++    test('the legal control links to the dedicated notices page', async function (assert) {
+         await render(hbs`<FleetbaseAttribution />`);
+-        await click('.fleetbase-attribution-legal-link');
+-
+-        const modalsManager = this.owner.lookup('service:modals-manager');
+-        const [modal] = modalsManager.modals;
+-
+-        assert.ok(modal, 'a modal is opened');
+-        assert.strictEqual(modal.options.title, 'Open-source Legal Notices');
+-        assert.strictEqual(modal.options.acceptButtonText, 'Done');
+-        assert.true(modal.options.hideDeclineButton, 'there is nothing to decline');
++        assert.dom('.fleetbase-attribution-legal-link').hasAttribute('href', '/legal');
+     });
+ });
+diff --git a/tests/integration/components/layout/header-test.js b/tests/integration/components/layout/header-test.js
+index 9a15d77..b556a46 100644
+--- a/tests/integration/components/layout/header-test.js
++++ b/tests/integration/components/layout/header-test.js
+@@ -56,11 +56,11 @@ module('Integration | Component | layout/header', function (hooks) {
+     });
+ 
+     module('rendering', function () {
+-        test('it renders a header with a logo linking to the console', async function (assert) {
++        test('it renders a header with a logo linking to the workspace dashboard', async function (assert) {
+             await render(hbs`<Layout::Header />`);
+ 
+             assert.dom('header.next-view-header').exists();
+-            assert.dom('a.navbar-logo').hasAttribute('data-test-route', 'console');
++            assert.dom('a.navbar-logo').hasAttribute('data-test-route', 'console.home');
+         });
+ 
+         test('it yields into the left section', async function (assert) {
+@@ -254,7 +254,7 @@ module('Integration | Component | layout/header', function (hooks) {
+             assert.dom(`${USER_TRIGGER} img`).hasAttribute('alt', 'Test User');
+         });
+ 
+-        test('it lists the identity, profile, changelog and support items', async function (assert) {
++        test('it lists the identity, profile and changelog items without upstream links', async function (assert) {
+             await render(hbs`<Layout::Header />`);
+             await click(USER_TRIGGER);
+ 
+@@ -262,9 +262,10 @@ module('Integration | Component | layout/header', function (hooks) {
+             assert.true(texts.includes('View Profile'));
+             assert.true(texts.includes('Show keyboard shortcuts'));
+             assert.true(texts.includes('Changelog'));
+-            assert.true(texts.includes('Join Discord Community'));
+-            assert.true(texts.includes('Help & Support'));
+-            assert.true(texts.includes('Documentation'));
++            assert.false(texts.includes('Join Discord Community'));
++            assert.false(texts.includes('Help & Support'));
++            assert.false(texts.includes('Documentation'));
++            assert.false(texts.includes('Fleetbase'));
+             assert.dom('.next-dd-session-user-wrapper').containsText('Test User');
+         });
+ 
+@@ -298,30 +299,6 @@ module('Integration | Component | layout/header', function (hooks) {
+             assert.true(texts.includes('Registered User Item'));
+             assert.true(texts.includes('Supplied User Item'));
+         });
+-
+-        test('the documentation item opens the docs panel', async function (assert) {
+-            const opened = [];
+-            this.owner.unregister('service:docs-panel');
+-            this.owner.register(
+-                'service:docs-panel',
+-                class extends Service {
+-                    open(url, options) {
+-                        opened.push({ url, options });
+-                    }
+-                }
+-            );
+-
+-            await render(hbs`<Layout::Header />`);
+-            await click(USER_TRIGGER);
+-
+-            const item = findAll('.next-header-menu-item-dd-content a.next-dd-item').find((candidate) => candidate.textContent.includes('Documentation'));
+-            assert.ok(item, 'the documentation item is rendered');
+-            await click(item);
+-
+-            assert.strictEqual(opened.length, 1);
+-            assert.strictEqual(opened[0].url, 'https://www.fleetbase.io/docs');
+-            assert.strictEqual(opened[0].options.source, 'user-menu');
+-        });
+     });
+ 
+     test('a registered tray component is rendered and can route through the header', async function (assert) {
+diff --git a/tests/integration/components/layout/header/smart-nav-menu-test.js b/tests/integration/components/layout/header/smart-nav-menu-test.js
+index 86b2bc9..e0cb823 100644
+--- a/tests/integration/components/layout/header/smart-nav-menu-test.js
++++ b/tests/integration/components/layout/header/smart-nav-menu-test.js
+@@ -428,8 +428,8 @@ module('Integration | Component | layout/header/smart-nav-menu', function (hooks
+         return Array.from(context.wormhole.querySelectorAll('.snm-dropdown-pin-btn'));
+     }
+ 
+-    function customizerPanel() {
+-        return find('.snm-customizer-panel');
++    function customizerPanel(context) {
++        return context.wormhole.querySelector('.snm-customizer-panel');
+     }
+ 
+     module('the more dropdown', function () {
+@@ -463,13 +463,13 @@ module('Integration | Component | layout/header/smart-nav-menu', function (hooks
+             headerMenuItems = [item('fleet-ops'), item('storefront')];
+ 
+             await render(TEMPLATE);
+-            assert.strictEqual(customizerPanel(), null, 'the panel starts closed');
++            assert.strictEqual(customizerPanel(this), null, 'the panel starts closed');
+ 
+             await click(customiseButton());
+-            assert.ok(customizerPanel(), 'the panel opens');
++            assert.ok(customizerPanel(this), 'the panel opens');
+ 
+             await click('.snm-customizer-close');
+-            assert.strictEqual(customizerPanel(), null, 'and closes without saving');
++            assert.strictEqual(customizerPanel(this), null, 'and closes without saving');
+         });
+ 
+         test('opening the customiser closes the more dropdown', async function (assert) {
+@@ -482,7 +482,7 @@ module('Integration | Component | layout/header/smart-nav-menu', function (hooks
+             await click(customiseButton());
+ 
+             assert.strictEqual(dropdown(this), null, 'only one panel is open at a time');
+-            assert.ok(customizerPanel());
++            assert.ok(customizerPanel(this));
+         });
+ 
+         test('applying a selection saves it and closes the panel', async function (assert) {
+@@ -492,7 +492,7 @@ module('Integration | Component | layout/header/smart-nav-menu', function (hooks
+             await click(customiseButton());
+             await click('.snm-btn-primary');
+ 
+-            assert.strictEqual(customizerPanel(), null, 'the panel closes');
++            assert.strictEqual(customizerPanel(this), null, 'the panel closes');
+             assert.ok(savedOptions[PREFS_KEY], 'the preference is persisted');
+             assert.true(Array.isArray(savedOptions[PREFS_KEY].pinnedIds), 'as an ordered id list');
+         });
+@@ -504,7 +504,7 @@ module('Integration | Component | layout/header/smart-nav-menu', function (hooks
+             await click(customiseButton());
+             await click('.snm-btn-secondary');
+ 
+-            assert.strictEqual(customizerPanel(), null);
++            assert.strictEqual(customizerPanel(this), null);
+             assert.notOk(savedOptions[PREFS_KEY], 'nothing is written');
+         });
+     });
+@@ -628,11 +628,11 @@ module('Integration | Component | layout/header/smart-nav-menu', function (hooks
+ 
+             await render(TEMPLATE);
+             await click(customiseButton());
+-            assert.dom('.snm-customizer-panel').exists('the customiser is open');
++            assert.ok(customizerPanel(this), 'the customiser is open');
+ 
+             await click(moreButton());
+ 
+-            assert.dom('.snm-customizer-panel').doesNotExist('opening the dropdown closes it again');
++            assert.notOk(customizerPanel(this), 'opening the dropdown closes it again');
+             assert.dom(moreButton()).hasAttribute('aria-expanded', 'true');
+         });
+     });
+diff --git a/tests/integration/components/layout/mobile-navbar-test.js b/tests/integration/components/layout/mobile-navbar-test.js
+index 9397b0d..93744c2 100644
+--- a/tests/integration/components/layout/mobile-navbar-test.js
++++ b/tests/integration/components/layout/mobile-navbar-test.js
+@@ -160,6 +160,18 @@ module('Integration | Component | layout/mobile-navbar', function (hooks) {
+                 ['Operations', 'Storefront']
+             );
+         });
++
++        test('mobile menu applies changes before rendering without changing the supplied array', async function (assert) {
++            const originalLength = this.menuItems.length;
++            this.set('mutateMenuItems', (items) => {
++                items.push({ title: 'Reports', route: 'console.reports', icon: 'chart-bar' });
++            });
++
++            await render(hbs`<Layout::MobileNavbar @menuItems={{this.menuItems}} @mutateMenuItems={{this.mutateMenuItems}} />`);
++
++            assert.strictEqual(this.menuItems.length, originalLength);
++            assert.true(findAll('.scrollable-nav-items .next-mobile-navbar-tab-item span').some((node) => node.textContent.trim() === 'Reports'));
++        });
+     });
+ 
+     module('the sidebar', function () {
+@@ -199,11 +211,14 @@ module('Integration | Component | layout/mobile-navbar', function (hooks) {
+         test('pressing the toggle flips the sidebar', async function (assert) {
+             await render(hbs`<Layout::MobileNavbar @menuItems={{this.menuItems}} />`);
+ 
++            assert.dom('button.menu-toggle').hasAttribute('aria-expanded', 'true');
+             await click('.menu-toggle');
+             assert.false(sidebar.isVisible, 'the visible sidebar is hidden');
++            assert.dom('button.menu-toggle').hasAttribute('aria-expanded', 'false');
+ 
+             await click('.menu-toggle');
+             assert.true(sidebar.isVisible, 'and shown again');
++            assert.dom('button.menu-toggle').hasAttribute('aria-expanded', 'true');
+         });
+ 
+         // The component closes the sidebar behind any route change, not only the ones it starts
+diff --git a/tests/integration/components/money-input-test.js b/tests/integration/components/money-input-test.js
+index f894c53..ab45fa3 100644
+--- a/tests/integration/components/money-input-test.js
++++ b/tests/integration/components/money-input-test.js
+@@ -64,27 +64,27 @@ module('Integration | Component | money-input', function (hooks) {
+             assert.dom(input()).hasAttribute('data-test-money', 'yes');
+         });
+ 
+-        test('it defaults to USD when nothing else is available', async function (assert) {
++        test('it defaults to INR when nothing else is available', async function (assert) {
+             await render(TEMPLATE);
+ 
+-            assert.strictEqual(currencyChanges[0][0], 'USD');
++            assert.strictEqual(currencyChanges[0][0], 'INR');
+         });
+ 
+-        test("it adopts the current user's currency when no argument is given", async function (assert) {
++        test("it keeps INR when the current user's saved currency differs", async function (assert) {
+             whois = { currency: { code: 'EUR' } };
+ 
+             await render(TEMPLATE);
+ 
+-            assert.strictEqual(currencyChanges[0][0], 'EUR');
++            assert.strictEqual(currencyChanges[0][0], 'INR');
+         });
+ 
+-        test('an explicit currency argument wins over the user default', async function (assert) {
++        test('an explicit legacy currency cannot override INR', async function (assert) {
+             whois = { currency: { code: 'EUR' } };
+             this.set('currency', 'GBP');
+ 
+             await render(TEMPLATE);
+ 
+-            assert.strictEqual(currencyChanges[0][0], 'GBP');
++            assert.strictEqual(currencyChanges[0][0], 'INR');
+         });
+ 
+         test('a currency selector is offered only when asked for', async function (assert) {
+@@ -99,22 +99,22 @@ module('Integration | Component | money-input', function (hooks) {
+     });
+ 
+     module('formatting the amount', function () {
+-        test('a decimal currency treats the value as minor units', async function (assert) {
++        test('a legacy decimal currency is displayed in INR minor units', async function (assert) {
+             this.set('currency', 'USD');
+             this.set('value', 1500);
+ 
+             await render(TEMPLATE);
+ 
+-            assert.strictEqual(input().value, '$15.00', '1500 cents renders as $15.00');
++            assert.strictEqual(input().value, '₹15.00', '1500 paise renders as ₹15.00');
+         });
+ 
+-        test('a zero-decimal currency uses the value as-is', async function (assert) {
++        test('a zero-decimal currency value is presented using INR precision', async function (assert) {
+             this.set('currency', 'JPY');
+             this.set('value', 1500);
+ 
+             await render(TEMPLATE);
+ 
+-            assert.true(input().value.includes('1,500'), 'yen is not divided by one hundred');
++            assert.strictEqual(input().value, '₹15.00');
+         });
+ 
+         test('a missing value renders zero', async function (assert) {
+@@ -122,31 +122,31 @@ module('Integration | Component | money-input', function (hooks) {
+ 
+             await render(TEMPLATE);
+ 
+-            assert.strictEqual(input().value, '$0.00');
++            assert.strictEqual(input().value, '₹0.00');
+         });
+ 
+-        test('the currency symbol is applied', async function (assert) {
++        test('the INR symbol is applied regardless of a legacy currency argument', async function (assert) {
+             this.set('currency', 'GBP');
+             this.set('value', 2500);
+ 
+             await render(TEMPLATE);
+ 
+             assert.true(input().value.includes('25'), `the amount is present (got ${input().value})`);
+-            assert.true(input().value.includes('£'), `and carries the currency symbol (got ${input().value})`);
++            assert.true(input().value.includes('₹'), `and carries the INR symbol (got ${input().value})`);
+         });
+ 
+-        test('a comma-decimal currency uses its own separator', async function (assert) {
++        test('a legacy comma-decimal currency uses the INR decimal separator', async function (assert) {
+             this.set('currency', 'AWG');
+             this.set('value', 1234);
+ 
+             await render(TEMPLATE);
+ 
+-            assert.true(input().value.endsWith(',34'), `the Aruban guilder's comma decimal separator is honoured (got ${input().value})`);
++            assert.true(input().value.endsWith('.34'), `INR decimal formatting is used (got ${input().value})`);
+         });
+     });
+ 
+     module('changing currency', function () {
+-        test('a new currency argument reformats the field without echoing it back', async function (assert) {
++        test('a new legacy currency argument keeps INR formatting without echoing it back', async function (assert) {
+             this.set('currency', 'USD');
+             this.set('value', 1500);
+ 
+@@ -157,7 +157,7 @@ module('Integration | Component | money-input', function (hooks) {
+             this.set('currency', 'JPY');
+             await settled();
+ 
+-            assert.notStrictEqual(input().value, formattedBefore, 'the amount is reformatted for the new currency');
++            assert.strictEqual(input().value, formattedBefore, 'the amount remains formatted as INR');
+             // The consumer set it; writing it back to their model mid-render trips Ember's
+             // "already used in the same computation" assertion.
+             assert.strictEqual(currencyChanges.length, before, 'the change is not reported back');
+@@ -169,32 +169,31 @@ module('Integration | Component | money-input', function (hooks) {
+             assert.ok(input(), 'no handler is required');
+         });
+ 
+-        // 16 of the currencies in get-currency.js place their symbol after the amount.
+-        test('a currency that places its symbol after the amount is formatted that way', async function (assert) {
++        test('a currency that places its symbol after the amount is still displayed as INR', async function (assert) {
+             this.set('currency', 'CZK');
+             this.set('value', 1500);
+ 
+             await render(TEMPLATE);
+ 
+-            assert.dom(input()).hasValue(/K\u010d$/, 'the koruna symbol trails the amount');
++            assert.true(input().value.startsWith('₹'), 'the INR symbol is before the amount');
+         });
+ 
+         // CLP declares the same character for both separators. AutoNumeric refuses that, so the
+         // component reverts the group separator to a comma.
+-        test('a currency whose separators would collide has its group separator reverted', async function (assert) {
++        test('a currency whose separators would collide is normalized to INR grouping', async function (assert) {
+             this.set('currency', 'CLP');
+             this.set('value', 1234567);
+ 
+             await render(TEMPLATE);
+ 
+-            assert.dom(input()).hasValue(/,/, 'the amount is grouped with commas rather than being rejected');
++            assert.dom(input()).hasValue(/,/, 'the amount is grouped with INR commas');
+         });
+ 
+-        test('picking a currency with no handler behind it still reformats', async function (assert) {
++        test('picking a currency from an INR-only selector keeps INR formatting', async function (assert) {
+             await render(hbs`<MoneyInput @currency="USD" @value={{1500}} @canSelectCurrency={{true}} />`);
+-            await selectChoose('.ember-power-select-trigger', 'JPY');
++            await selectChoose('.ember-power-select-trigger', 'INR');
+ 
+-            assert.dom(input()).hasValue(/\u00a5/, 'the field is reformatted for the new currency');
++            assert.dom(input()).hasValue(/₹/, 'the field is formatted as INR');
+         });
+     });
+ 
+diff --git a/tests/integration/components/widget/count-test.js b/tests/integration/components/widget/count-test.js
+index 2528269..b325d4e 100644
+--- a/tests/integration/components/widget/count-test.js
++++ b/tests/integration/components/widget/count-test.js
+@@ -41,22 +41,22 @@ module('Integration | Component | widget/count', function (hooks) {
+     });
+ 
+     module('option formats', function () {
+-        test('money is formatted in the requested currency', async function (assert) {
++        test('money is formatted in INR even when a saved widget has another currency', async function (assert) {
+             this.set('options', { value: 1500, format: 'money', currency: 'EUR' });
+ 
+             await render(TEMPLATE);
+ 
+             const rendered = renderedValue();
+             assert.true(rendered.includes('15'), `the amount survives (got ${rendered})`);
+-            assert.false(rendered.includes('$'), 'and the euro currency is honoured, not the USD default');
++            assert.true(rendered.includes('₹'), `the INR symbol is used (got ${rendered})`);
+         });
+ 
+-        test('money with no currency falls back to the USD default', async function (assert) {
++        test('money with no currency falls back to INR', async function (assert) {
+             this.set('options', { value: 1500, format: 'money' });
+ 
+             await render(TEMPLATE);
+ 
+-            assert.strictEqual(renderedValue(), '$15.00');
++            assert.strictEqual(renderedValue(), '₹15.00');
+         });
+ 
+         test('a date is formatted rather than throwing', async function (assert) {
+diff --git a/tests/integration/helpers/format-currency-test.js b/tests/integration/helpers/format-currency-test.js
+index 020f65a..e51c284 100644
+--- a/tests/integration/helpers/format-currency-test.js
++++ b/tests/integration/helpers/format-currency-test.js
+@@ -6,12 +6,12 @@ import { hbs } from 'ember-cli-htmlbars';
+ module('Integration | Helper | format-currency', function (hooks) {
+     setupRenderingTest(hooks);
+ 
+-    test('it formats an amount in cents as USD by default', async function (assert) {
++    test('it formats an amount in cents as INR by default', async function (assert) {
+         this.set('inputValue', '1234');
+ 
+         await render(hbs`{{format-currency this.inputValue}}`);
+ 
+-        assert.dom(this.element).hasText('$12.34');
++        assert.dom(this.element).hasText('₹12.34');
+     });
+ 
+     test('it formats using an explicit currency code', async function (assert) {
+@@ -23,6 +23,6 @@ module('Integration | Helper | format-currency', function (hooks) {
+     test('it renders a zero amount when no arguments are given', async function (assert) {
+         await render(hbs`{{format-currency}}`);
+ 
+-        assert.dom(this.element).hasText('$0.00');
++        assert.dom(this.element).hasText('₹0.00');
+     });
+ });
+diff --git a/tests/unit/services/dashboard-test.js b/tests/unit/services/dashboard-test.js
+index b62229a..6544f15 100644
+--- a/tests/unit/services/dashboard-test.js
++++ b/tests/unit/services/dashboard-test.js
+@@ -7,6 +7,7 @@ class StubStore {
+     nextId = 1;
+     createdPayloads = [];
+     queryRecords = [];
++    queryError = null;
+ 
+     createRecord(modelName, data) {
+         this.createdPayloads.push({ modelName, data });
+@@ -39,6 +40,10 @@ class StubStore {
+         this.records.clear();
+     }
+     query() {
++        if (this.queryError) {
++            return Promise.reject(this.queryError);
++        }
++
+         return Promise.resolve(this.queryRecords);
+     }
+ }
+@@ -180,6 +185,32 @@ module('Unit | Service | dashboard', function (hooks) {
+         assert.strictEqual(service.currentDashboard.id, 'saved-dashboard', 'persisted default dashboard takes precedence');
+         assert.strictEqual(service.currentWidgetSourceDashboardId, 'dashboard', 'saved dashboard keeps its persisted widget catalog source');
+     });
++
++    test('a saved-dashboard request failure keeps a usable system dashboard and exposes the failure', async function (assert) {
++        this.store.queryError = new Error('dashboard request failed');
++        const service = this.owner.lookup('service:dashboard');
++
++        let thrown = null;
++        try {
++            await service.loadDashboards.perform({ defaultDashboardId: 'dashboard', defaultDashboardName: 'Default Dashboard' });
++        } catch (error) {
++            thrown = error;
++        }
++
++        assert.strictEqual(thrown, null, 'the load failure is handled so the workspace can render its fallback');
++        assert.strictEqual(service.currentDashboard?.id, 'dashboard', 'the system dashboard remains selected');
++        assert.deepEqual(
++            service.dashboards.map((dashboard) => dashboard.id),
++            ['dashboard'],
++            'the fallback dashboard remains available'
++        );
++        assert.strictEqual(service.loadError?.message, 'dashboard request failed', 'the original failure remains available to the UI');
++
++        this.store.queryError = null;
++        await service.loadDashboards.perform({ defaultDashboardId: 'dashboard', defaultDashboardName: 'Default Dashboard' });
++
++        assert.strictEqual(service.loadError, null, 'a successful retry clears the previous error');
++    });
+ });
+ 
+ // A second module covering the parts of the service the original tests do not reach:
+diff --git a/tests/unit/utils/format-currency-test.js b/tests/unit/utils/format-currency-test.js
+index 0aa4de1..8b0ab41 100644
+--- a/tests/unit/utils/format-currency-test.js
++++ b/tests/unit/utils/format-currency-test.js
+@@ -2,29 +2,27 @@ import formatCurrency from 'dummy/utils/format-currency';
+ import { module, test } from 'qunit';
+ 
+ module('Unit | Utility | format-currency', function () {
+-    test('it formats USD by default', function (assert) {
++    test('it formats INR by default', function (assert) {
+         let result = formatCurrency(10000);
+-        assert.strictEqual(result, '$100.00');
++        assert.strictEqual(result, '₹100.00');
+     });
+ 
+-    test('it formats KUDOS', function (assert) {
++    test('it formats legacy currency values as INR', function (assert) {
+         let result = formatCurrency(500, 'KUDOS');
+-        assert.strictEqual(result, 'KUDOS 5.00');
++        assert.strictEqual(result, '₹5.00');
+     });
+ 
+     test('it does not throw for unknown long currency codes', function (assert) {
+         let result = formatCurrency(500, 'DEMOX');
+-        assert.strictEqual(result, 'DEMOX 5.00');
++        assert.strictEqual(result, '₹5.00');
+     });
+-    test('a zero-decimal currency is not divided into cents', function (assert) {
+-        // JPY has no decimal separator, so the amount is already in its main unit.
+-        const yen = formatCurrency(1500, 'JPY');
++    test('legacy zero-decimal amounts still use the INR minor-unit display contract', function (assert) {
++        const amount = formatCurrency(1500, 'JPY');
+ 
+-        assert.true(yen.includes('1,500'), `the amount is used as-is (${yen})`);
+-        assert.false(yen.includes('15.00'), 'rather than treated as cents');
++        assert.strictEqual(amount, '₹15.00');
+     });
+ 
+-    test('it formats nothing at all as zero in US dollars', function (assert) {
+-        assert.strictEqual(formatCurrency(), '$0.00', 'both arguments default');
++    test('it formats nothing at all as zero in INR', function (assert) {
++        assert.strictEqual(formatCurrency(), '₹0.00', 'both arguments default');
+     });
+ });

@@ -31,7 +31,10 @@ jobs:
               uses: actions/checkout@v3
               with:
                   ref: ${{ github.event.inputs.branch || github.ref_name }}
-                  submodules: recursive
+                  submodules: false
+
+            - name: Restore pinned package snapshots
+              run: node scripts/restore-package-bundles.mjs
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v2

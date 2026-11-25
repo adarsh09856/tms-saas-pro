@@ -44,7 +44,10 @@ jobs:
       - name: Checkout release branch
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: false
+
+      - name: Restore pinned package snapshots
+        run: node scripts/restore-package-bundles.mjs
 
       - name: Validate generator scripts
         run: |

@@ -8,6 +8,9 @@ ARG ENVIRONMENT=development
 RUN npm install -g ember-cli pnpm && apk add --no-cache git openssh-client
 COPY console/package.json console/pnpm-lock.yaml console/pnpm-workspace.yaml ./
 COPY packages/ /packages/
+COPY patches/upstream/ /patches/upstream/
+COPY scripts/apply-upstream-package-patches.mjs /apply-upstream-package-patches.mjs
+RUN node /apply-upstream-package-patches.mjs /packages /patches/upstream
 RUN pnpm install --frozen-lockfile
 
 COPY console/ ./

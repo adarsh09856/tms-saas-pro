@@ -126,6 +126,9 @@ RUN mkdir -p /var/www/.cache/composer && chown -R www-data:www-data /var/www/.ca
 # Composer resolves Fleetbase extensions from the local ../packages path repository,
 # so make the package sources available before it installs the lockfile.
 COPY --chown=www-data:www-data ./packages/ /fleetbase/packages/
+COPY ./patches/upstream/ /fleetbase/patches/upstream/
+COPY ./scripts/apply-upstream-package-patches.mjs /fleetbase/apply-upstream-package-patches.mjs
+RUN node /fleetbase/apply-upstream-package-patches.mjs /fleetbase/packages /fleetbase/patches/upstream
 COPY --chown=www-data:www-data ./api/composer.json ./api/composer.lock /fleetbase/api/
 
 # Pre-install Composer dependencies

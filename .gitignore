@@ -17,6 +17,8 @@ api/storage/*.key
 api/storage/uploads
 api/storage/public
 api/vendor
+/packages/fleetops/vendor/
+/packages/fleetops/server_vendor/
 api/composer.dev.json
 api/composer-install-dev.sh
 api/auth.json
@@ -40,9 +42,9 @@ builds/osx/frankenphp
 *.so
 *.dylib
 
-# Local agent/build artifacts and preserved recovery bundles are not source releases.
+# Keep local build/agent artifacts out of source releases; package bundles are source inputs.
 /.codex-build/
 /.impeccable/
-/git-bundles/
+/git-bundles/root.bundle
 /api/.codex-vendor-test/
 /deliverables/*.pptx

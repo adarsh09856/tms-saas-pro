@@ -1,0 +1,188 @@
+diff --git a/addon/adapters/application.js b/addon/adapters/application.js
+index 89f5a66..a1d23c2 100644
+--- a/addon/adapters/application.js
++++ b/addon/adapters/application.js
+@@ -10,6 +10,7 @@ import { dasherize } from '@ember/string';
+ import { pluralize } from 'ember-inflector';
+ import { decompress as decompressJson } from 'compress-json';
+ import getUserOptions from '../utils/get-user-options';
++import notificationErrorMessage from '../utils/notification-error-message';
+ import config from 'ember-get-config';
+ 
+ /* istanbul ignore if -- runs at import; whichever of adapters/application or services/fetch loads first sets the host, so the other can never enter */
+@@ -209,7 +210,7 @@ export default class ApplicationAdapter extends RESTAdapter {
+      * @return {string} - The extracted error message.
+      */
+     getErrorMessage(errors = []) {
+-        return errors[0] ? errors[0] : DEFAULT_ERROR_MESSAGE;
++        return notificationErrorMessage(errors, DEFAULT_ERROR_MESSAGE);
+     }
+ 
+     /**
+diff --git a/addon/services/fetch.js b/addon/services/fetch.js
+index 6073616..428d910 100644
+--- a/addon/services/fetch.js
++++ b/addon/services/fetch.js
+@@ -17,6 +17,7 @@ import download from '../utils/download';
+ import getUserOptions from '../utils/get-user-options';
+ import isEmptyObject from '../utils/is-empty-object';
+ import isObject from '../utils/is-object';
++import notificationErrorMessage from '../utils/notification-error-message';
+ import fetch from 'fetch';
+ 
+ /* istanbul ignore if -- runs at import; whichever of adapters/application or services/fetch loads first sets the host, so the other can never enter */
+@@ -320,10 +321,7 @@ export default class FetchService extends Service {
+                     }
+ 
+                     if (isArray(response.json.errors)) {
+-                        // Decoded JSON is a plain array, so `firstObject` was
+-                        // undefined and every such error surfaced as the
+-                        // literal string "undefined".
+-                        return reject(new Error(response.json.errors[0] ?? response.statusText));
++                        return reject(new Error(notificationErrorMessage(response.json, response.statusText || 'Request failed.')));
+                     }
+ 
+                     if (response.json.error && typeof response.json.error === 'string') {
+diff --git a/addon/services/notifications.js b/addon/services/notifications.js
+index 303e209..46b7f35 100644
+--- a/addon/services/notifications.js
++++ b/addon/services/notifications.js
+@@ -1,26 +1,9 @@
+ import EmberNotificationsService from 'ember-cli-notifications/services/notifications';
+-import { isArray } from '@ember/array';
+-import getWithDefault from '../utils/get-with-default';
++import notificationErrorMessage from '../utils/notification-error-message';
+ 
+ export default class NotificationsService extends EmberNotificationsService {
+     serverError(error, fallbackMessage = 'Oops! Something went wrong with your request.', options = {}) {
+-        if (error && isArray(error.errors)) {
+-            const errors = getWithDefault(error, 'errors');
+-            const errorMessage = getWithDefault(errors, '0', fallbackMessage);
+-
+-            return this.error(errorMessage, options);
+-        }
+-
+-        if (error instanceof Error) {
+-            const errorMessage = getWithDefault(error, 'message', fallbackMessage);
+-            return this.error(errorMessage, options);
+-        }
+-
+-        if (typeof error === 'string') {
+-            return this.error(error, options);
+-        }
+-
+-        return this.error(fallbackMessage, options);
++        return this.error(notificationErrorMessage(error, fallbackMessage), options);
+     }
+ 
+     invoke(type, message, ...params) {
+diff --git a/addon/services/theme.js b/addon/services/theme.js
+index 8253853..5782439 100644
+--- a/addon/services/theme.js
++++ b/addon/services/theme.js
+@@ -45,11 +45,7 @@ export default class ThemeService extends Service.extend(Evented) {
+             return this.initialTheme;
+         }
+ 
+-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+-            return 'dark';
+-        }
+-
+-        // default to dark theme
++        // Kodewaves uses the light transport workspace as its default theme.
+         return this.currentTheme;
+     }
+ 
+@@ -66,7 +62,7 @@ export default class ThemeService extends Service.extend(Evented) {
+      *
+      * @var {String}
+      */
+-    @tracked currentTheme = this.currentUser.getOption('theme', 'dark');
++    @tracked currentTheme = this.currentUser.getOption('theme', 'light');
+ 
+     /**
+      * The initially set theme
+diff --git a/addon/utils/notification-error-message.js b/addon/utils/notification-error-message.js
+new file mode 100644
+index 0000000..57eefe4
+--- /dev/null
++++ b/addon/utils/notification-error-message.js
+@@ -0,0 +1,37 @@
++/** Extract readable API feedback without rendering an object or JSON document. */
++export default function notificationErrorMessage(error, fallback) {
++    const seen = new WeakSet();
++    function read(value, depth = 0) {
++        if (depth > 8 || value == null) return null;
++        if (typeof value === 'string') {
++            const text = value.trim();
++            if (!text) return null;
++            if (text.startsWith('{') || text.startsWith('[')) {
++                try {
++                    return read(JSON.parse(text), depth + 1);
++                } catch {
++                    return null;
++                }
++            }
++            return text;
++        }
++        if (typeof value !== 'object' || seen.has(value)) return null;
++        seen.add(value);
++        if (Array.isArray(value)) {
++            for (const entry of value) {
++                const message = read(entry, depth + 1);
++                if (message) return message;
++            }
++            return null;
++        }
++        for (const key of ['errors', 'detail', 'message', 'error', 'title']) {
++            const candidate = value[key];
++            // Validation errors can be keyed by field name.
++            const entries = key === 'errors' && candidate && typeof candidate === 'object' && !Array.isArray(candidate) ? Object.values(candidate) : candidate;
++            const message = read(entries, depth + 1);
++            if (message) return message;
++        }
++        return null;
++    }
++    return read(error) || fallback;
++}
+diff --git a/tests/unit/adapters/application-test.js b/tests/unit/adapters/application-test.js
+index 202ed4b..38663a9 100644
+--- a/tests/unit/adapters/application-test.js
++++ b/tests/unit/adapters/application-test.js
+@@ -214,6 +214,10 @@ module('Unit | Adapter | application', function (hooks) {
+             assert.strictEqual(this.buildAdapter().getErrorMessage(['First', 'Second']), 'First');
+         });
+ 
++        test('an object error becomes its readable detail instead of JSON', function (assert) {
++            assert.strictEqual(this.buildAdapter().getErrorMessage([{ detail: 'The order could not be saved.' }]), 'The order could not be saved.');
++        });
++
+         test('an empty or absent error list falls back to the default message', function (assert) {
+             const adapter = this.buildAdapter();
+ 
+diff --git a/tests/unit/utils/notification-error-message-test.js b/tests/unit/utils/notification-error-message-test.js
+new file mode 100644
+index 0000000..11253c0
+--- /dev/null
++++ b/tests/unit/utils/notification-error-message-test.js
+@@ -0,0 +1,20 @@
++import { module, test } from 'qunit';
++import notificationErrorMessage from '@fleetbase/ember-core/utils/notification-error-message';
++
++module('Unit | Utility | notification-error-message', function () {
++    test('extracts API and validation feedback as text', function (assert) {
++        assert.strictEqual(notificationErrorMessage({ errors: [{ detail: 'Select a driver.' }] }, 'Fallback'), 'Select a driver.');
++        assert.strictEqual(notificationErrorMessage({ errors: { pickup: ['Pickup is required.'] } }, 'Fallback'), 'Pickup is required.');
++        assert.strictEqual(notificationErrorMessage(new Error('Connection failed.'), 'Fallback'), 'Connection failed.');
++        assert.strictEqual(notificationErrorMessage('{"errors":[{"message":"Permission denied."}]}', 'Fallback'), 'Permission denied.');
++        assert.strictEqual(notificationErrorMessage('plain message', 'Fallback'), 'plain message');
++    });
++
++    test('falls back for unrenderable or circular payloads', function (assert) {
++        const cycle = {};
++        cycle.errors = cycle;
++        for (const payload of [{ errors: [] }, { status: 500 }, '{bad json', cycle]) {
++            assert.strictEqual(notificationErrorMessage(payload, 'Fallback'), 'Fallback');
++        }
++    });
++});

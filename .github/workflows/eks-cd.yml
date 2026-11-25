@@ -24,7 +24,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          submodules: recursive
+          submodules: false
+
+      - name: Restore pinned package snapshots
+        run: node scripts/restore-package-bundles.mjs
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -86,7 +89,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          submodules: true
+          submodules: false
+
+      - name: Restore pinned package snapshots
+        run: node scripts/restore-package-bundles.mjs
 
       - name: Set Dynamic ENV Vars
         run: |

@@ -1,0 +1,2991 @@
+diff --git a/addon/components/equipment/form.hbs b/addon/components/equipment/form.hbs
+index 85f770c..f0fa166 100644
+--- a/addon/components/equipment/form.hbs
++++ b/addon/components/equipment/form.hbs
+@@ -152,7 +152,7 @@
+                 <MoneyInput
+                     class="w-full"
+                     @value={{@resource.purchase_price}}
+-                    @currency={{or @resource.currency "USD"}}
++                    @currency={{or @resource.currency "INR"}}
+                     @onChange={{fn (mut @resource.purchase_price)}}
+                     @disabled={{cannot-write @resource}}
+                 />
+@@ -200,4 +200,4 @@
+     <ContentPanel @title="Metadata" @open={{false}} @wrapperClass="bordered-top">
+         <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+     </ContentPanel>
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/maintenance/cost-panel.js b/addon/components/maintenance/cost-panel.js
+index b456a11..9f1aa63 100644
+--- a/addon/components/maintenance/cost-panel.js
++++ b/addon/components/maintenance/cost-panel.js
+@@ -66,7 +66,7 @@ export default class MaintenanceCostPanelComponent extends Component {
+     }
+ 
+     get currency() {
+-        return this.args.resource?.currency ?? 'USD';
++        return this.args.resource?.currency ?? 'INR';
+     }
+ 
+     get laborCost() {
+diff --git a/addon/components/modals/orchestrator-import.js b/addon/components/modals/orchestrator-import.js
+index 1d29569..4f6e478 100644
+--- a/addon/components/modals/orchestrator-import.js
++++ b/addon/components/modals/orchestrator-import.js
+@@ -82,7 +82,7 @@ const FIELD_SECTIONS = [
+             { key: 'volume_m3', label: 'Volume (m3)', required: false },
+             { key: 'parcels', label: 'Parcels', required: false },
+             { key: 'cod_amount', label: 'COD Amount', required: false },
+-            { key: 'cod_currency', label: 'COD Currency', required: false, hint: 'ISO 4217, e.g. USD' },
++            { key: 'cod_currency', label: 'COD Currency', required: false, hint: 'ISO 4217, e.g. INR' },
+         ],
+     },
+     {
+@@ -130,7 +130,7 @@ const FIELD_SECTIONS = [
+             { key: 'entity_barcode', label: 'Entity Barcode', required: false },
+             { key: 'entity_internal_id', label: 'Entity Internal ID', required: false },
+             { key: 'entity_declared_value', label: 'Declared Value', required: false },
+-            { key: 'entity_currency', label: 'Entity Currency', required: false, hint: 'ISO 4217, e.g. USD' },
++            { key: 'entity_currency', label: 'Entity Currency', required: false, hint: 'ISO 4217, e.g. INR' },
+             { key: 'entity_price', label: 'Entity Price', required: false },
+             { key: 'entity_sale_price', label: 'Entity Sale Price', required: false },
+             { key: 'entity_weight', label: 'Entity Weight', required: false },
+diff --git a/addon/components/modals/order-form.hbs b/addon/components/modals/order-form.hbs
+index 1ae8769..ed57aee 100644
+--- a/addon/components/modals/order-form.hbs
++++ b/addon/components/modals/order-form.hbs
+@@ -1,7 +1,7 @@
+ <Modal::Default @modalIsOpened={{@modalIsOpened}} @options={{@options}} @confirm={{@onConfirm}} @decline={{@onDecline}}>
+     <div class="modal-body-container">
+         <div class="grid grid-cols-2 gap-4 text-xs dark:text-gray-100">
+-            <InputGroup @name={{t "common.internal-id"}} @value={{@options.order.internal_id}} @helpText={{t "order.fields.id-text"}} />
++            <InputGroup @name={{t "common.internal-id"}} @value={{@options.order.internal_id}} @helpText={{t "modals.order-form.id-text"}} />
+ 
+             <div class="input-group">
+                 <InputLabel @labelText={{t "order.fields.date-scheduled"}} @helpText={{t "order.fields.schedule-help-text"}} />
+@@ -87,4 +87,4 @@
+             </InputGroup>
+         </div>
+     </div>
+-</Modal::Default>
+\ No newline at end of file
++</Modal::Default>
+diff --git a/addon/components/order/form/service-rate.js b/addon/components/order/form/service-rate.js
+index f6e9fbc..c068875 100644
+--- a/addon/components/order/form/service-rate.js
++++ b/addon/components/order/form/service-rate.js
+@@ -64,7 +64,7 @@ export default class OrderFormServiceRateComponent extends Component {
+     }
+ 
+     get overrideCurrency() {
+-        return this.overrideQuote?.currency ?? this.serviceQuoteOverride?.currency ?? 'USD';
++        return this.overrideQuote?.currency ?? this.serviceQuoteOverride?.currency ?? 'INR';
+     }
+ 
+     @task *queryServiceRates(toggled) {
+diff --git a/addon/components/part/form.hbs b/addon/components/part/form.hbs
+index d23a024..9152ba7 100644
+--- a/addon/components/part/form.hbs
++++ b/addon/components/part/form.hbs
+@@ -125,13 +125,13 @@
+                 <MoneyInput
+                     class="w-full"
+                     @value={{@resource.unit_cost}}
+-                    @currency={{or @resource.currency "USD"}}
++                    @currency={{or @resource.currency "INR"}}
+                     @onChange={{fn (mut @resource.unit_cost)}}
+                     @disabled={{cannot-write @resource}}
+                 />
+             </InputGroup>
+             <InputGroup @name="MSRP">
+-                <MoneyInput class="w-full" @value={{@resource.msrp}} @currency={{or @resource.currency "USD"}} @onChange={{fn (mut @resource.msrp)}} @disabled={{cannot-write @resource}} />
++                <MoneyInput class="w-full" @value={{@resource.msrp}} @currency={{or @resource.currency "INR"}} @onChange={{fn (mut @resource.msrp)}} @disabled={{cannot-write @resource}} />
+             </InputGroup>
+         </div>
+     </ContentPanel>
+@@ -242,4 +242,4 @@
+     <ContentPanel @title="Metadata" @open={{false}} @wrapperClass="bordered-top">
+         <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+     </ContentPanel>
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/tracking-page.hbs b/addon/components/tracking-page.hbs
+index 588ac45..902d517 100644
+--- a/addon/components/tracking-page.hbs
++++ b/addon/components/tracking-page.hbs
+@@ -59,17 +59,9 @@
+                         {{#if this.lookup.isRunning}}{{t "tracking-page.page.looking-up"}}{{else}}{{t "tracking-page.page.track"}}{{/if}}
+                     </button>
+                 </form>
+-                {{#if this.page.sign_in}}
+-                    <div class="tp-divider"><span>{{t "tracking-page.page.or"}}</span></div>
+-                    {{#if this.signedIn}}
+-                        <button type="button" class="tp-button tp-button-secondary" {{on "click" (perform this.loadOrders)}}>{{t "tracking-page.page.your-orders"}}</button>
+-                    {{else}}
+-                        <a class="tp-button tp-button-secondary" href={{this.signInUrl}}>{{t "tracking-page.page.sign-in"}}</a>
+-                    {{/if}}
+-                {{/if}}
+             </section>
+         {{else if (eq this.screen "public")}}
+-            <TrackingPage::PublicView @data={{this.data}} @signInUrl={{this.signInUrl}} @onVerify={{this.startVerify}} />
++            <TrackingPage::PublicView @data={{this.data}} @onVerify={{this.startVerify}} />
+         {{else if (eq this.screen "verify")}}
+             <section class="tp-narrow tp-stack">
+                 <button type="button" class="tp-back" {{on "click" this.cancelVerify}}><FaIcon @icon="chevron-left" /> {{t "tracking-page.page.back"}}</button>
+@@ -95,18 +87,13 @@
+                     @onSwitch={{this.switchChannel}}
+                 />
+             </section>
+-        {{else if (eq this.screen "list")}}
+-            <TrackingPage::OrderList @orders={{this.orders}} @isLoading={{this.loadOrders.isRunning}} @onOpen={{this.openOrder}} />
+         {{else if (eq this.screen "track")}}
+             <TrackingPage::FullView
+                 @data={{this.data}}
+                 @company={{this.company}}
+                 @liveState={{this.liveState}}
+-                @fromList={{this.orders}}
+-                @onBack={{this.backToOrders}}
+                 @onShare={{this.share}}
+                 @onSignOut={{perform this.signOut}}
+-                @saveInstructions={{perform this.saveInstructions}}
+                 @reportProblem={{perform this.reportProblem}}
+                 @loadProof={{perform this.loadProof}}
+             />
+diff --git a/addon/components/tracking-page.js b/addon/components/tracking-page.js
+index 6b8f70d..9c59222 100644
+--- a/addon/components/tracking-page.js
++++ b/addon/components/tracking-page.js
+@@ -35,7 +35,6 @@ export default class TrackingPageComponent extends Component {
+     @service fetch;
+     @service intl;
+     @service urlSearchParams;
+-    @service session;
+ 
+     @tracked screen = 'loading';
+     @tracked page = null;
+@@ -45,7 +44,6 @@ export default class TrackingPageComponent extends Component {
+     @tracked misses = 0;
+     @tracked liveState = 'live';
+     @tracked toast = null;
+-    @tracked orders = null;
+     @tracked prefersDark = false;
+ 
+     /* verification */
+@@ -127,14 +125,6 @@ export default class TrackingPageComponent extends Component {
+         return this.channels.length > 0;
+     }
+ 
+-    get signInUrl() {
+-        return `/customer-portal/auth/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+-    }
+-
+-    get signedIn() {
+-        return this.session.isAuthenticated === true;
+-    }
+-
+     get cooldownText() {
+         return formatCountdown(this.cooldown);
+     }
+@@ -176,9 +166,6 @@ export default class TrackingPageComponent extends Component {
+             this.screen = 'lookup';
+         }
+ 
+-        if (this.signedIn && !this.data) {
+-            this.loadOrders.perform();
+-        }
+     }
+ 
+     @task({ restartable: true }) *lookup(number, { quiet = false } = {}) {
+@@ -209,18 +196,6 @@ export default class TrackingPageComponent extends Component {
+         return yield this.fetch.get(`track/${encodeURIComponent(this.number)}`, this.query(), REQUEST_OPTIONS);
+     }
+ 
+-    @task *loadOrders() {
+-        try {
+-            const response = yield this.fetch.get('track/account/orders', {}, REQUEST_OPTIONS);
+-            this.orders = response?.orders ?? [];
+-            if (!this.data) {
+-                this.screen = 'list';
+-            }
+-        } catch {
+-            this.orders = null;
+-        }
+-    }
+-
+     show(data) {
+         const before = this.data;
+         this.data = data;
+@@ -277,18 +252,6 @@ export default class TrackingPageComponent extends Component {
+         this.screen = 'lookup';
+     }
+ 
+-    @action openOrder(order) {
+-        this.trackingInput = order.tracking_number;
+-        this.lookup.perform(order.tracking_number);
+-    }
+-
+-    @action backToOrders() {
+-        this.live?.stop();
+-        this.data = null;
+-        this.replaceUrl(null);
+-        this.screen = 'list';
+-    }
+-
+     /* ── Verification ──────────────────────────────────────────────── */
+ 
+     @action startVerify() {
+@@ -403,16 +366,6 @@ export default class TrackingPageComponent extends Component {
+ 
+     /* ── Full view actions ─────────────────────────────────────────── */
+ 
+-    @task *saveInstructions(text) {
+-        try {
+-            const data = yield this.fetch.put(`track/${encodeURIComponent(this.number)}/instructions${this.queryString()}`, { text }, REQUEST_OPTIONS);
+-            this.show(data);
+-            this.notify(this.intl.t('tracking-page.page.instructions-saved'), '');
+-        } catch {
+-            this.notify(this.intl.t('tracking-page.page.action-failed'), '');
+-        }
+-    }
+-
+     @task *reportProblem(message) {
+         try {
+             yield this.fetch.post(`track/${encodeURIComponent(this.number)}/report${this.queryString()}`, { message }, REQUEST_OPTIONS);
+diff --git a/addon/components/tracking-page/full-view.hbs b/addon/components/tracking-page/full-view.hbs
+index f8f2546..423d0aa 100644
+--- a/addon/components/tracking-page/full-view.hbs
++++ b/addon/components/tracking-page/full-view.hbs
+@@ -1,8 +1,5 @@
+ <div class="tp-full {{if @data.location 'tp-full-with-map'}}" {{did-insert this.loadProofs}} {{did-update this.loadProofs @data.proofs}}>
+     <div class="tp-row-wrap tp-full-chips">
+-        {{#if @fromList}}
+-            <button type="button" class="tp-back" {{on "click" @onBack}}><FaIcon @icon="chevron-left" /> {{t "tracking-page.page.your-orders"}}</button>
+-        {{/if}}
+         <span class="tp-chip tp-chip-accent"><FaIcon @icon={{this.viewerChip.icon}} /> {{this.viewerChip.label}}</span>
+         {{#if this.canSignOut}}
+             <button type="button" class="tp-link-button tp-muted" {{on "click" @onSignOut}}>{{t "tracking-page.page.sign-out"}}</button>
+@@ -174,24 +171,10 @@
+             </section>
+         {{/if}}
+ 
+-        {{#if (or this.instructions.text this.instructions.editable)}}
++        {{#if this.instructions.text}}
+             <section class="tp-card tp-stack-sm" aria-labelledby="tp-instructions-title">
+-                <div class="tp-row-between">
+-                    <h2 id="tp-instructions-title" class="tp-h3">{{t "tracking-page.page.instructions"}}</h2>
+-                    {{#if (and this.instructions.editable (not this.editing))}}
+-                        <button type="button" class="tp-button tp-button-small" {{on "click" this.editInstructions}}>{{t "tracking-page.page.edit"}}</button>
+-                    {{/if}}
+-                </div>
+-                {{#if this.editing}}
+-                    <label for="tp-instructions" class="tp-small tp-muted">{{t "tracking-page.page.instructions-help"}}</label>
+-                    <textarea id="tp-instructions" class="tp-input tp-textarea" rows="3" maxlength="500" {{on "input" this.updateDraft}}>{{this.draft}}</textarea>
+-                    <div class="tp-row-end">
+-                        <button type="button" class="tp-link-button" {{on "click" this.cancelInstructions}}>{{t "tracking-page.page.cancel"}}</button>
+-                        <button type="button" class="tp-button tp-button-primary tp-button-small" {{on "click" this.saveInstructions}}>{{t "tracking-page.page.save"}}</button>
+-                    </div>
+-                {{else}}
+-                    <p>{{or this.instructions.text (t "tracking-page.page.no-instructions")}}</p>
+-                {{/if}}
++                <h2 id="tp-instructions-title" class="tp-h3">{{t "tracking-page.page.instructions"}}</h2>
++                <p>{{this.instructions.text}}</p>
+             </section>
+         {{/if}}
+ 
+diff --git a/addon/components/tracking-page/full-view.js b/addon/components/tracking-page/full-view.js
+index 26270c5..6da47c1 100644
+--- a/addon/components/tracking-page/full-view.js
++++ b/addon/components/tracking-page/full-view.js
+@@ -32,8 +32,6 @@ export default class TrackingPageFullViewComponent extends Component {
+     @service intl;
+ 
+     @tracked showOlder = false;
+-    @tracked editing = false;
+-    @tracked draft = '';
+     @tracked reporting = false;
+     @tracked reportText = '';
+     @tracked proofUrls = {};
+@@ -66,10 +64,6 @@ export default class TrackingPageFullViewComponent extends Component {
+             return { icon: 'user-shield', label: this.intl.t('tracking-page.page.chip-staff') };
+         }
+ 
+-        if (viewer === 'account') {
+-            return { icon: 'user', label: this.intl.t('tracking-page.page.chip-account') };
+-        }
+-
+         return { icon: 'shield-halved', label: this.intl.t('tracking-page.page.chip-verified') };
+     }
+ 
+@@ -387,24 +381,6 @@ export default class TrackingPageFullViewComponent extends Component {
+         return this.data.instructions ?? {};
+     }
+ 
+-    @action editInstructions() {
+-        this.draft = this.instructions.text ?? '';
+-        this.editing = true;
+-    }
+-
+-    @action updateDraft(event) {
+-        this.draft = event.target.value;
+-    }
+-
+-    @action cancelInstructions() {
+-        this.editing = false;
+-    }
+-
+-    @action async saveInstructions() {
+-        await this.args.saveInstructions(this.draft);
+-        this.editing = false;
+-    }
+-
+     @action toggleReport() {
+         this.reporting = !this.reporting;
+     }
+diff --git a/addon/components/tracking-page/public-view.hbs b/addon/components/tracking-page/public-view.hbs
+index 1c09d0d..9cad941 100644
+--- a/addon/components/tracking-page/public-view.hbs
++++ b/addon/components/tracking-page/public-view.hbs
+@@ -35,9 +35,6 @@
+         </div>
+         <div class="tp-row-wrap">
+             <button type="button" class="tp-button tp-button-primary tp-grow" {{on "click" @onVerify}}>{{t "tracking-page.page.verify-button"}}</button>
+-            {{#if @data.sign_in}}
+-                <a class="tp-button tp-button-secondary tp-grow" href={{@signInUrl}}>{{t "tracking-page.page.sign-in-account"}}</a>
+-            {{/if}}
+         </div>
+     </section>
+ 
+diff --git a/addon/components/trailer/form.js b/addon/components/trailer/form.js
+index 902c06d..39dc74e 100644
+--- a/addon/components/trailer/form.js
++++ b/addon/components/trailer/form.js
+@@ -110,7 +110,7 @@ export default class TrailerFormComponent extends Component {
+     }
+ 
+     get currency() {
+-        return this.args.resource?.currency || this.currentUser?.company?.currency || this.currentUser?.currency || 'USD';
++        return this.args.resource?.currency || this.currentUser?.company?.currency || 'INR';
+     }
+ 
+     @action setType(option) {
+diff --git a/addon/components/widget/fleet-ops-key-metrics.js b/addon/components/widget/fleet-ops-key-metrics.js
+index 1328036..1d0cd94 100644
+--- a/addon/components/widget/fleet-ops-key-metrics.js
++++ b/addon/components/widget/fleet-ops-key-metrics.js
+@@ -10,7 +10,7 @@ import formatMeters from '@fleetbase/ember-ui/utils/format-meters';
+ const TOP_KEYS = ['earnings', 'orders_completed', 'orders_in_progress', 'drivers_online', 'fuel_costs', 'total_distance_traveled'];
+ 
+ const FORMATTERS = {
+-    money: (v, currency) => formatCurrency(v ?? 0, currency || 'USD'),
++    money: (v) => formatCurrency(v ?? 0, 'INR'),
+     meters: (v) => formatMeters(v ?? 0),
+     count: (v) => v ?? 0,
+ };
+diff --git a/addon/components/widget/fuel-providers.hbs b/addon/components/widget/fuel-providers.hbs
+index f2352fa..fccc4a4 100644
+--- a/addon/components/widget/fuel-providers.hbs
++++ b/addon/components/widget/fuel-providers.hbs
+@@ -13,7 +13,11 @@
+             <div class="grid grid-cols-2 gap-2 mb-3">
+                 <div>
+                     <div class="text-[10px] uppercase text-gray-500 dark:text-gray-400">Spend</div>
+-                    <div class="text-sm font-bold text-gray-900 dark:text-gray-100">{{format-currency this.data.summary.spend this.data.summary.currency}}</div>
++                    {{#each this.data.summary.spend_by_currency as |spend|}}
++                        <div class="text-sm font-bold text-gray-900 dark:text-gray-100">{{format-currency spend.amount spend.currency}}</div>
++                    {{else}}
++                        <div class="text-sm font-bold text-gray-900 dark:text-gray-100">—</div>
++                    {{/each}}
+                 </div>
+                 <div>
+                     <div class="text-[10px] uppercase text-gray-500 dark:text-gray-400">Volume</div>
+diff --git a/addon/components/widget/kpi-tile.js b/addon/components/widget/kpi-tile.js
+index 1b1cb87..211f255 100644
+--- a/addon/components/widget/kpi-tile.js
++++ b/addon/components/widget/kpi-tile.js
+@@ -39,7 +39,7 @@ export default class WidgetKpiTileComponent extends Component {
+     }
+ 
+     get currency() {
+-        return this.data?.currency ?? 'USD';
++        return this.data?.currency ?? 'INR';
+     }
+ 
+     get deltaPct() {
+diff --git a/addon/components/widget/revenue-trend.hbs b/addon/components/widget/revenue-trend.hbs
+index 80c211c..37dd91a 100644
+--- a/addon/components/widget/revenue-trend.hbs
++++ b/addon/components/widget/revenue-trend.hbs
+@@ -20,7 +20,7 @@
+         {{else if this.data}}
+             <div class="flex items-baseline gap-2 mb-1.5">
+                 <span class="text-base font-bold text-black dark:text-gray-100 leading-none">
+-                    {{format-currency this.data.summary.total this.data.summary.currency}}
++                    {{format-currency this.data.summary.total this.currencyCode}}
+                 </span>
+                 {{#if this.deltaStatus}}
+                     <Badge @status={{this.deltaStatus}} @text={{this.deltaText}} @hideIcon={{true}} @disableHumanize={{true}} @wrapperClass="text-[9px] px-1 py-0" />
+diff --git a/addon/components/widget/revenue-trend.js b/addon/components/widget/revenue-trend.js
+index c9890cf..c007074 100644
+--- a/addon/components/widget/revenue-trend.js
++++ b/addon/components/widget/revenue-trend.js
+@@ -25,11 +25,11 @@ export default class WidgetRevenueTrendComponent extends Component {
+     }
+ 
+     get currencyCode() {
+-        return this.data?.summary?.currency ?? 'USD';
++        return this.data?.summary?.currency ?? 'INR';
+     }
+ 
+     get currency() {
+-        return getCurrency(this.currencyCode) ?? getCurrency('USD');
++        return getCurrency(this.currencyCode) ?? getCurrency('INR');
+     }
+ 
+     get currencyDivisor() {
+diff --git a/addon/components/work-order/form.hbs b/addon/components/work-order/form.hbs
+index fa4cc50..137669f 100644
+--- a/addon/components/work-order/form.hbs
++++ b/addon/components/work-order/form.hbs
+@@ -247,15 +247,15 @@
+                 </InputGroup>
+ 
+                 <InputGroup @name="Labour Cost">
+-                    <MoneyInput @value={{this.completionLaborCost}} @currency={{or @resource.currency "USD"}} @disabled={{false}} @onChange={{this.setCompletionLaborCost}} />
++                    <MoneyInput @value={{this.completionLaborCost}} @currency={{or @resource.currency "INR"}} @disabled={{false}} @onChange={{this.setCompletionLaborCost}} />
+                 </InputGroup>
+ 
+                 <InputGroup @name="Parts Cost">
+-                    <MoneyInput @value={{this.completionPartsCost}} @currency={{or @resource.currency "USD"}} @disabled={{false}} @onChange={{this.setCompletionPartsCost}} />
++                    <MoneyInput @value={{this.completionPartsCost}} @currency={{or @resource.currency "INR"}} @disabled={{false}} @onChange={{this.setCompletionPartsCost}} />
+                 </InputGroup>
+ 
+                 <InputGroup @name="Tax">
+-                    <MoneyInput @value={{this.completionTax}} @currency={{or @resource.currency "USD"}} @disabled={{false}} @onChange={{this.setCompletionTax}} />
++                    <MoneyInput @value={{this.completionTax}} @currency={{or @resource.currency "INR"}} @disabled={{false}} @onChange={{this.setCompletionTax}} />
+                 </InputGroup>
+ 
+                 <InputGroup @name="Completion Notes" @wrapperClass="col-span-2">
+diff --git a/addon/controllers/settings/tracking-page.js b/addon/controllers/settings/tracking-page.js
+index abe5cc0..b5f0999 100644
+--- a/addon/controllers/settings/tracking-page.js
++++ b/addon/controllers/settings/tracking-page.js
+@@ -25,7 +25,7 @@ export const TRACKING_PAGE_LOCALES = [
+  * Keys the server adds to the saved config when it reads it back. They are facts about
+  * the instance, not settings, so they are kept apart and never sent back on save.
+  */
+-const READ_ONLY_KEYS = ['slug_validation', 'accent_ink', 'accent_contrast', 'sms_available', 'customer_portal_installed', 'admin'];
++const READ_ONLY_KEYS = ['slug_validation', 'accent_ink', 'accent_contrast', 'sms_available', 'admin'];
+ 
+ /**
+  * Settings::TrackingPageController
+@@ -42,7 +42,6 @@ export default class SettingsTrackingPageController extends Controller {
+     @tracked config = null;
+     @tracked slugValidation = null;
+     @tracked smsAvailable = false;
+-    @tracked customerPortalInstalled = false;
+     @tracked loadFailed = false;
+ 
+     /**
+@@ -60,7 +59,6 @@ export default class SettingsTrackingPageController extends Controller {
+         this.config = config;
+         this.slugValidation = settings.slug_validation ?? null;
+         this.smsAvailable = settings.sms_available === true;
+-        this.customerPortalInstalled = settings.customer_portal_installed === true;
+         this.loadFailed = false;
+     }
+ 
+diff --git a/addon/extension.js b/addon/extension.js
+index 2e899ea..efd2774 100644
+--- a/addon/extension.js
++++ b/addon/extension.js
+@@ -8,7 +8,10 @@ export default {
+         const intlService = app.lookup('service:intl');
+ 
+         // Register header navigation
+-        menuService.registerHeaderMenuItem('Fleet-Ops', 'console.fleet-ops', {
++        // Open a concrete landing screen from the global nav. The engine root
++        // has no standalone page outlet, so targeting it can leave the console
++        // chrome visible over an empty panel during root-route transitions.
++        menuService.registerHeaderMenuItem('Fleet-Ops', 'console.fleet-ops.operations.orders.index', {
+             icon: 'route',
+             priority: 0,
+             description: 'Dispatch, fleet management, driver tracking, and logistics operations.',
+diff --git a/addon/services/equipment-actions.js b/addon/services/equipment-actions.js
+index 9e08636..82fe361 100644
+--- a/addon/services/equipment-actions.js
++++ b/addon/services/equipment-actions.js
+@@ -5,7 +5,7 @@ export default class EquipmentActionsService extends ResourceActionService {
+     @service('universe/menu-service') menuService;
+ 
+     get defaultCurrency() {
+-        return this.currentUser?.company?.currency || this.currentUser.currency || 'USD';
++        return 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/services/maintenance-actions.js b/addon/services/maintenance-actions.js
+index d7eb894..8875c6f 100644
+--- a/addon/services/maintenance-actions.js
++++ b/addon/services/maintenance-actions.js
+@@ -5,7 +5,7 @@ export default class MaintenanceActionsService extends ResourceActionService {
+     @service('universe/menu-service') menuService;
+ 
+     get defaultCurrency() {
+-        return this.currentUser?.company?.currency || this.currentUser.currency || 'USD';
++        return 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/services/order-actions.js b/addon/services/order-actions.js
+index 32ad736..fed7fbb 100644
+--- a/addon/services/order-actions.js
++++ b/addon/services/order-actions.js
+@@ -365,7 +365,7 @@ export default class OrderActionsService extends ResourceActionService {
+ 
+                 try {
+                     await order.save();
+-                    this.notifications.success(options.successNotification || this.intl.t('fleet-ops.operations.orders.index.view.update-success', { orderId: order.public_id }));
++                    this.notifications.success(options.successNotification || this.intl.t('order.prompts.update-details-success', { orderId: order.public_id }));
+                     modal.done();
+                 } catch (error) {
+                     this.notifications.serverError(error);
+diff --git a/addon/services/part-actions.js b/addon/services/part-actions.js
+index d64c12c..739a48e 100644
+--- a/addon/services/part-actions.js
++++ b/addon/services/part-actions.js
+@@ -5,7 +5,7 @@ export default class PartActionsService extends ResourceActionService {
+     @service('universe/menu-service') menuService;
+ 
+     get defaultCurrency() {
+-        return this.currentUser?.company?.currency || this.currentUser.currency || 'USD';
++        return 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/services/service-rate-actions.js b/addon/services/service-rate-actions.js
+index 3007221..0d65afe 100644
+--- a/addon/services/service-rate-actions.js
++++ b/addon/services/service-rate-actions.js
+@@ -7,7 +7,7 @@ export default class ServiceRateActionsService extends ResourceActionService {
+     modelNamePath = 'service_name';
+ 
+     get defaultCurrency() {
+-        return this.currentUser?.company?.currency || this.currentUser.currency || 'USD';
++        return 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/services/work-order-actions.js b/addon/services/work-order-actions.js
+index 4f08ce3..ab3718c 100644
+--- a/addon/services/work-order-actions.js
++++ b/addon/services/work-order-actions.js
+@@ -98,7 +98,7 @@ export default class WorkOrderActionsService extends ResourceActionService {
+                 parts_cost: partsCostCents,
+                 tax: taxCents,
+                 total_cost: totalCostCents,
+-                currency: workOrder.currency ?? 'USD',
++                currency: workOrder.currency ?? 'INR',
+                 notes: completionData.notes ?? null,
+             },
+         };
+diff --git a/addon/templates/settings/tracking-page.hbs b/addon/templates/settings/tracking-page.hbs
+index f38e4c0..11e6083 100644
+--- a/addon/templates/settings/tracking-page.hbs
++++ b/addon/templates/settings/tracking-page.hbs
+@@ -251,25 +251,6 @@
+                                 <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">{{t "tracking-page.settings.session-hours-help"}}</p>
+                             </div>
+ 
+-                            {{#if this.customerPortalInstalled}}
+-                                <div class="flex items-start justify-between gap-4">
+-                                    <div>
+-                                        <div class="text-sm font-semibold">{{t "tracking-page.settings.account-sign-in"}}</div>
+-                                        <div class="text-xs text-gray-600 dark:text-gray-300">{{t "tracking-page.settings.account-sign-in-help"}}</div>
+-                                    </div>
+-                                    <Toggle @isToggled={{this.config.access.account_sign_in}} @onToggle={{fn this.update "access.account_sign_in"}} />
+-                                </div>
+-                                <div class="flex items-start justify-between gap-4">
+-                                    <div>
+-                                        <div class="text-sm font-semibold">{{t "tracking-page.settings.account-upsell"}}</div>
+-                                        <div class="text-xs text-gray-600 dark:text-gray-300">{{t "tracking-page.settings.account-upsell-help"}}</div>
+-                                    </div>
+-                                    <Toggle @isToggled={{this.config.access.account_upsell}} @onToggle={{fn this.update "access.account_upsell"}} />
+-                                </div>
+-                            {{else}}
+-                                <p class="text-xs text-gray-600 dark:text-gray-300">{{t "tracking-page.settings.customer-portal-missing"}}</p>
+-                            {{/if}}
+-
+                             <p class="text-xs text-gray-600 dark:text-gray-300">{{t "tracking-page.settings.code-rules"}}</p>
+                         </div>
+                     </ContentPanel>
+@@ -277,7 +258,7 @@
+                     {{! ── What verified customers see ───────────────────────── }}
+                     <ContentPanel @title={{t "tracking-page.settings.visibility"}} @open={{true}} @wrapperClass="bordered-classic">
+                         <div class="space-y-4">
+-                            {{#each (array "map" "driver_name" "vehicle" "items" "item_prices" "pod_photo" "pod_signature" "instructions_edit" "report_problem") as |key|}}
++                            {{#each (array "map" "driver_name" "vehicle" "items" "item_prices" "pod_photo" "pod_signature" "report_problem") as |key|}}
+                                 <div class="flex items-start justify-between gap-4">
+                                     <div>
+                                         <div class="text-sm font-semibold">{{t (concat "tracking-page.settings.visibility-" key)}}</div>
+diff --git a/server/src/Auth/Schemas/FleetOps.php b/server/src/Auth/Schemas/FleetOps.php
+index 247e1da..133b116 100644
+--- a/server/src/Auth/Schemas/FleetOps.php
++++ b/server/src/Auth/Schemas/FleetOps.php
+@@ -252,6 +252,9 @@ class FleetOps
+                 'see extension',
+                 '* order',
+                 '* route',
++                'see place',
++                'list place',
++                'view place',
+                 'see analytics',
+                 'list analytics',
+                 'view analytics',
+@@ -322,6 +325,10 @@ class FleetOps
+                 'assign-driver-for order',
+                 'assign-vehicle-for order',
+                 'update-route-for order',
++                'see place',
++                'list place',
++                'view place',
++                'create place',
+                 'see driver',
+                 'list driver',
+                 'view driver',
+diff --git a/server/src/Casts/Point.php b/server/src/Casts/Point.php
+index 7415686..d1841ea 100644
+--- a/server/src/Casts/Point.php
++++ b/server/src/Casts/Point.php
+@@ -60,6 +60,17 @@ class Point implements CastsAttributes
+         }
+ 
+         if (Utils::isGeoJson($value)) {
++            // Text inputs send coordinate numbers as strings. GeoJSON requires
++            // numeric values, so normalize valid numeric strings before parsing.
++            $geometry = is_string($value) ? json_decode($value, true) : (array) $value;
++            if (($geometry['type'] ?? null) === 'Point' && isset($geometry['coordinates']) && is_array($geometry['coordinates'])) {
++                foreach (['coordinates', 'bbox'] as $field) {
++                    if (isset($geometry[$field]) && is_array($geometry[$field])) {
++                        $geometry[$field] = array_map(static fn ($coordinate) => is_string($coordinate) && is_numeric($coordinate) ? (float) $coordinate : $coordinate, $geometry[$field]);
++                    }
++                }
++                $value = $geometry;
++            }
+             $value                   = Utils::createSpatialExpressionFromGeoJson($value);
+             $model->geometries[$key] = $value;
+ 
+diff --git a/server/src/Exports/VehicleExport.php b/server/src/Exports/VehicleExport.php
+index 002ffcb..52d19ba 100644
+--- a/server/src/Exports/VehicleExport.php
++++ b/server/src/Exports/VehicleExport.php
+@@ -31,7 +31,7 @@ class VehicleExport implements FromCollection, WithHeadings, WithMapping, WithCo
+ 
+     public function map($vehicle): array
+     {
+-        $currency = $vehicle->currency ?: 'USD';
++        $currency = $vehicle->currency ?: 'INR';
+ 
+         return [
+             $vehicle->public_id,
+@@ -295,13 +295,13 @@ class VehicleExport implements FromCollection, WithHeadings, WithMapping, WithCo
+         return method_exists($location, 'getLng') ? $location->getLng() : data_get($location, 'longitude', data_get($location, 'lng'));
+     }
+ 
+-    protected function money($amount, ?string $currency = 'USD'): ?string
++    protected function money($amount, ?string $currency = 'INR'): ?string
+     {
+         if ($amount === null || $amount === '') {
+             return null;
+         }
+ 
+-        return Utils::moneyFormat($amount, $currency ?: 'USD');
++        return Utils::moneyFormat($amount, $currency ?: 'INR');
+     }
+ 
+     protected function assignedOrdersCount(Vehicle $vehicle): int
+diff --git a/server/src/Flow/FlowResource.php b/server/src/Flow/FlowResource.php
+index 6a6f05a..19caea9 100644
+--- a/server/src/Flow/FlowResource.php
++++ b/server/src/Flow/FlowResource.php
+@@ -44,7 +44,13 @@ class FlowResource implements \JsonSerializable
+             return $this->attributes[$name];
+         }
+ 
+-        return $this->{$name};
++        if (property_exists($this, $name)) {
++            return $this->{$name};
++        }
++
++        // Flow configuration properties are optional. Return null for an
++        // absent attribute instead of reading an undefined PHP property.
++        return null;
+     }
+ 
+     /**
+diff --git a/server/src/Http/Controllers/Api/v1/OrderController.php b/server/src/Http/Controllers/Api/v1/OrderController.php
+index b4e6542..1aee119 100644
+--- a/server/src/Http/Controllers/Api/v1/OrderController.php
++++ b/server/src/Http/Controllers/Api/v1/OrderController.php
+@@ -37,11 +37,13 @@ use Fleetbase\Models\Setting;
+ use Fleetbase\Support\Auth;
+ use Fleetbase\Support\TemplateString;
+ use Illuminate\Database\Eloquent\ModelNotFoundException;
++use Illuminate\Http\Exceptions\HttpResponseException;
+ use Illuminate\Http\Request;
+ use Illuminate\Http\UploadedFile;
+ use Illuminate\Support\Arr;
+ use Illuminate\Support\Carbon;
+ use Illuminate\Support\Facades\Cache;
++use Illuminate\Support\Facades\DB;
+ use Illuminate\Support\Facades\Log;
+ use Illuminate\Support\Facades\Storage;
+ use Illuminate\Support\Str;
+@@ -160,6 +162,10 @@ class OrderController extends Controller
+             }
+         }
+ 
++        // Payloads, customer contacts, and the order are one local operation.
++        // A failure later in creation must not leave an orphan payload/contact.
++        DB::beginTransaction();
++        try {
+         // create payload
+         if ($request->has('payload') && $request->isArray('payload')) {
+             $payload                = $this->newPayload();
+@@ -337,11 +343,11 @@ class OrderController extends Controller
+                         ]
+                     );
+                 } catch (CustomerUserConflictException $e) {
+-                    return response()->apiError($e->getMessage());
++                    throw new HttpResponseException(response()->apiError($e->getMessage()));
+                 } catch (UserAlreadyExistsException $e) {
+-                    return response()->apiError($e->getMessage());
++                    throw new HttpResponseException(response()->apiError($e->getMessage()));
+                 } catch (\Exception $e) {
+-                    return response()->apiError('Failed to find or create customer for order.');
++                    throw new HttpResponseException(response()->apiError('Failed to find or create customer for order.'));
+                 }
+ 
+                 if ($customer instanceof Contact) {
+@@ -368,7 +374,7 @@ class OrderController extends Controller
+         }
+ 
+         if (!isset($input['payload_uuid'])) {
+-            return response()->apiError('Attempted to attach invalid payload to order.');
++            throw new HttpResponseException(response()->apiError('Attempted to attach invalid payload to order.'));
+         }
+ 
+         // create the order
+@@ -394,8 +400,23 @@ class OrderController extends Controller
+             $shouldDispatch
+         );
+ 
++        DB::commit();
++
+         // response the driver resource
+         return $this->orderResource($order);
++        } catch (HttpResponseException $exception) {
++            if (DB::transactionLevel() > 0) {
++                DB::rollBack();
++            }
++
++            return $exception->getResponse();
++        } catch (\Throwable $exception) {
++            if (DB::transactionLevel() > 0) {
++                DB::rollBack();
++            }
++
++            throw $exception;
++        }
+     }
+ 
+     /**
+@@ -1150,6 +1171,13 @@ class OrderController extends Controller
+             return response()->apiError('No driver assigned to order.');
+         }
+ 
++        // Do not begin the order before all lifecycle relations have been
++        // resolved inside the order's tenant. Otherwise a stale/corrupt
++        // cross-company payload reference can be loaded and updated below.
++        if ($order->payload_uuid && !$payload) {
++            return response()->apiError('Payload resource not found.', 404);
++        }
++
+         // Get the order config
+         $orderConfig = $order->config();
+ 
+@@ -1265,6 +1293,22 @@ class OrderController extends Controller
+             $activity = $orderConfig->getStartedActivity();
+         }
+ 
++        $bypassProof   = $request->boolean('bypass_proof');
++        $requiresProof = Utils::isActivity($activity)
++            && ($activity->get('require_pod') || ($activity->completesOrder() && $order->pod_required));
++        if ($requiresProof && !$bypassProof) {
++            $resolvedProof = $this->resolveProofForOrder($order, $proof);
++            if (!$resolvedProof) {
++                return response()->apiError('Proof of delivery is required for this activity or must be explicitly bypassed.', 422);
++            }
++
++            $proof = $resolvedProof;
++        } elseif (Utils::isActivity($activity) && $activity->completesOrder() && $proof) {
++            // Optional proofs must still belong to this order and company; do not
++            // associate another tenant's proof through a caller-supplied identifier.
++            $proof = $this->resolveProofForOrder($order, $proof);
++        }
++
+         // handle pickup/dropoff order activity update as normal
+         if (Utils::isActivity($activity) && $activity->is('dispatched')) {
+             // make sure driver is assigned if not trigger failed dispatch
+@@ -2027,7 +2071,17 @@ class OrderController extends Controller
+ 
+     protected function findOrder(string $id, array $with = [], array $withCount = []): Order
+     {
+-        return Order::findRecordOrFail($id, $with, $withCount);
++        $companyUuid = $this->sessionCompany();
++
++        return Order::findRecordOrFail($id, $with, $withCount, function ($query) use ($companyUuid) {
++            if (!$companyUuid) {
++                $query->whereRaw('1 = 0');
++
++                return;
++            }
++
++            $query->where('company_uuid', $companyUuid);
++        });
+     }
+ 
+     protected function resolveOrderConfig(array $input): ?OrderConfig
+@@ -2052,12 +2106,52 @@ class OrderController extends Controller
+ 
+     protected function findDriverByUuid(?string $uuid): ?Driver
+     {
+-        return Driver::where('uuid', $uuid)->withoutGlobalScopes()->first();
++        $companyUuid = $this->sessionCompany();
++        if (!$uuid || !$companyUuid) {
++            return null;
++        }
++
++        return Driver::where('uuid', $uuid)
++            ->where('company_uuid', $companyUuid)
++            ->withoutGlobalScopes()
++            ->first();
+     }
+ 
+     protected function findPayloadByUuid(?string $uuid): ?Payload
+     {
+-        return Payload::where('uuid', $uuid)->withoutGlobalScopes()->with(['waypoints', 'waypointMarkers', 'entities'])->first();
++        $companyUuid = $this->sessionCompany();
++        if (!$uuid || !$companyUuid) {
++            return null;
++        }
++
++        return Payload::where('uuid', $uuid)
++            ->where('company_uuid', $companyUuid)
++            ->withoutGlobalScopes()
++            ->with(['waypoints', 'waypointMarkers', 'entities'])
++            ->first();
++    }
++
++    protected function resolveProofForOrder(Order $order, mixed $proof): ?Proof
++    {
++        $companyUuid = $order->company_uuid ?? $this->sessionCompany();
++        if (!$companyUuid) {
++            return null;
++        }
++
++        if ($proof instanceof Proof) {
++            return $proof->company_uuid === $companyUuid && $proof->order_uuid === $order->uuid ? $proof : null;
++        }
++
++        if (!is_string($proof) || $proof === '') {
++            return null;
++        }
++
++        return Proof::where('company_uuid', $companyUuid)
++            ->where('order_uuid', $order->uuid)
++            ->where(function ($query) use ($proof) {
++                $query->where('public_id', $proof)->orWhere('uuid', $proof);
++            })
++            ->first();
+     }
+ 
+     protected function sessionCompany(): ?string
+diff --git a/server/src/Http/Controllers/Internal/v1/MaintenanceController.php b/server/src/Http/Controllers/Internal/v1/MaintenanceController.php
+index 49e1ca3..f818e8a 100644
+--- a/server/src/Http/Controllers/Internal/v1/MaintenanceController.php
++++ b/server/src/Http/Controllers/Internal/v1/MaintenanceController.php
+@@ -5,6 +5,8 @@ namespace Fleetbase\FleetOps\Http\Controllers\Internal\v1;
+ use Fleetbase\Attributes\SkipAuthorizationCheck;
+ use Fleetbase\FleetOps\Exports\MaintenanceExport;
+ use Fleetbase\FleetOps\Http\Controllers\FleetOpsController;
++use Fleetbase\FleetOps\Http\Requests\CreateMaintenanceRequest;
++use Fleetbase\FleetOps\Http\Requests\UpdateMaintenanceRequest;
+ use Fleetbase\FleetOps\Imports\MaintenanceImport;
+ use Fleetbase\FleetOps\Models\Maintenance;
+ use Fleetbase\Http\Requests\ExportRequest;
+@@ -34,6 +36,12 @@ class MaintenanceController extends FleetOpsController
+      */
+     public $resource = 'maintenance';
+ 
++    /** @var class-string<CreateMaintenanceRequest> */
++    public $createRequest = CreateMaintenanceRequest::class;
++
++    /** @var class-string<UpdateMaintenanceRequest> */
++    public $updateRequest = UpdateMaintenanceRequest::class;
++
+     /**
+      * Export maintenances to excel or csv.
+      *
+@@ -84,12 +92,7 @@ class MaintenanceController extends FleetOpsController
+     {
+         $maintenance = $this->findMaintenanceForLineItem($id);
+ 
+-        $validated = $request->validate([
+-            'description' => 'required|string|max:255',
+-            'quantity'    => 'required|numeric|min:0',
+-            'unit_cost'   => 'required|integer|min:0',
+-            'currency'    => 'nullable|string|size:3',
+-        ]);
++        $validated = $request->validate($this->lineItemValidationRules($request));
+ 
+         $maintenance->addLineItem($validated);
+         $maintenance->refresh();
+@@ -107,12 +110,7 @@ class MaintenanceController extends FleetOpsController
+     {
+         $maintenance = $this->findMaintenanceForLineItem($id);
+ 
+-        $validated = $request->validate([
+-            'description' => 'required|string|max:255',
+-            'quantity'    => 'required|numeric|min:0',
+-            'unit_cost'   => 'required|integer|min:0',
+-            'currency'    => 'nullable|string|size:3',
+-        ]);
++        $validated = $request->validate($this->lineItemValidationRules($request));
+ 
+         $lineItems = $maintenance->line_items ?? [];
+ 
+@@ -219,4 +217,14 @@ class MaintenanceController extends FleetOpsController
+             'total_cost' => $maintenance->total_cost,
+         ];
+     }
++
++    protected function lineItemValidationRules(Request $request): array
++    {
++        return [
++            'description' => 'required|string|max:255',
++            'quantity'    => 'required|numeric|min:0',
++            'unit_cost'   => 'required|integer|min:0',
++            'currency'    => ['nullable', 'string', 'size:3', $request->isMethod('POST') ? 'in:INR' : 'string'],
++        ];
++    }
+ }
+diff --git a/server/src/Http/Controllers/Internal/v1/OrderController.php b/server/src/Http/Controllers/Internal/v1/OrderController.php
+index 2bbe642..dfc8e9e 100644
+--- a/server/src/Http/Controllers/Internal/v1/OrderController.php
++++ b/server/src/Http/Controllers/Internal/v1/OrderController.php
+@@ -48,6 +48,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
+ use Illuminate\Database\QueryException;
+ use Illuminate\Http\Request;
+ use Illuminate\Http\UploadedFile;
++use Illuminate\Support\Facades\Cache;
+ use Illuminate\Support\Facades\DB;
+ use Illuminate\Support\Facades\Storage;
+ use Illuminate\Support\Facades\Validator;
+@@ -121,6 +122,104 @@ class OrderController extends FleetOpsController
+      */
+     public function createRecord(Request $request)
+     {
++        $idempotencyKey = $this->internalOrderIdempotencyKey($request);
++        if ($idempotencyKey === null) {
++            return $this->createRecordOnce($request);
++        }
++
++        $cacheKey = $this->internalOrderIdempotencyCacheKey($idempotencyKey, $request);
++        if ($replay = $this->replayInternalOrderCreate($cacheKey, $request)) {
++            return $replay;
++        }
++
++        $lock = Cache::lock($cacheKey . ':lock', 180);
++        if (!$lock->get()) {
++            return response()->json(['errors' => ['An order request with this Idempotency-Key is already being processed.']], 409);
++        }
++
++        try {
++            if ($replay = $this->replayInternalOrderCreate($cacheKey, $request)) {
++                return $replay;
++            }
++
++            $result = $this->createRecordOnce($request);
++            $order  = $this->createdOrderFromResult($result);
++            if ($order instanceof Order && $order->public_id) {
++                Cache::put(
++                    $cacheKey,
++                    [
++                        'public_id'      => $order->public_id,
++                        'request_hash'   => $this->internalOrderRequestHash($request),
++                    ],
++                    now()->addDay()
++                );
++            }
++
++            return $result;
++        } finally {
++            $lock->release();
++        }
++    }
++
++    protected function internalOrderIdempotencyKey(Request $request): ?string
++    {
++        $key = trim((string) $request->header('Idempotency-Key', ''));
++
++        return $key !== '' && strlen($key) <= 255 ? $key : null;
++    }
++
++    protected function internalOrderIdempotencyCacheKey(string $key, Request $request): string
++    {
++        $userUuid = $request->user()?->uuid ?? session('user', 'session');
++
++        return 'fleetops:internal-order-create:' . sha1(implode('|', [(string) session('company'), (string) $userUuid, $key]));
++    }
++
++    protected function internalOrderRequestHash(Request $request): string
++    {
++        $encoded = json_encode($request->input('order', []), JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
++
++        return hash('sha256', $encoded === false ? '' : $encoded);
++    }
++
++    protected function replayInternalOrderCreate(string $cacheKey, Request $request)
++    {
++        $cached = Cache::get($cacheKey);
++        if (!is_array($cached) || !is_string($cached['public_id'] ?? null) || $cached['public_id'] === '') {
++            return null;
++        }
++
++        if (!hash_equals((string) ($cached['request_hash'] ?? ''), $this->internalOrderRequestHash($request))) {
++            return response()->json(['errors' => ['This Idempotency-Key has already been used for a different order request.']], 409);
++        }
++
++        $order = Order::where('public_id', $cached['public_id'])
++            ->where('company_uuid', session('company'))
++            ->first();
++        if (!$order) {
++            return null;
++        }
++
++        $order->load(['payload', 'trackingNumber']);
++
++        return response()->json(['order' => new OrderResource($order)])
++            ->header('Idempotent-Replayed', 'true');
++    }
++
++    protected function createdOrderFromResult(mixed $result): ?Order
++    {
++        $resource = is_array($result) ? ($result['order'] ?? null) : null;
++
++        return $resource instanceof OrderResource && $resource->resource instanceof Order ? $resource->resource : null;
++    }
++
++    protected function createRecordOnce(Request $request)
++    {
++        $input = $request->input('order');
++        if (is_array($input)) {
++            $request->merge(['order' => CreateOrderRequest::normalizeDispatchInput($input)]);
++        }
++
+         // Create validation request
+         $createOrderRequest  = CreateOrderRequest::createFrom($request);
+         $rules               = $createOrderRequest->rules();
+diff --git a/server/src/Http/Controllers/Internal/v1/SettingController.php b/server/src/Http/Controllers/Internal/v1/SettingController.php
+index 6f06e0e..8206981 100644
+--- a/server/src/Http/Controllers/Internal/v1/SettingController.php
++++ b/server/src/Http/Controllers/Internal/v1/SettingController.php
+@@ -1399,7 +1399,6 @@ class SettingController extends Controller
+             'accent_ink'                => TrackingPageConfig::inkFor($accent),
+             'accent_contrast'           => TrackingPageConfig::contrastRatio($accent, TrackingPageConfig::inkFor($accent)),
+             'sms_available'             => $this->smsProviderConfigured(),
+-            'customer_portal_installed' => $this->customerPortalInstalled(),
+             'admin'                     => $this->trackingPageAdminConfig(),
+         ]);
+     }
+@@ -1466,20 +1465,6 @@ class SettingController extends Controller
+         // @codeCoverageIgnoreEnd
+     }
+ 
+-    protected function customerPortalInstalled(): bool
+-    {
+-        return collect($this->installedFleetbaseExtensions())
+-            ->contains(fn ($package) => data_get($package, 'name') === 'fleetbase/customer-portal-api');
+-    }
+-
+-    protected function installedFleetbaseExtensions(): array
+-    {
+-        // @codeCoverageIgnoreStart
+-        // Reads the installed composer packages; tests replace this seam.
+-        return Utils::getInstalledFleetbaseExtensions();
+-        // @codeCoverageIgnoreEnd
+-    }
+-
+     protected function dispatchTelematicsPrune(): void
+     {
+         Queue::dispatch(new DispatchTelematicsRetentionJobs());
+diff --git a/server/src/Http/Controllers/Public/TrackingController.php b/server/src/Http/Controllers/Public/TrackingController.php
+index 758c343..92736ee 100644
+--- a/server/src/Http/Controllers/Public/TrackingController.php
++++ b/server/src/Http/Controllers/Public/TrackingController.php
+@@ -2,10 +2,6 @@
+ 
+ namespace Fleetbase\FleetOps\Http\Controllers\Public;
+ 
+-use Fleetbase\FleetOps\Models\Contact;
+-use Fleetbase\FleetOps\Models\Entity;
+-use Fleetbase\FleetOps\Models\Order;
+-use Fleetbase\FleetOps\Models\Waypoint;
+ use Fleetbase\FleetOps\Support\TrackingChannel;
+ use Fleetbase\FleetOps\Support\TrackingPage\TrackingAccess;
+ use Fleetbase\FleetOps\Support\TrackingPage\TrackingRecipient;
+@@ -14,7 +10,6 @@ use Fleetbase\FleetOps\Support\TrackingPage\TrackingTarget;
+ use Fleetbase\FleetOps\Support\TrackingPage\TrackingView;
+ use Fleetbase\FleetOps\Support\TrackingPublisher;
+ use Fleetbase\FleetOps\Support\TrackingScope;
+-use Fleetbase\FleetOps\Support\Utils;
+ use Fleetbase\Models\Company;
+ use Fleetbase\Models\Setting;
+ use Fleetbase\Models\VerificationCode;
+@@ -29,8 +24,8 @@ use Symfony\Component\HttpFoundation\Cookie;
+  * The public customer tracking page's API.
+  *
+  * A tracking number alone gives level 0. A device that entered a correct one-time code
+- * gets level 1 for one customer within the order; a signed-in customer gets level 2;
+- * staff of the owning company see the customer's view. Unknown, malformed, opted-out,
++ * gets level 1 for that delivery; staff of the owning company see the customer's view.
++ * There is no customer account or order-list sign-in. Unknown, malformed, opted-out,
+  * other-company and throttled lookups all get the same 404, so a caller can't tell
+  * which one they hit.
+  *
+@@ -67,7 +62,7 @@ class TrackingController extends Controller
+             return $this->json([
+                 'company'       => $this->view->branding($config, $this->findCompany($companyUuid)),
+                 'org'           => $slug,
+-                'sign_in'       => $this->signInOffered($config),
++                'sign_in'       => false,
+                 'session_hours' => $config['access']['session_hours'],
+             ]);
+         }
+@@ -80,7 +75,7 @@ class TrackingController extends Controller
+         return $this->json([
+             'company'       => $this->view->branding(['branding' => $admin['branding']], null, $this->instanceLogo()),
+             'org'           => null,
+-            'sign_in'       => $this->customerPortalInstalled(),
++            'sign_in'       => false,
+             'session_hours' => 24,
+         ]);
+     }
+@@ -164,24 +159,6 @@ class TrackingController extends Controller
+         return $this->json(['status' => 'signed_out'], 200, $cookie);
+     }
+ 
+-    public function updateInstructions(Request $request, string $number): JsonResponse
+-    {
+-        $target = $this->resolve($request, $number);
+-        $viewer = $target ? $this->viewerFor($request, $target) : null;
+-        if (!$target || !$viewer || !$target->scope) {
+-            return $this->notFound();
+-        }
+-
+-        if (!data_get($target->config, 'visibility.instructions_edit', false)) {
+-            return $this->json(['error' => 'not_allowed'], 403);
+-        }
+-
+-        $text = trim(mb_substr((string) $request->input('text', ''), 0, 500));
+-        $this->saveInstructions($target->order, $target->scope, $text);
+-
+-        return $this->json($this->payload($request, $target));
+-    }
+-
+     public function proof(Request $request, string $number, string $id): JsonResponse
+     {
+         $target = $this->resolve($request, $number);
+@@ -232,19 +209,6 @@ class TrackingController extends Controller
+         return $this->json($this->socketTokenFor($target->scope));
+     }
+ 
+-    /**
+-     * A signed-in customer's orders, newest first.
+-     */
+-    public function accountOrders(Request $request): JsonResponse
+-    {
+-        $contacts = $this->contactsFor($this->requestUser($request));
+-        if ($contacts === []) {
+-            return $this->json(['error' => 'unauthenticated'], 401);
+-        }
+-
+-        return $this->json(['orders' => $this->ordersForContacts($contacts)]);
+-    }
+-
+     protected function payload(Request $request, TrackingTarget $target): array
+     {
+         $branding = $this->brandingFor($target);
+@@ -258,7 +222,7 @@ class TrackingController extends Controller
+ 
+         $channels = $target->scope ? $this->recipientFor($target)->channels($target->config, $this->smsAvailable()) : [];
+ 
+-        return $this->view->publicView($target, $branding, $channels, $this->signInOffered($target->config));
++        return $this->view->publicView($target, $branding, $channels, false);
+     }
+ 
+     protected function verified(Request $request, TrackingTarget $target, ?string $channel): JsonResponse
+@@ -271,8 +235,8 @@ class TrackingController extends Controller
+     }
+ 
+     /**
+-     * Who is looking: staff of the owning company, a signed-in customer of this delivery,
+-     * or a device verified for it; null for a visitor with only the tracking number.
++     * Who is looking: staff of the owning company, a device verified for this delivery,
++     * or null for a visitor with only the tracking number.
+      */
+     protected function viewerFor(Request $request, TrackingTarget $target): ?string
+     {
+@@ -281,10 +245,6 @@ class TrackingController extends Controller
+             return TrackingView::VIEWER_STAFF;
+         }
+ 
+-        if ($user && $target->scope && in_array($target->scope->customer_uuid, $this->contactsFor($user), true)) {
+-            return TrackingView::VIEWER_ACCOUNT;
+-        }
+-
+         return $this->access->hasGrant($request, $target->scope) ? TrackingView::VIEWER_VERIFIED : null;
+     }
+ 
+@@ -305,11 +265,6 @@ class TrackingController extends Controller
+         return $this->view->branding($target->config, $this->findCompany($target->companyUuid()));
+     }
+ 
+-    protected function signInOffered(array $config): bool
+-    {
+-        return (bool) data_get($config, 'access.account_sign_in', true) && $this->customerPortalInstalled();
+-    }
+-
+     protected function recipientFor(TrackingTarget $target): TrackingRecipient
+     {
+         return TrackingRecipient::for($target->scope, $this->fallbackPhone($target));
+@@ -334,15 +289,6 @@ class TrackingController extends Controller
+         $this->sendEmail($destination, $code . ' is your ' . $name . ' delivery code', $message);
+     }
+ 
+-    protected function saveInstructions(Order $order, TrackingScope $scope, string $text): void
+-    {
+-        $instructions                      = (array) $order->getMeta('recipient_instructions', []);
+-        $instructions[sha1($scope->key())] = $text;
+-        $order->setMeta('recipient_instructions', $instructions);
+-        $order->saveQuietly();
+-        $order->invalidateApiCache();
+-    }
+-
+     protected function dataUrl(string $raw): string
+     {
+         return str_starts_with($raw, 'data:') ? $raw : 'data:image/png;base64,' . $raw;
+@@ -378,54 +324,6 @@ class TrackingController extends Controller
+             ->contains(fn ($provider) => (bool) data_get($provider, 'available'));
+     }
+ 
+-    /**
+-     * The contact uuids a signed-in customer user acts as.
+-     *
+-     * @return array<int, string>
+-     */
+-    protected function contactsFor(mixed $user): array
+-    {
+-        if (!$user || data_get($user, 'type') !== 'customer' || !data_get($user, 'uuid')) {
+-            return [];
+-        }
+-
+-        return $this->contactUuidsForUser((string) data_get($user, 'uuid'));
+-    }
+-
+-    protected function contactUuidsForUser(string $userUuid): array
+-    {
+-        return Contact::withoutGlobalScopes()->where('user_uuid', $userUuid)->pluck('uuid')->all();
+-    }
+-
+-    /**
+-     * Each order a customer is on, with the tracking number that opens their part of it.
+-     *
+-     * @param array<int, string> $contacts
+-     */
+-    protected function ordersForContacts(array $contacts): array
+-    {
+-        $payloads = Waypoint::withoutGlobalScopes()->whereIn('customer_uuid', $contacts)->pluck('payload_uuid')->filter()->unique()->values()->all();
+-        $orders   = Order::withoutGlobalScopes()
+-            ->with(['trackingNumber'])
+-            ->where(fn ($query) => $query->whereIn('customer_uuid', $contacts)->orWhereIn('payload_uuid', $payloads))
+-            ->latest()
+-            ->limit(50)
+-            ->get();
+-
+-        return $orders->map(function (Order $order) use ($contacts) {
+-            $waypoint = in_array($order->customer_uuid, $contacts, true) ? null : Waypoint::withoutGlobalScopes()->with('trackingNumber')->where('payload_uuid', $order->payload_uuid)->whereIn('customer_uuid', $contacts)->first();
+-            $first    = Entity::withoutGlobalScopes()->where('payload_uuid', $order->payload_uuid)->value('name');
+-
+-            return [
+-                'tracking_number' => $waypoint ? data_get($waypoint, 'trackingNumber.tracking_number') : data_get($order, 'trackingNumber.tracking_number'),
+-                'title'           => $first,
+-                'status'          => $order->status,
+-                'stage'           => $this->view->stage($order, null),
+-                'updated_at'      => $order->updated_at ? $order->updated_at->toISOString() : null,
+-            ];
+-        })->filter(fn ($row) => !empty($row['tracking_number']))->values()->all();
+-    }
+-
+     protected function findCompany(?string $companyUuid): mixed
+     {
+         return $companyUuid ? Company::where('uuid', $companyUuid)->first() : null;
+@@ -493,7 +391,7 @@ class TrackingController extends Controller
+     protected function requestUser(Request $request): mixed
+     {
+         // @codeCoverageIgnoreStart
+-        // A signed-in console or customer-portal user, from the bearer token the page sends.
++        // A signed-in company user, from the bearer token the page sends.
+         try {
+             return auth('sanctum')->user();
+         } catch (\Throwable) {
+@@ -502,13 +400,6 @@ class TrackingController extends Controller
+         // @codeCoverageIgnoreEnd
+     }
+ 
+-    protected function customerPortalInstalled(): bool
+-    {
+-        // @codeCoverageIgnoreStart
+-        return collect(Utils::getInstalledFleetbaseExtensions())->contains(fn ($package) => data_get($package, 'name') === 'fleetbase/customer-portal-api');
+-        // @codeCoverageIgnoreEnd
+-    }
+-
+     protected function instanceLogo(): ?string
+     {
+         // @codeCoverageIgnoreStart
+diff --git a/server/src/Http/Requests/CreateCustomerOrderRequest.php b/server/src/Http/Requests/CreateCustomerOrderRequest.php
+index 553b7ee..7f362de 100644
+--- a/server/src/Http/Requests/CreateCustomerOrderRequest.php
++++ b/server/src/Http/Requests/CreateCustomerOrderRequest.php
+@@ -56,7 +56,7 @@ class CreateCustomerOrderRequest extends FleetbaseRequest
+             'entities.*.weight'         => 'nullable|numeric|min:0',
+             'entities.*.weight_unit'    => 'nullable|string',
+             'entities.*.declared_value' => 'nullable|numeric|min:0',
+-            'entities.*.currency'       => 'nullable|string|size:3',
++            'entities.*.currency'       => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'entities.*.meta'           => 'nullable|array',
+         ];
+     }
+diff --git a/server/src/Http/Requests/CreateDriverRequest.php b/server/src/Http/Requests/CreateDriverRequest.php
+index 5f645b9..86881d6 100644
+--- a/server/src/Http/Requests/CreateDriverRequest.php
++++ b/server/src/Http/Requests/CreateDriverRequest.php
+@@ -59,7 +59,7 @@ class CreateDriverRequest extends FleetbaseRequest
+ 
+             // Operational
+             'country'        => 'nullable|size:2',
+-            'currency'       => 'nullable|string|size:3',
++            'currency'       => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'city'           => 'nullable|string|max:191',
+             'online'         => 'nullable|boolean',
+             'current_status' => 'nullable|string|max:64',
+diff --git a/server/src/Http/Requests/CreateEntityRequest.php b/server/src/Http/Requests/CreateEntityRequest.php
+index de4c602..cfd5cdc 100644
+--- a/server/src/Http/Requests/CreateEntityRequest.php
++++ b/server/src/Http/Requests/CreateEntityRequest.php
+@@ -36,7 +36,7 @@ class CreateEntityRequest extends FleetbaseRequest
+             'declared_value'  => ['nullable', 'numeric'],
+             'price'           => ['nullable', 'numeric'],
+             'sales_price'     => ['nullable', 'numeric'],
+-            'currency'        => [Rule::requiredIf($this->has(['declared_value', 'price', 'sales_price'])), 'size:3'],
++            'currency'        => [Rule::requiredIf($this->has(['declared_value', 'price', 'sales_price'])), 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+         ];
+     }
+ }
+diff --git a/server/src/Http/Requests/CreateEquipmentRequest.php b/server/src/Http/Requests/CreateEquipmentRequest.php
+index 4fe9d1a..a5984ae 100644
+--- a/server/src/Http/Requests/CreateEquipmentRequest.php
++++ b/server/src/Http/Requests/CreateEquipmentRequest.php
+@@ -28,7 +28,7 @@ class CreateEquipmentRequest extends FleetbaseRequest
+             'equipable'      => ['nullable', 'required_with:equipable_type', 'string'],
+             'purchased_at'   => ['nullable', 'date'],
+             'purchase_price' => ['nullable'],
+-            'currency'       => ['nullable', 'string', 'size:3'],
++            'currency'       => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'meta'           => ['nullable', 'array'],
+         ];
+     }
+diff --git a/server/src/Http/Requests/CreateFuelTransactionRequest.php b/server/src/Http/Requests/CreateFuelTransactionRequest.php
+index bfe77aa..1b08223 100644
+--- a/server/src/Http/Requests/CreateFuelTransactionRequest.php
++++ b/server/src/Http/Requests/CreateFuelTransactionRequest.php
+@@ -39,7 +39,7 @@ class CreateFuelTransactionRequest extends FleetbaseRequest
+             'volume'                  => ['nullable', 'numeric'],
+             'metric_unit'             => ['nullable', 'string'],
+             'amount'                  => ['nullable'],
+-            'currency'                => ['nullable', 'string', 'size:3'],
++            'currency'                => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'odometer'                => ['nullable', 'numeric'],
+             'sync_status'             => ['nullable', 'string'],
+             'matched_at'              => ['nullable', 'date'],
+diff --git a/server/src/Http/Requests/CreateMaintenanceRequest.php b/server/src/Http/Requests/CreateMaintenanceRequest.php
+new file mode 100644
+index 0000000..bffbc6b
+--- /dev/null
++++ b/server/src/Http/Requests/CreateMaintenanceRequest.php
+@@ -0,0 +1,20 @@
++<?php
++
++namespace Fleetbase\FleetOps\Http\Requests;
++
++use Fleetbase\Http\Requests\FleetbaseRequest;
++
++class CreateMaintenanceRequest extends FleetbaseRequest
++{
++    public function authorize(): bool
++    {
++        return request()->session()->has('api_credential') || request()->session()->has('is_sanctum_token');
++    }
++
++    public function rules(): array
++    {
++        return [
++            'currency' => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
++        ];
++    }
++}
+diff --git a/server/src/Http/Requests/CreatePartRequest.php b/server/src/Http/Requests/CreatePartRequest.php
+index fc600d2..a686a13 100644
+--- a/server/src/Http/Requests/CreatePartRequest.php
++++ b/server/src/Http/Requests/CreatePartRequest.php
+@@ -25,7 +25,7 @@ class CreatePartRequest extends FleetbaseRequest
+             'quantity_on_hand' => ['nullable', 'integer', 'min:0'],
+             'unit_cost'        => ['nullable'],
+             'msrp'             => ['nullable'],
+-            'currency'         => ['nullable', 'string', 'size:3'],
++            'currency'         => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'asset_type'       => ['nullable', 'string'],
+             'asset'            => ['nullable', 'required_with:asset_type', 'string'],
+             'type'             => ['nullable', 'string'],
+diff --git a/server/src/Http/Requests/CreatePayloadRequest.php b/server/src/Http/Requests/CreatePayloadRequest.php
+index 9fc2cd6..3f31b89 100644
+--- a/server/src/Http/Requests/CreatePayloadRequest.php
++++ b/server/src/Http/Requests/CreatePayloadRequest.php
+@@ -25,7 +25,7 @@ class CreatePayloadRequest extends FleetbaseRequest
+             'waypoints'             => 'array',
+             'return'                => 'nullable',
+             'type'                  => [Rule::requiredIf($this->isMethod('POST'))],
+-            'cod_currency'          => [Rule::requiredIf($this->has(['cod_amount'])), 'size:3'],
++            'cod_currency'          => [Rule::requiredIf($this->has(['cod_amount'])), 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'cod_payment_method'    => [Rule::requiredIf($this->has(['cod_amount'])), 'in:card,check,cash,bank_transfer'],
+         ];
+ 
+diff --git a/server/src/Http/Requests/CreateServiceQuoteRequest.php b/server/src/Http/Requests/CreateServiceQuoteRequest.php
+index bbfddfc..03849e2 100644
+--- a/server/src/Http/Requests/CreateServiceQuoteRequest.php
++++ b/server/src/Http/Requests/CreateServiceQuoteRequest.php
+@@ -20,6 +20,7 @@ class CreateServiceQuoteRequest extends FleetbaseRequest
+     public function rules(): array
+     {
+         return [
++            'currency' => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+         ];
+     }
+ }
+diff --git a/server/src/Http/Requests/CreateServiceRateRequest.php b/server/src/Http/Requests/CreateServiceRateRequest.php
+index 41122c5..a656565 100644
+--- a/server/src/Http/Requests/CreateServiceRateRequest.php
++++ b/server/src/Http/Requests/CreateServiceRateRequest.php
+@@ -33,7 +33,7 @@ class CreateServiceRateRequest extends FleetbaseRequest
+             'service_area'                  => ['nullable', Rule::exists('service_areas', 'public_id')->whereNull('deleted_at')],
+             'zone'                          => ['nullable', Rule::exists('zones', 'public_id')->whereNull('deleted_at')],
+             'rate_calculation_method'       => [Rule::requiredIf($this->isMethod('POST')), 'string', 'in:fixed_meter,fixed_rate,per_meter,per_drop,algo,parcel'],
+-            'currency'                      => ['required', 'size:3'],
++            'currency'                      => ['required', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'base_fee'                      => ['numeric'],
+             'per_meter_unit'                => ['required_if:rate_calculation_method,per_meter', 'string', 'in:km,m,ft,yd,mi'],
+             'per_meter_flat_rate_fee'       => ['required_if:rate_calculation_method,per_meter', 'numeric'],
+diff --git a/server/src/Http/Requests/CreateTrailerRequest.php b/server/src/Http/Requests/CreateTrailerRequest.php
+index 79ab5fa..767e832 100644
+--- a/server/src/Http/Requests/CreateTrailerRequest.php
++++ b/server/src/Http/Requests/CreateTrailerRequest.php
+@@ -45,7 +45,7 @@ class CreateTrailerRequest extends FleetbaseRequest
+             'coupling_type'       => ['nullable', 'string', 'max:255'], 'brake_type' => ['nullable', 'string', 'max:255'],
+             'ownership_type'      => ['nullable', Rule::in(Trailer::OWNERSHIP_TYPES)],
+             'purchased_at'        => ['nullable', 'date'], 'lease_expires_at' => ['nullable', 'date'],
+-            'financing_status'    => ['nullable', 'string', 'max:255'], 'currency' => ['nullable', 'string', 'size:3'],
++            'financing_status'    => ['nullable', 'string', 'max:255'], 'currency' => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'acquisition_cost'    => ['nullable', 'numeric', 'min:0'], 'current_value' => ['nullable', 'numeric', 'min:0'],
+             'insurance_value'     => ['nullable', 'numeric', 'min:0'], 'depreciation_rate' => ['nullable', 'numeric', 'min:0'],
+             'capacity'            => ['nullable', 'array'], 'specs' => ['nullable', 'array'], 'attributes' => ['nullable', 'array'], 'notes' => ['nullable', 'string'],
+diff --git a/server/src/Http/Requests/CreateVehicleRequest.php b/server/src/Http/Requests/CreateVehicleRequest.php
+index 47be75a..64085d2 100644
+--- a/server/src/Http/Requests/CreateVehicleRequest.php
++++ b/server/src/Http/Requests/CreateVehicleRequest.php
+@@ -120,7 +120,7 @@ class CreateVehicleRequest extends FleetbaseRequest
+             'depreciation_rate'                    => 'nullable|numeric',
+             'current_value'                        => 'nullable|numeric|min:0',
+             'acquisition_cost'                     => 'nullable|numeric|min:0',
+-            'currency'                             => 'nullable|string|size:3',
++            'currency'                             => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'purchased_at'                         => 'nullable|date',
+             'lease_expires_at'                     => 'nullable|date',
+ 
+diff --git a/server/src/Http/Requests/CreateWorkOrderRequest.php b/server/src/Http/Requests/CreateWorkOrderRequest.php
+index 0b5ca84..9eca9a8 100644
+--- a/server/src/Http/Requests/CreateWorkOrderRequest.php
++++ b/server/src/Http/Requests/CreateWorkOrderRequest.php
+@@ -32,7 +32,7 @@ class CreateWorkOrderRequest extends FleetbaseRequest
+             'estimated_cost'  => ['nullable'],
+             'approved_budget' => ['nullable'],
+             'actual_cost'     => ['nullable'],
+-            'currency'        => ['nullable', 'string', 'size:3'],
++            'currency'        => ['nullable', 'string', 'size:3', $this->isMethod('POST') ? 'in:INR' : 'string'],
+             'cost_breakdown'  => ['nullable', 'array'],
+             'cost_center'     => ['nullable', 'string'],
+             'budget_code'     => ['nullable', 'string'],
+diff --git a/server/src/Http/Requests/Internal/CreateOrderRequest.php b/server/src/Http/Requests/Internal/CreateOrderRequest.php
+index 7b54668..f3509ef 100644
+--- a/server/src/Http/Requests/Internal/CreateOrderRequest.php
++++ b/server/src/Http/Requests/Internal/CreateOrderRequest.php
+@@ -4,11 +4,25 @@ namespace Fleetbase\FleetOps\Http\Requests\Internal;
+ 
+ use Fleetbase\FleetOps\Support\Utils;
+ use Fleetbase\Http\Requests\FleetbaseRequest;
+-use Fleetbase\Rules\ExistsInAny;
+ use Fleetbase\Support\Auth;
++use Illuminate\Support\Facades\DB;
++use Illuminate\Validation\Rule;
+ 
+ class CreateOrderRequest extends FleetbaseRequest
+ {
++    /**
++     * Preserve the legacy dispatch input while using the console model's field.
++     * Keep values uncast so boolean validation can reject malformed input.
++     */
++    public static function normalizeDispatchInput(array $input): array
++    {
++        if (!array_key_exists('dispatched', $input) && array_key_exists('dispatch', $input)) {
++            $input['dispatched'] = $input['dispatch'];
++        }
++
++        return $input;
++    }
++
+     /**
+      * Determine if the user is authorized to make this request.
+      */
+@@ -24,22 +38,85 @@ class CreateOrderRequest extends FleetbaseRequest
+     {
+         $podMethods = config('fleetops.pod_methods');
+         $podMethods = is_array($podMethods) ? implode(',', $podMethods) : (string) $podMethods;
++        $companyUuid = session('company') ?: '__missing_company__';
++        $scopedRecord = fn ($table) => Rule::exists($table, 'uuid')->where('company_uuid', $companyUuid);
++        $recordUuid = static function ($value) {
++            if (is_string($value) || is_numeric($value)) {
++                return (string) $value;
++            }
++
++            if (is_array($value)) {
++                $uuid = $value['uuid'] ?? $value['id'] ?? null;
++                return is_string($uuid) || is_numeric($uuid) ? (string) $uuid : null;
++            }
++
++            if (is_object($value)) {
++                $uuid = $value->uuid ?? $value->id ?? null;
++                return is_string($uuid) || is_numeric($uuid) ? (string) $uuid : null;
++            }
++
++            return null;
++        };
++        $scopedCustomer = function ($attribute, $value, $fail) use ($companyUuid, $recordUuid) {
++            $uuid = $recordUuid($value);
++            if (!$uuid) {
++                $fail('The selected customer is invalid.');
++                return;
++            }
++
++            foreach (['contacts', 'vendors'] as $table) {
++                if (DB::table($table)->where('uuid', $uuid)->where('company_uuid', $companyUuid)->whereNull('deleted_at')->exists()) {
++                    return;
++                }
++            }
++            $fail('The selected customer is not available to this company.');
++        };
++        $scopedFacilitator = function ($attribute, $value, $fail) use ($companyUuid, $recordUuid) {
++            $uuid = $recordUuid($value);
++            if (!$uuid) {
++                $provider = is_array($value) ? ($value['provider'] ?? null) : (is_object($value) ? ($value->provider ?? null) : null);
++                if (is_string($provider) && $provider !== '' && DB::table('integrated_vendors')->where('provider', $provider)->where('company_uuid', $companyUuid)->whereNull('deleted_at')->exists()) {
++                    return;
++                }
++
++                $fail('The selected facilitator is invalid.');
++                return;
++            }
++
++            foreach (['contacts', 'vendors', 'integrated_vendors'] as $table) {
++                if (DB::table($table)->where('uuid', $uuid)->where('company_uuid', $companyUuid)->whereNull('deleted_at')->exists()) {
++                    return;
++                }
++            }
++            $fail('The selected facilitator is not available to this company.');
++        };
+ 
+         $validations = [
+             'order_config_uuid' => ['required'],
+             'adhoc'             => ['nullable', 'boolean'],
+             'dispatch'          => ['nullable', 'boolean'],
++            'dispatched'        => ['nullable', 'boolean'],
+             'adhoc_distance'    => ['nullable', 'numeric'],
+             'pod_required'      => ['nullable', 'boolean'],
+             'pod_method'        => ['nullable', 'in:' . $podMethods],
+             'scheduled_at'      => ['nullable', 'date'],
+-            'driver'            => ['nullable', 'exists:drivers,uuid'],
+-            'service_quote'     => ['nullable', 'exists:service_quotes,uuid'],
+-            'purchase_rate'     => ['nullable', 'exists:purchase_rates,uuid'],
+-            'facilitator'       => ['nullable', new ExistsInAny(['vendors', 'contacts', 'integrated_vendors'], ['uuid', 'provider'])],
+-            'customer'          => ['nullable', new ExistsInAny(['vendors', 'contacts'], 'uuid')],
++            'driver'            => ['nullable', $scopedRecord('drivers')],
++            'service_quote'     => ['nullable', $scopedRecord('service_quotes')],
++            'purchase_rate'     => ['nullable', $scopedRecord('purchase_rates')],
++            'facilitator'       => ['nullable', $scopedFacilitator],
++            'customer'          => ['nullable', $scopedCustomer],
+             'status'            => ['nullable', 'string'],
+             'type'              => ['string'],
++            'driver_assigned_uuid'  => ['nullable', $scopedRecord('drivers')],
++            'vehicle_assigned_uuid' => ['nullable', $scopedRecord('vehicles')],
++            'service_quote_uuid'    => ['nullable', $scopedRecord('service_quotes')],
++            'purchase_rate_uuid'    => ['nullable', $scopedRecord('purchase_rates')],
++            'customer_uuid'         => ['nullable', $scopedCustomer],
++            'customer.uuid'         => ['sometimes', 'nullable', $scopedCustomer],
++            'facilitator_uuid'      => ['nullable', $scopedFacilitator],
++            'facilitator.uuid'      => ['sometimes', 'nullable', $scopedFacilitator],
++            'payload.waypoints.*.customer_uuid' => ['sometimes', 'nullable', $scopedCustomer],
++            'payload.waypoints.*.customer.uuid' => ['sometimes', 'nullable', $scopedCustomer],
+         ];
+ 
+         // Conditionally require 'pod_method' if 'pod_required' is truthy
+@@ -47,23 +124,53 @@ class CreateOrderRequest extends FleetbaseRequest
+             $validations['pod_method'] = ['required', 'in:' . $podMethods];
+         }
+ 
+-        if ($this->has('payload')) {
++        if ($this->has('order.payload')) {
+             $validations['payload.entities']  = 'array';
+             $validations['payload.waypoints'] = 'array';
+ 
+-            if ($this->isArray('payload')) {
++            if ($this->isArray('order.payload')) {
+                 $validations['payload']         = 'required';
++                $scopedPlace = fn ($column) => Rule::exists('places', $column)
++                    ->where('company_uuid', $companyUuid)
++                    ->whereNull('deleted_at');
++                // Search results can carry a temporary UUID until a place is saved.
++                // Reject an existing ID owned by another company without rejecting a new place.
++                $notForeignPlace = function ($attribute, $value, $fail) use ($companyUuid) {
++                    $foreign = DB::table('places')->where('uuid', $value)
++                        ->where(function ($query) use ($companyUuid) {
++                            $query->where('company_uuid', '!=', $companyUuid)->orWhereNull('company_uuid');
++                        })->exists();
++                    if ($foreign) {
++                        $fail('The selected place is not available to this company.');
++                    }
++                };
+ 
+-                if ($this->missing('payload.waypoints')) {
+-                    $validations['payload.pickup_uuid']  = 'required';
+-                    $validations['payload.dropoff_uuid'] = 'required';
++                $waypoints = $this->input('order.payload.waypoints');
++                if ($waypoints === null || $waypoints === []) {
++                    $validations['payload.pickup_uuid']  = ['required_without:payload.pickup', 'nullable', $scopedPlace('uuid')];
++                    $validations['payload.pickup']       = 'required_without:payload.pickup_uuid|array';
++                    $validations['payload.dropoff_uuid'] = ['required_without:payload.dropoff', 'nullable', $scopedPlace('uuid')];
++                    $validations['payload.dropoff']      = 'required_without:payload.dropoff_uuid|array';
++                } else {
++                    $validations['payload.waypoints'] = 'required|array|min:2';
+                 }
+ 
+-                if ($this->missing(['payload.pickup', 'payload.dropoff'])) {
+-                    $validations['payload.waypoints'] = 'required|array|min:2';
++                foreach (['pickup', 'dropoff', 'return'] as $role) {
++                    $validations["payload.{$role}.uuid"] = ['sometimes', 'nullable', $notForeignPlace];
++                    $validations["payload.{$role}.public_id"] = ['sometimes', 'nullable', $scopedPlace('public_id')];
++                    $validations["payload.{$role}.company_uuid"] = ['sometimes', 'nullable', Rule::in([$companyUuid])];
+                 }
+ 
+-                $validations['payload.return_uuid']  = 'nullable';
++                $validations['payload.waypoints.*.place_uuid'] = ['sometimes', 'nullable', $scopedPlace('uuid')];
++                $validations['payload.waypoints.*.uuid'] = ['sometimes', 'nullable', $notForeignPlace];
++                $validations['payload.waypoints.*.public_id'] = ['sometimes', 'nullable', $scopedPlace('public_id')];
++                $validations['payload.waypoints.*.company_uuid'] = ['sometimes', 'nullable', Rule::in([$companyUuid])];
++                $validations['payload.waypoints.*.place.uuid'] = ['sometimes', 'nullable', $notForeignPlace];
++                $validations['payload.waypoints.*.place.place_uuid'] = ['sometimes', 'nullable', $scopedPlace('uuid')];
++                $validations['payload.waypoints.*.place.public_id'] = ['sometimes', 'nullable', $scopedPlace('public_id')];
++                $validations['payload.waypoints.*.place.company_uuid'] = ['sometimes', 'nullable', Rule::in([$companyUuid])];
++
++                $validations['payload.return_uuid'] = ['nullable', $scopedPlace('uuid')];
+             }
+         }
+ 
+diff --git a/server/src/Http/Requests/UpdateMaintenanceRequest.php b/server/src/Http/Requests/UpdateMaintenanceRequest.php
+new file mode 100644
+index 0000000..5153565
+--- /dev/null
++++ b/server/src/Http/Requests/UpdateMaintenanceRequest.php
+@@ -0,0 +1,7 @@
++<?php
++
++namespace Fleetbase\FleetOps\Http\Requests;
++
++class UpdateMaintenanceRequest extends CreateMaintenanceRequest
++{
++}
+diff --git a/server/src/Http/Resources/v1/Customer.php b/server/src/Http/Resources/v1/Customer.php
+index a5d20b6..61a6d67 100644
+--- a/server/src/Http/Resources/v1/Customer.php
++++ b/server/src/Http/Resources/v1/Customer.php
+@@ -59,7 +59,7 @@ class Customer extends FleetbaseResource
+      * fields any caller could fetch through other public endpoints — name,
+      * resolved currency, country, phone — plus the company's public id.
+      * Currency falls back through company.currency → ledger base_currency
+-     * → "USD" via {@see Utils::getCompanyTransactionCurrency}.
++     * → "INR" via {@see Utils::getCompanyTransactionCurrency}.
+      */
+     protected function buildCompanyPayload(): ?array
+     {
+diff --git a/server/src/Models/Equipment.php b/server/src/Models/Equipment.php
+index ee53004..2d3f965 100644
+--- a/server/src/Models/Equipment.php
++++ b/server/src/Models/Equipment.php
+@@ -564,7 +564,7 @@ class Equipment extends Model
+         $manufacturer  = Utils::or($row, ['manufacturer', 'make', 'brand']);
+         $model         = Utils::or($row, ['model', 'equipment_model']);
+         $purchasePrice = Utils::or($row, ['purchase_price', 'price', 'cost']);
+-        $currency      = Utils::or($row, ['currency'], 'USD');
++        $currency      = Utils::or($row, ['currency'], 'INR');
+         $purchasedAt   = Utils::or($row, ['purchased_at', 'purchase_date']);
+         $warrantyName  = Utils::or($row, ['warranty_name', 'warranty']);
+ 
+@@ -578,7 +578,7 @@ class Equipment extends Model
+             'manufacturer'   => $manufacturer,
+             'model'          => $model,
+             'purchase_price' => $purchasePrice,
+-            'currency'       => strtoupper($currency ?? 'USD'),
++            'currency'       => strtoupper($currency ?? 'INR'),
+             'purchased_at'   => $purchasedAt ? \Carbon\Carbon::parse($purchasedAt) : null,
+         ]);
+ 
+diff --git a/server/src/Models/Maintenance.php b/server/src/Models/Maintenance.php
+index 10457ef..4501f36 100644
+--- a/server/src/Models/Maintenance.php
++++ b/server/src/Models/Maintenance.php
+@@ -580,7 +580,7 @@ class Maintenance extends Model
+         $partsCost   = Utils::or($row, ['parts_cost']);
+         $tax         = Utils::or($row, ['tax']);
+         $totalCost   = Utils::or($row, ['total_cost']);
+-        $currency    = Utils::or($row, ['currency'], 'USD');
++        $currency    = Utils::or($row, ['currency'], 'INR');
+         $vehicleName = Utils::or($row, ['vehicle', 'vehicle_name', 'asset', 'maintainable']);
+         $performedBy = Utils::or($row, ['performed_by', 'technician', 'mechanic']);
+ 
+@@ -600,7 +600,7 @@ class Maintenance extends Model
+             'parts_cost'   => $partsCost,
+             'tax'          => $tax,
+             'total_cost'   => $totalCost,
+-            'currency'     => strtoupper($currency ?? 'USD'),
++            'currency'     => strtoupper($currency ?? 'INR'),
+         ]);
+ 
+         // Attempt to resolve the maintainable (vehicle or equipment) by identifier
+diff --git a/server/src/Models/Order.php b/server/src/Models/Order.php
+index 5d5b90a..066610e 100644
+--- a/server/src/Models/Order.php
++++ b/server/src/Models/Order.php
+@@ -1823,6 +1823,19 @@ class Order extends Model
+      */
+     public function assignDriver($driver, $silent = false)
+     {
++        $companyUuid = $this->company_uuid ?? session('company');
++
++        if ($driver instanceof Driver && $companyUuid) {
++            $driverCompanyUuid = $driver->company_uuid;
++            if (!$driverCompanyUuid && $driver->exists && $driver->uuid) {
++                $driverCompanyUuid = Driver::where('uuid', $driver->uuid)->withoutGlobalScopes()->value('company_uuid');
++            }
++
++            if ($driverCompanyUuid && $driverCompanyUuid !== $companyUuid) {
++                throw new \Illuminate\Database\Eloquent\ModelNotFoundException('Invalid driver provided for assignment!');
++            }
++        }
++
+         if ($driver instanceof Driver && $this->driver_assigned_uuid === $driver->uuid) {
+             return $this;
+         }
+@@ -1833,7 +1846,16 @@ class Order extends Model
+ 
+         if (is_string($driver)) {
+             if (Str::startsWith($driver, 'driver_')) {
+-                $driver = Driver::select(['uuid', 'public_id'])->where('public_id', $driver)->whereNull('deleted_at')->withoutGlobalScopes()->first();
++                $driverQuery = Driver::select(['uuid', 'public_id', 'company_uuid'])
++                    ->where('public_id', $driver)
++                    ->whereNull('deleted_at')
++                    ->withoutGlobalScopes();
++
++                if ($companyUuid) {
++                    $driverQuery->where('company_uuid', $companyUuid);
++                }
++
++                $driver = $driverQuery->first();
+                 if ($driver) {
+                     if ($this->driver_assigned_uuid === $driver->uuid) {
+                         return $this;
+@@ -1842,7 +1864,14 @@ class Order extends Model
+                     return $this->assignDriver($driver, $silent);
+                 }
+ 
+-                throw new \Exception('Invalid driver provided for assignment!');
++                throw new \Illuminate\Database\Eloquent\ModelNotFoundException('Invalid driver provided for assignment!');
++            }
++
++            if ($companyUuid) {
++                $driverCompanyUuid = Driver::where('uuid', $driver)->withoutGlobalScopes()->value('company_uuid');
++                if ($driverCompanyUuid && $driverCompanyUuid !== $companyUuid) {
++                    throw new \Illuminate\Database\Eloquent\ModelNotFoundException('Invalid driver provided for assignment!');
++                }
+             }
+ 
+             $this->driver_assigned_uuid = $driver;
+diff --git a/server/src/Models/Part.php b/server/src/Models/Part.php
+index fcf52d2..e5e8d95 100644
+--- a/server/src/Models/Part.php
++++ b/server/src/Models/Part.php
+@@ -539,7 +539,7 @@ class Part extends Model
+         $quantityOnHand = Utils::or($row, ['quantity_on_hand', 'quantity', 'qty']);
+         $unitCost       = Utils::or($row, ['unit_cost', 'cost']);
+         $msrp           = Utils::or($row, ['msrp', 'retail_price']);
+-        $currency       = Utils::or($row, ['currency'], 'USD');
++        $currency       = Utils::or($row, ['currency'], 'INR');
+         $vendorName     = Utils::or($row, ['vendor_name', 'vendor', 'supplier']);
+ 
+         $part = new static([
+@@ -556,7 +556,7 @@ class Part extends Model
+             'quantity_on_hand' => $quantityOnHand ? (int) $quantityOnHand : 0,
+             'unit_cost'        => $unitCost,
+             'msrp'             => $msrp,
+-            'currency'         => strtoupper($currency ?? 'USD'),
++            'currency'         => strtoupper($currency ?? 'INR'),
+         ]);
+ 
+         // Attempt to resolve vendor by name
+diff --git a/server/src/Models/WorkOrder.php b/server/src/Models/WorkOrder.php
+index f668881..71380ab 100644
+--- a/server/src/Models/WorkOrder.php
++++ b/server/src/Models/WorkOrder.php
+@@ -588,7 +588,7 @@ class WorkOrder extends Model
+         $estimatedCost  = Utils::or($row, ['estimated_cost']);
+         $approvedBudget = Utils::or($row, ['approved_budget', 'budget']);
+         $actualCost     = Utils::or($row, ['actual_cost']);
+-        $currency       = Utils::or($row, ['currency'], 'USD');
++        $currency       = Utils::or($row, ['currency'], 'INR');
+         $costCenter     = Utils::or($row, ['cost_center']);
+         $budgetCode     = Utils::or($row, ['budget_code']);
+         $vehicleName    = Utils::or($row, ['vehicle', 'vehicle_name', 'asset', 'target']);
+@@ -606,7 +606,7 @@ class WorkOrder extends Model
+             'estimated_cost'  => $estimatedCost,
+             'approved_budget' => $approvedBudget,
+             'actual_cost'     => $actualCost,
+-            'currency'        => strtoupper($currency ?? 'USD'),
++            'currency'        => strtoupper($currency ?? 'INR'),
+             'cost_center'     => $costCenter,
+             'budget_code'     => $budgetCode,
+         ]);
+diff --git a/server/src/Observers/VehicleObserver.php b/server/src/Observers/VehicleObserver.php
+index 1c9f504..7357843 100644
+--- a/server/src/Observers/VehicleObserver.php
++++ b/server/src/Observers/VehicleObserver.php
+@@ -19,7 +19,7 @@ class VehicleObserver
+         $identifier = $this->getDriverIdentifier();
+ 
+         if ($identifier) {
+-            $driver = $this->findDriver($identifier);
++            $driver = $this->findDriver($identifier, $vehicle->company_uuid);
+ 
+             if ($driver) {
+                 // assign this vehicle to driver
+@@ -44,7 +44,7 @@ class VehicleObserver
+         $identifier = $this->getDriverIdentifier();
+ 
+         if ($identifier) {
+-            $driver = $this->findDriver($identifier);
++            $driver = $this->findDriver($identifier, $vehicle->company_uuid);
+ 
+             if ($driver) {
+                 // assign this vehicle to driver
+@@ -76,14 +76,22 @@ class VehicleObserver
+         return request()->or(['driver_uuid', 'vehicle.driver_uuid', 'vehicle.driver.uuid']);
+     }
+ 
+-    protected function findDriver(string $identifier): ?Driver
++    protected function findDriver(string $identifier, ?string $companyUuid): ?Driver
+     {
+-        return Driver::where('uuid', $identifier)->whereNull('deleted_at')->withoutGlobalScopes()->first();
++        if (!$companyUuid) {
++            return null;
++        }
++
++        return Driver::where('uuid', $identifier)->where('company_uuid', $companyUuid)->whereNull('deleted_at')->withoutGlobalScopes()->first();
+     }
+ 
+     protected function unassignDriversFrom(Vehicle $vehicle): int
+     {
+-        $unassigned = Driver::where(['vehicle_uuid' => $vehicle->uuid])->update(['vehicle_uuid' => null]);
++        if (!$vehicle->company_uuid) {
++            return 0;
++        }
++
++        $unassigned = Driver::where(['vehicle_uuid' => $vehicle->uuid, 'company_uuid' => $vehicle->company_uuid])->update(['vehicle_uuid' => null]);
+         if ($unassigned) {
+             Driver::invalidateApiCacheManually($vehicle->company_uuid);
+         }
+diff --git a/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php b/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php
+index 2316581..c7a6e50 100644
+--- a/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php
++++ b/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php
+@@ -113,7 +113,7 @@ class OrderInsightsCapability extends AbstractFleetOpsAICapability
+     {
+         $company = function_exists('session') ? \Fleetbase\Models\Company::where('uuid', session('company'))->first(['uuid', 'currency']) : null;
+ 
+-        return strtoupper((string) ($company?->currency ?: 'USD'));
++        return strtoupper((string) ($company?->currency ?: 'INR'));
+     }
+ 
+     protected function dateWindow(string $prompt): ?array
+diff --git a/server/src/Support/Analytics/AbstractAnalytics.php b/server/src/Support/Analytics/AbstractAnalytics.php
+index cb9766b..4ff8b4e 100644
+--- a/server/src/Support/Analytics/AbstractAnalytics.php
++++ b/server/src/Support/Analytics/AbstractAnalytics.php
+@@ -72,6 +72,6 @@ abstract class AbstractAnalytics
+ 
+     protected function companyCurrency(): string
+     {
+-        return $this->company->currency ?? 'USD';
++        return $this->company->currency ?? 'INR';
+     }
+ }
+diff --git a/server/src/Support/Analytics/FuelProviderSummary.php b/server/src/Support/Analytics/FuelProviderSummary.php
+index b5f7650..b2fdd36 100644
+--- a/server/src/Support/Analytics/FuelProviderSummary.php
++++ b/server/src/Support/Analytics/FuelProviderSummary.php
+@@ -23,15 +23,23 @@ class FuelProviderSummary extends AbstractAnalytics
+             ])
+             ->values();
+ 
++        $spendByCurrency = $transactions
++            ->groupBy(fn ($transaction) => strtoupper((string) ($transaction->currency ?: $this->companyCurrency())))
++            ->map(fn ($rows, $currency) => [
++                'currency' => $currency,
++                'amount'   => (int) $rows->sum('amount'),
++            ])
++            ->values();
++
+         return [
+             'summary' => [
+                 'connections'        => $connections->count(),
+                 'active_connections' => $connections->whereIn('status', ['connected', 'active'])->count(),
+                 'transactions'       => $transactions->count(),
+                 'unmatched'          => $transactions->where('sync_status', 'unmatched')->count(),
+-                'spend'              => (int) $transactions->sum('amount'),
++                // Do not combine amounts in different currencies into one total.
++                'spend_by_currency'  => $spendByCurrency,
+                 'volume'             => (float) $transactions->sum('volume'),
+-                'currency'           => $transactions->first()?->currency ?? $this->companyCurrency(),
+             ],
+             'providers' => $byProvider,
+         ];
+diff --git a/server/src/Support/Metrics/MoneyMetric.php b/server/src/Support/Metrics/MoneyMetric.php
+index 8419e41..c60b303 100644
+--- a/server/src/Support/Metrics/MoneyMetric.php
++++ b/server/src/Support/Metrics/MoneyMetric.php
+@@ -25,6 +25,6 @@ abstract class MoneyMetric extends AbstractMetric
+     public function currency(): string
+     {
+         return $this->currencyOverride
+-            ?? ($this->company->currency ?? 'USD');
++            ?? ($this->company->currency ?? 'INR');
+     }
+ }
+diff --git a/server/src/Support/TrackingPage/TrackingPageConfig.php b/server/src/Support/TrackingPage/TrackingPageConfig.php
+index 646c79d..718845b 100644
+--- a/server/src/Support/TrackingPage/TrackingPageConfig.php
++++ b/server/src/Support/TrackingPage/TrackingPageConfig.php
+@@ -98,8 +98,9 @@ class TrackingPageConfig
+                     'email' => static::bool(data_get($input, 'access.channels.email'), true),
+                 ],
+                 'session_hours'   => static::clampInt(data_get($input, 'access.session_hours'), 1, 168, 24),
+-                'account_sign_in' => static::bool(data_get($input, 'access.account_sign_in'), true),
+-                'account_upsell'  => static::bool(data_get($input, 'access.account_upsell'), true),
++                // This base TMS offers order tracking, not customer accounts or an order portal.
++                'account_sign_in' => false,
++                'account_upsell'  => false,
+             ],
+             'visibility'   => [
+                 'map'               => static::bool(data_get($input, 'visibility.map'), true),
+@@ -110,7 +111,7 @@ class TrackingPageConfig
+                 'item_prices'       => static::bool(data_get($input, 'visibility.item_prices'), false),
+                 'pod_photo'         => static::bool(data_get($input, 'visibility.pod_photo'), true),
+                 'pod_signature'     => static::bool(data_get($input, 'visibility.pod_signature'), true),
+-                'instructions_edit' => static::bool(data_get($input, 'visibility.instructions_edit'), false),
++                'instructions_edit' => false,
+                 'report_problem'    => static::bool(data_get($input, 'visibility.report_problem'), true),
+             ],
+         ];
+diff --git a/server/src/Support/TrackingPage/TrackingView.php b/server/src/Support/TrackingPage/TrackingView.php
+index 90ce61c..f58f7ae 100644
+--- a/server/src/Support/TrackingPage/TrackingView.php
++++ b/server/src/Support/TrackingPage/TrackingView.php
+@@ -19,10 +19,10 @@ use Illuminate\Support\Collection;
+  * What the public tracking page receives, per access level.
+  *
+  * Level 0 (a tracking number alone) carries branding, a coarse stage and how to verify.
+- * Level 1 (a verified device) and level 2 (a signed-in customer) carry one customer's
+- * stops within the order, built on TrackingUpdate, which already filters stops, timelines,
+- * the driver and the vehicle position to the scope. Staff of the owning company see what
+- * the customer sees.
++ * A verified tracking code carries one customer's stops within the order, built on
++ * TrackingUpdate, which already filters stops, timelines, the driver and the vehicle
++ * position to the scope. There is no customer account or order-list surface. Staff of the
++ * owning company see what the customer sees.
+  *
+  * Never sent at any level: internal uuids, notes, order meta, custom fields, files other
+  * than proof of delivery, rates or transactions, another customer's stops, items or
+@@ -32,7 +32,6 @@ use Illuminate\Support\Collection;
+ class TrackingView
+ {
+     public const VIEWER_VERIFIED = 'verified';
+-    public const VIEWER_ACCOUNT  = 'account';
+     public const VIEWER_STAFF    = 'staff';
+ 
+     /**
+@@ -114,7 +113,7 @@ class TrackingView
+         $stopsView  = $this->stops($own, collect($data['stops']), $stops);
+ 
+         return [
+-            'level'           => $viewer === self::VIEWER_ACCOUNT ? 2 : 1,
++            'level'           => 1,
+             'viewer'          => $viewer,
+             'tracking_number' => $target->trackingNumber->tracking_number,
+             'company'         => $branding,
+@@ -134,11 +133,11 @@ class TrackingView
+             'driver'          => $this->driver($data['driver'], $config),
+             'location'        => $location,
+             'map'             => $showMap ? $this->map($stops, $own, $tracker) : null,
+-            'items'           => data_get($config, 'visibility.items', true) ? $this->items($entities, $own, $viewer === self::VIEWER_ACCOUNT && data_get($config, 'visibility.item_prices', false) && $scope->isOrderCustomer($order)) : [],
++            'items'           => data_get($config, 'visibility.items', true) ? $this->items($entities, $own, data_get($config, 'visibility.item_prices', false) && $scope->isOrderCustomer($order)) : [],
+             'proofs'          => $this->proofs($order, $own, $entities, $scope, $config),
+             'instructions'    => [
+                 'text'     => $this->instructionsFor($order, $scope),
+-                'editable' => (bool) data_get($config, 'visibility.instructions_edit', false),
++                'editable' => false,
+             ],
+             'actions'         => [
+                 'report'         => (bool) data_get($config, 'visibility.report_problem', true),
+diff --git a/server/src/Support/Utils.php b/server/src/Support/Utils.php
+index e4747a3..8324589 100644
+--- a/server/src/Support/Utils.php
++++ b/server/src/Support/Utils.php
+@@ -37,7 +37,7 @@ class Utils extends FleetbaseUtils
+      * Resolution order:
+      * 1. Organization/company configured currency
+      * 2. Ledger accounting base currency
+-     * 3. USD
++     * 3. INR for this deployment when the company and ledger have no configured base.
+      */
+     public static function getCompanyTransactionCurrency(string|Company|null $company = null): string
+     {
+@@ -61,7 +61,7 @@ class Utils extends FleetbaseUtils
+             }
+         }
+ 
+-        return 'USD';
++        return 'INR';
+     }
+ 
+     /**
+diff --git a/server/src/routes.php b/server/src/routes.php
+index 3159aef..484277a 100644
+--- a/server/src/routes.php
++++ b/server/src/routes.php
+@@ -26,12 +26,10 @@ Route::prefix(config('fleetops.api.routing.prefix'))->namespace('Fleetbase\Fleet
+         // an unknown number; code sends and checks have limits of their own there too.
+         $router->prefix('public/track')->namespace('Public')->middleware([Fleetbase\FleetOps\Http\Middleware\ForceJsonResponse::class])->group(function ($router) {
+             $router->get('config', 'TrackingController@config');
+-            $router->get('account/orders', 'TrackingController@accountOrders');
+             $router->delete('session', 'TrackingController@signOut');
+             $router->get('{number}', 'TrackingController@show');
+             $router->post('{number}/codes', 'TrackingController@sendCode');
+             $router->post('{number}/codes/verify', 'TrackingController@verifyCode');
+-            $router->put('{number}/instructions', 'TrackingController@updateInstructions');
+             $router->get('{number}/proofs/{id}', 'TrackingController@proof');
+             $router->post('{number}/report', 'TrackingController@report');
+             $router->get('{number}/socket-token', 'TrackingController@socketToken');
+@@ -94,33 +92,8 @@ Route::prefix(config('fleetops.api.routing.prefix'))->namespace('Fleetbase\Fleet
+                 $router->get('/', 'OrderConfigController@query');
+                 $router->get('{id}', 'OrderConfigController@find');
+             });
+-            // customers routes — public B2C customer auth + customer-scoped orders.
+-            //  - Public endpoints: API key only (resolves company from credential)
+-            //  - Authenticated endpoints: API key + `Customer-Token` header (Sanctum)
+-            $router->group(['prefix' => 'customers', 'middleware' => []], function () use ($router) {
+-                // Public auth flows
+-                $router->post('request-creation-code', 'CustomerController@requestCreationCode')->middleware('throttle:5,1,fleetops-sms');
+-                $router->post('/', 'CustomerController@create');
+-                $router->post('login', 'CustomerController@login');
+-                $router->post('login-with-sms', 'CustomerController@loginWithPhone')->middleware('throttle:5,1,fleetops-sms');
+-                $router->post('verify-code', 'CustomerController@verifyCode');
+-                $router->post('forgot-password', 'CustomerController@forgotPassword')->middleware('throttle:5,1,fleetops-sms');
+-                $router->post('reset-password', 'CustomerController@resetPassword');
+-
+-                // Authenticated (require Customer-Token)
+-                $router->group(['middleware' => [Fleetbase\FleetOps\Http\Middleware\AuthenticateCustomerToken::class]], function () use ($router) {
+-                    $router->get('me', 'CustomerController@me');
+-                    $router->put('me', 'CustomerController@updateMe');
+-                    $router->match(['post', 'patch'], 'me', 'CustomerController@updateMe');
+-                    $router->post('logout', 'CustomerController@logout');
+-                    $router->post('logout-all', 'CustomerController@logoutAll');
+-                    $router->post('register-device', 'CustomerController@registerDevice');
+-                    $router->get('places', 'CustomerController@places');
+-                    $router->get('orders', 'CustomerController@orders');
+-                    $router->post('orders', 'CustomerController@createOrder');
+-                    $router->get('orders/{id}', 'CustomerController@findOrder');
+-                });
+-            });
++            // Customer records are company-scoped staff-managed contacts. This base TMS does
++            // not expose customer signup, authentication, self-service orders, or a portal API.
+             // vendors routes
+             $router->group(['prefix' => 'vendors'], function () use ($router) {
+                 $router->post('/', 'VendorController@create');
+@@ -759,11 +732,6 @@ Route::prefix(config('fleetops.api.routing.prefix'))->namespace('Fleetbase\Fleet
+                             ['prefix' => 'customers'],
+                             function () use ($router) {
+                                 $router->get('/', 'MorphController@queryCustomers');
+-                                $router->post('create-portal-login', 'CustomerController@createPortalLogin');
+-                                $router->post('reset-credentials', 'CustomerController@resetCredentials');
+-                                $router->post('send-credentials', 'CustomerController@sendCredentials');
+-                                $router->post('deactivate-portal-login', 'CustomerController@deactivatePortalLogin');
+-                                $router->post('reactivate-portal-login', 'CustomerController@reactivatePortalLogin');
+                             }
+                         );
+                         $router->group(
+@@ -815,10 +783,6 @@ Route::prefix(config('fleetops.api.routing.prefix'))->namespace('Fleetbase\Fleet
+                                 $router->group(
+                                     ['prefix' => 'settings', 'middleware' => []],
+                                     function ($router) {
+-                                        $router->get('customer-payments-config', 'SettingController@getCustomerPortalPaymentConfig');
+-                                        $router->post('customer-payments-config', 'SettingController@saveCustomerPortalPaymentConfig');
+-                                        $router->get('customer-enabled-order-configs', 'SettingController@getCustomerEnabledOrderConfigs');
+-                                        $router->post('customer-enabled-order-configs', 'SettingController@saveCustomerEnabledOrderConfigs');
+                                         $router->get('entity-editing-settings', 'SettingController@getEntityEditingSettings');
+                                         $router->post('entity-editing-settings', 'SettingController@saveEntityEditingSettings');
+                                         $router->post('driver-onboard-settings', 'SettingController@savedDriverOnboardSettings');
+diff --git a/server/tests/AnalyticsWidgetContractsTest.php b/server/tests/AnalyticsWidgetContractsTest.php
+index 8a8ec96..0875a02 100644
+--- a/server/tests/AnalyticsWidgetContractsTest.php
++++ b/server/tests/AnalyticsWidgetContractsTest.php
+@@ -1,6 +1,7 @@
+ <?php
+ 
+ use Fleetbase\FleetOps\Support\Analytics\FuelProviderSummary;
++use Fleetbase\FleetOps\Support\Analytics\AbstractAnalytics;
+ use Fleetbase\FleetOps\Support\Analytics\GeofenceViolations;
+ use Fleetbase\FleetOps\Support\Analytics\IssuesInsights;
+ use Fleetbase\FleetOps\Support\Analytics\MaintenanceOverview;
+@@ -11,6 +12,26 @@ use Fleetbase\FleetOps\Support\Analytics\RevenueTrend;
+ use Fleetbase\Models\Company;
+ use Illuminate\Support\Carbon;
+ 
++class FleetOpsAnalyticsCurrencyProbe extends AbstractAnalytics
++{
++    public function get(): array
++    {
++        return [];
++    }
++
++    public function currencyForTest(): string
++    {
++        return $this->companyCurrency();
++    }
++}
++
++test('analytics defaults an unset company currency to INR', function () {
++    $company = new Company();
++    $company->setRawAttributes(['uuid' => 'company-inr-default', 'currency' => null], true);
++
++    expect(FleetOpsAnalyticsCurrencyProbe::forCompany($company)->currencyForTest())->toBe('INR');
++});
++
+ class FleetOpsOrdersByStatusAnalyticsProbe extends OrdersByStatus
+ {
+     public array $periods = [];
+diff --git a/server/tests/AuthSchemaContractsTest.php b/server/tests/AuthSchemaContractsTest.php
+new file mode 100644
+index 0000000..4ede77e
+--- /dev/null
++++ b/server/tests/AuthSchemaContractsTest.php
+@@ -0,0 +1,18 @@
++<?php
++
++use Fleetbase\FleetOps\Auth\Schemas\FleetOps;
++
++it('lets dispatchers read places and order coordinators add places without granting destructive edits', function () {
++    $schema   = new FleetOps();
++    $policies = [];
++
++    foreach ($schema->policies as $policy) {
++        $policies[$policy['name']] = $policy['permissions'];
++    }
++
++    expect($policies['DispatchManager'])->toContain('see place', 'list place', 'view place')
++        ->not->toContain('create place', 'update place', 'delete place');
++
++    expect($policies['OrderCoordinator'])->toContain('see place', 'list place', 'view place', 'create place')
++        ->not->toContain('update place', 'delete place');
++});
+diff --git a/server/tests/Feature/Http/Api/OrderControllerCreateTest.php b/server/tests/Feature/Http/Api/OrderControllerCreateTest.php
+index 07f78f0..96dde1a 100644
+--- a/server/tests/Feature/Http/Api/OrderControllerCreateTest.php
++++ b/server/tests/Feature/Http/Api/OrderControllerCreateTest.php
+@@ -276,4 +276,24 @@ test('create surfaces customer identity conflicts as api errors', function () {
+         'dispatch' => false,
+     ]));
+     expect($existing->getData(true)['error'] ?? '')->toBe('That user already exists.');
++
++    // A payload created earlier in the same request must roll back when
++    // resolving the customer fails later in the order-creation flow.
++    $rollbackConnection = fleetopsApiOrderCreateBoot();
++    $rollbackController = new class extends OrderController {
++        protected function firstOrCreateCustomerContact(array $attributes, array $values): Fleetbase\FleetOps\Models\Contact
++        {
++            throw new Fleetbase\FleetOps\Exceptions\CustomerUserConflictException('A user already owns this email.');
++        }
++    };
++    $rollbackResponse = $rollbackController->create(CreateOrderRequest::create('/v1/orders', 'POST', [
++        'type'     => 'transport',
++        'payload'  => [],
++        'customer' => ['name' => 'Conflicted', 'email' => 'conflict@example.com'],
++        'dispatch' => false,
++    ]));
++
++    expect($rollbackResponse->getData(true)['error'] ?? '')->toBe('A user already owns this email.')
++        ->and($rollbackConnection->table('payloads')->count())->toBe(0)
++        ->and($rollbackConnection->table('orders')->count())->toBe(0);
+ });
+diff --git a/server/tests/Feature/Http/Api/OrderControllerStartActivityTest.php b/server/tests/Feature/Http/Api/OrderControllerStartActivityTest.php
+index 5309ffc..9b25970 100644
+--- a/server/tests/Feature/Http/Api/OrderControllerStartActivityTest.php
++++ b/server/tests/Feature/Http/Api/OrderControllerStartActivityTest.php
+@@ -160,7 +160,7 @@ function fleetopsOrderStartBoot(): SQLiteConnection
+         'tracking_numbers'    => ['uuid', 'public_id', 'company_uuid', 'tracking_number', 'region', 'location', 'status_uuid', 'owner_uuid', 'owner_type', 'qr_code', 'barcode', '_key'],
+         'tracking_statuses'   => ['uuid', 'public_id', 'company_uuid', 'tracking_number_uuid', 'proof_uuid', 'status', 'details', 'location', 'code', 'complete', '_key'],
+         'entities'            => ['uuid', 'public_id', 'company_uuid', 'payload_uuid', 'destination_uuid', 'tracking_number_uuid', 'customer_uuid', 'customer_type', 'name', 'type', 'meta', 'internal_id', 'qr_code', 'barcode', 'photo_uuid', '_key', '_import_id'],
+-        'proofs'              => ['uuid', 'public_id', 'company_uuid', 'subject_uuid', 'subject_type', 'remarks', 'raw_data', 'data'],
++        'proofs'              => ['uuid', 'public_id', 'company_uuid', 'order_uuid', 'subject_uuid', 'subject_type', 'remarks', 'raw_data', 'data'],
+         'companies'           => ['uuid', 'public_id', 'name', 'country'],
+         'positions'           => ['uuid', 'public_id', 'company_uuid', 'subject_uuid', 'subject_type', 'destination_uuid', 'coordinates', 'heading', 'bearing', 'speed', 'altitude', 'order_uuid', '_key'],
+         'purchase_rates'      => ['uuid', 'public_id', 'company_uuid', 'customer_uuid', 'customer_type', 'service_quote_uuid', 'payload_uuid', 'order_uuid', 'status', 'amount', 'currency', '_key'],
+@@ -300,6 +300,55 @@ test('start order with skip dispatch starts the order and assigns the job', func
+         ->and(collect(FleetOpsOrderStartRecorder::$events)->first(fn ($event) => $event instanceof Fleetbase\FleetOps\Events\OrderStarted))->not->toBeNull();
+ });
+ 
++test('start order rejects cross-company driver or payload relations without mutating either tenant', function () {
++    $connection = fleetopsOrderStartBoot();
++    fleetopsOrderStartSeedOrder($connection, ['driver_assigned_uuid' => 'driver-2']);
++    $connection->table('users')->insert(['uuid' => 'user-2', 'company_uuid' => 'company-2', 'name' => 'Foreign Driver']);
++    $connection->table('drivers')->insert([
++        'uuid'         => 'driver-2',
++        'public_id'    => 'driver_foreign',
++        'company_uuid' => 'company-2',
++        'user_uuid'    => 'user-2',
++    ]);
++
++    $driverRejected = (new OrderController())->startOrder('order_start', Request::create('/x', 'POST', ['skip_dispatch' => 1]));
++    expect($driverRejected->getData(true)['error'])->toContain('No driver assigned')
++        ->and((int) $connection->table('orders')->value('started'))->toBe(0)
++        ->and($connection->table('drivers')->where('uuid', 'driver-2')->value('current_job_uuid'))->toBeNull();
++
++    // A valid tenant driver must not allow the start path to read or mutate a
++    // payload that has been attached to the order with a foreign tenant key.
++    $connection->table('orders')->where('uuid', 'order-1')->update([
++        'driver_assigned_uuid' => 'driver-1',
++        'payload_uuid'         => 'payload-foreign',
++    ]);
++    $connection->table('payloads')->insert([
++        'uuid'                  => 'payload-foreign',
++        'company_uuid'          => 'company-2',
++        'current_waypoint_uuid' => 'foreign-waypoint-before',
++    ]);
++
++    $payloadRejected = (new OrderController())->startOrder('order_start', Request::create('/x', 'POST', ['skip_dispatch' => 1]));
++    expect($payloadRejected->getStatusCode())->toBe(404)
++        ->and($payloadRejected->getData(true)['error'])->toContain('Payload resource not found')
++        ->and((int) $connection->table('orders')->value('started'))->toBe(0)
++        ->and($connection->table('drivers')->where('uuid', 'driver-1')->value('current_job_uuid'))->toBeNull()
++        ->and($connection->table('payloads')->where('uuid', 'payload-foreign')->value('current_waypoint_uuid'))->toBe('foreign-waypoint-before');
++});
++
++test('order lifecycle lookup fails closed when the request has no tenant context', function () {
++    $connection = fleetopsOrderStartBoot();
++    fleetopsOrderStartSeedOrder($connection, ['driver_assigned_uuid' => 'driver-1']);
++    session()->forget('company');
++
++    $response = (new OrderController())->startOrder('order_start', Request::create('/x', 'POST', ['skip_dispatch' => 1]));
++
++    expect($response)->toBeInstanceOf(JsonResponse::class)
++        ->and($response->getStatusCode())->toBe(404)
++        ->and((int) $connection->table('orders')->value('started'))->toBe(0)
++        ->and($connection->table('drivers')->where('uuid', 'driver-1')->value('current_job_uuid'))->toBeNull();
++});
++
+ test('update activity rejects unknown and completed orders', function () {
+     $connection = fleetopsOrderStartBoot();
+     $controller = new OrderController();
+@@ -364,6 +413,51 @@ test('lifecycle activities update classic orders through to completion', functio
+     expect($connection->table('tracking_statuses')->where('code', 'COMPLETED')->count())->toBeGreaterThanOrEqual(1);
+ });
+ 
++test('mobile API requires an order-scoped proof before completing a POD order', function () {
++    $connection = fleetopsOrderStartBoot();
++    fleetopsOrderStartSeedOrder($connection, [
++        'status'               => 'started',
++        'started'              => 1,
++        'driver_assigned_uuid' => 'driver-1',
++        'pod_required'         => 1,
++    ]);
++    $controller       = new OrderController();
++    $completeActivity = [
++        'key' => 'order_completed', 'code' => 'completed', 'status' => 'Completed', 'details' => 'Completed', 'complete' => true,
++    ];
++
++    $missing = $controller->updateActivity('order_start', Request::create('/x', 'POST', ['activity' => $completeActivity]));
++    expect($missing->getStatusCode())->toBe(422)
++        ->and($missing->getData(true)['error'])->toContain('Proof of delivery is required')
++        ->and($connection->table('orders')->value('status'))->toBe('started');
++
++    $connection->table('proofs')->insert([
++        'uuid'         => 'proof-foreign',
++        'public_id'    => 'proof_foreign',
++        'company_uuid' => 'company-2',
++        'order_uuid'   => 'order-foreign',
++    ]);
++    $foreign = $controller->updateActivity('order_start', Request::create('/x', 'POST', [
++        'activity' => $completeActivity,
++        'proof'    => 'proof_foreign',
++    ]));
++    expect($foreign->getStatusCode())->toBe(422)
++        ->and($connection->table('orders')->value('status'))->toBe('started');
++
++    $connection->table('proofs')->insert([
++        'uuid'         => 'proof-local',
++        'public_id'    => 'proof_local',
++        'company_uuid' => 'company-1',
++        'order_uuid'   => 'order-1',
++    ]);
++    $completed = $controller->updateActivity('order_start', Request::create('/x', 'POST', [
++        'activity' => $completeActivity,
++        'proof'    => 'proof_local',
++    ]));
++    expect($completed)->not->toBeNull()
++        ->and($connection->table('orders')->value('status'))->toBe('completed');
++});
++
+ test('waypoint activities gate on started and advance service stops', function () {
+     $connection = fleetopsOrderStartBoot();
+     fleetopsOrderStartSeedOrder($connection, ['status' => 'created', 'driver_assigned_uuid' => 'driver-1']);
+@@ -570,6 +664,26 @@ test('adhoc start assigns the driver and primes multi-stop payloads', function (
+         ->and($connection->table('payloads')->value('current_waypoint_uuid'))->not->toBeNull();
+ });
+ 
++test('adhoc start rejects a driver from another company without changing assignments', function () {
++    $connection = fleetopsOrderStartBoot();
++    fleetopsOrderStartSeedOrder($connection, ['adhoc' => 1, 'driver_assigned_uuid' => null]);
++    $connection->table('users')->insert(['uuid' => 'user-2', 'company_uuid' => 'company-2', 'name' => 'Driver Two']);
++    $connection->table('drivers')->insert([
++        'uuid'         => 'driver-2',
++        'public_id'    => 'driver_foreign',
++        'company_uuid' => 'company-2',
++        'user_uuid'    => 'user-2',
++    ]);
++
++    expect(fn () => (new OrderController())->startOrder('order_start', Request::create('/x', 'POST', [
++        'skip_dispatch' => 1,
++        'assign'        => 'driver_foreign',
++    ])))->toThrow(\Illuminate\Database\Eloquent\ModelNotFoundException::class)
++        ->and($connection->table('orders')->value('driver_assigned_uuid'))->toBeNull()
++        ->and($connection->table('orders')->value('started'))->toBe(0)
++        ->and($connection->table('drivers')->where('uuid', 'driver-2')->value('current_job_uuid'))->toBeNull();
++});
++
+ test('dispatch entity and waypoint gating branches update activities', function () {
+     $connection = fleetopsOrderStartBoot();
+     fleetopsOrderStartSeedOrder($connection, ['status' => 'created', 'driver_assigned_uuid' => 'driver-1']);
+diff --git a/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php b/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
+index 855ac2f..b7181a5 100644
+--- a/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
++++ b/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
+@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
+ use Illuminate\Database\SQLiteConnection;
+ use Illuminate\Http\JsonResponse;
+ use Illuminate\Http\Request;
++use Illuminate\Support\Facades\Cache;
+ 
+ /**
+  * Covers the internal OrderController createRecord flow end to end against an
+@@ -217,6 +218,7 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
+     }
+ 
+     session(['company' => 'company-1']);
++    Cache::swap(new Illuminate\Cache\Repository(new Illuminate\Cache\ArrayStore()));
+     $connection->table('companies')->insert(['uuid' => 'company-1', 'name' => 'Acme']);
+     $connection->table('order_configs')->insert([
+         'uuid'         => 'config-1',
+@@ -234,6 +236,13 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
+     return $connection;
+ }
+ 
++function fleetopsInternalOrderCreateRequest(array $order, ?string $idempotencyKey = null): Request
++{
++    $server = $idempotencyKey === null ? [] : ['HTTP_IDEMPOTENCY_KEY' => $idempotencyKey];
++
++    return Request::create('/int/v1/orders', 'POST', ['order' => $order], [], [], $server);
++}
++
+ test('create record persists an order with the default transport config', function () {
+     $connection = fleetopsInternalOrderCreateBoot();
+ 
+@@ -254,6 +263,43 @@ test('create record persists an order with the default transport config', functi
+         ->and($connection->table('payloads')->count())->toBe(1);
+ });
+ 
++test('internal order creation replays a successful request with the same idempotency key', function () {
++    $connection = fleetopsInternalOrderCreateBoot();
++    $controller = new OrderController();
++    $orderInput = [
++        'dispatched' => false,
++        'payload'    => ['type' => 'transport'],
++    ];
++
++    $first = $controller->createRecord(fleetopsInternalOrderCreateRequest($orderInput, 'console-order-create-1'));
++    $replay = $controller->createRecord(fleetopsInternalOrderCreateRequest($orderInput, 'console-order-create-1'));
++
++    expect($first)->toBeArray()->toHaveKey('order')
++        ->and($connection->table('orders')->count())->toBe(1)
++        ->and($replay)->toBeInstanceOf(JsonResponse::class)
++        ->and($replay->headers->get('Idempotent-Replayed'))->toBe('true')
++        ->and($replay->getData(true))->toHaveKey('order');
++});
++
++test('internal order creation rejects reuse of an idempotency key with a different payload', function () {
++    $connection = fleetopsInternalOrderCreateBoot();
++    $controller = new OrderController();
++
++    $controller->createRecord(fleetopsInternalOrderCreateRequest([
++        'dispatched' => false,
++        'payload'    => ['type' => 'transport'],
++    ], 'console-order-create-conflict'));
++    $conflict = $controller->createRecord(fleetopsInternalOrderCreateRequest([
++        'dispatched' => false,
++        'payload'    => ['type' => 'transport', 'entities' => [['name' => 'Different request']]],
++    ], 'console-order-create-conflict'));
++
++    expect($connection->table('orders')->count())->toBe(1)
++        ->and($conflict)->toBeInstanceOf(JsonResponse::class)
++        ->and($conflict->getStatusCode())->toBe(409)
++        ->and($conflict->getData(true)['errors'][0] ?? null)->toContain('different order request');
++});
++
+ test('create record inserts waypoints entities and attaches files', function () {
+     $connection = fleetopsInternalOrderCreateBoot();
+     $connection->table('places')->insert(['uuid' => '55555555-5555-4555-8555-555555555555', 'company_uuid' => 'company-1', 'name' => 'Depot']);
+diff --git a/server/tests/Feature/Http/Public/TrackingControllerTest.php b/server/tests/Feature/Http/Public/TrackingControllerTest.php
+index 623549f..0c1831b 100644
+--- a/server/tests/Feature/Http/Public/TrackingControllerTest.php
++++ b/server/tests/Feature/Http/Public/TrackingControllerTest.php
+@@ -2,7 +2,6 @@
+ 
+ use Fleetbase\FleetOps\Http\Controllers\Public\TrackingController;
+ use Fleetbase\FleetOps\Models\Contact;
+-use Fleetbase\FleetOps\Models\Entity;
+ use Fleetbase\FleetOps\Models\Order;
+ use Fleetbase\FleetOps\Models\Place;
+ use Fleetbase\FleetOps\Models\Proof;
+@@ -142,7 +141,7 @@ class TrackingControllerViewFake extends TrackingView
+     {
+         $this->calls[] = $viewer;
+ 
+-        return ['level' => $viewer === self::VIEWER_ACCOUNT ? 2 : 1, 'viewer' => $viewer, 'expires_at' => $expiresAt, 'company' => $branding];
++        return ['level' => 1, 'viewer' => $viewer, 'expires_at' => $expiresAt, 'company' => $branding];
+     }
+ 
+     public function proofFor(TrackingTarget $target, string $publicId): ?Proof
+@@ -157,9 +156,7 @@ class TrackingControllerProbe extends TrackingController
+     public array $sms            = [];
+     public array $mails          = [];
+     public array $providers      = [];
+-    public bool $portal          = true;
+     public bool $sockets         = false;
+-    public ?array $contactsOver  = null;
+ 
+     public function __construct(public TrackingControllerResolverFake $fakeResolver, public TrackingControllerAccessFake $fakeAccess, public TrackingControllerViewFake $fakeView)
+     {
+@@ -176,11 +173,6 @@ class TrackingControllerProbe extends TrackingController
+         return $this->providers;
+     }
+ 
+-    protected function customerPortalInstalled(): bool
+-    {
+-        return $this->portal;
+-    }
+-
+     protected function instanceLogo(): ?string
+     {
+         return 'https://instance.example/logo.png';
+@@ -220,18 +212,6 @@ class TrackingControllerProbe extends TrackingController
+     }
+ }
+ 
+-class TrackingControllerOrder extends Order
+-{
+-    public bool $saved = false;
+-
+-    public function saveQuietly(array $options = [])
+-    {
+-        $this->saved = true;
+-
+-        return true;
+-    }
+-}
+-
+ afterEach(function () {
+     EloquentModel::unsetConnectionResolver();
+     config(['services.twilio.sid' => null, 'services.twilio.token' => null]);
+@@ -246,7 +226,7 @@ function trackingController(): TrackingControllerProbe
+ 
+ function trackingControllerTarget(array $config = [], bool $scoped = true, ?Waypoint $waypoint = null): TrackingTarget
+ {
+-    $order = new TrackingControllerOrder();
++    $order = new Order();
+     $order->setRawAttributes(['uuid' => 'order-1', 'company_uuid' => 'co-1', 'customer_uuid' => 'contact-1', 'customer_type' => Contact::class, 'meta' => json_encode([])], true);
+ 
+     $trackingNumber = new TrackingNumber();
+@@ -303,14 +283,15 @@ test('lookups answer unknown and throttled numbers alike, and show what the view
+     $public = $controller->show(trackingControllerRequest(['org' => 'Northwind']), 'NOR1000000001US')->getData(true);
+     expect($public['level'])->toBe(0)
+         ->and(array_column($public['channels'], 'type'))->toBe(['sms', 'email'])
+-        ->and($public['sign_in'])->toBeTrue()
++        ->and($public['sign_in'])->toBeFalse()
+         ->and($controller->fakeResolver->resolved[1])->toBe(['NOR1000000001US', 'northwind']);
+ 
+     $controller->fakeResolver->target = trackingControllerTarget(['access' => ['account_sign_in' => false]], false);
+     $unscoped                         = $controller->show(trackingControllerRequest(), 'NOR1000000001US')->getData(true);
+     expect($unscoped['channels'])->toBe([])->and($unscoped['sign_in'])->toBeFalse();
+ 
+-    // A verified device, a signed-in customer and staff of the owning company see the full view.
++    // A verified device and staff of the owning company see the full view. Customer
++    // accounts never bypass per-delivery verification in the base TMS.
+     $controller->fakeResolver->target = trackingControllerTarget();
+     $controller->fakeAccess->granted  = true;
+     expect($controller->show(trackingControllerRequest(), 'NOR1000000001US')->getData(true))->toMatchArray(['viewer' => 'verified', 'expires_at' => '2026-10-09T09:00:00.000000Z']);
+@@ -321,7 +302,7 @@ test('lookups answer unknown and throttled numbers alike, and show what the view
+     expect($controller->show(trackingControllerRequest(), 'NOR1000000001US')->getData(true)['level'])->toBe(0);
+ 
+     Illuminate\Database\Eloquent\Model::getConnectionResolver()->connection()->table('contacts')->where('uuid', 'contact-1')->update(['user_uuid' => 'user-1']);
+-    expect($controller->show(trackingControllerRequest(), 'NOR1000000001US')->getData(true))->toMatchArray(['viewer' => 'account', 'level' => 2, 'expires_at' => null]);
++    expect($controller->show(trackingControllerRequest(), 'NOR1000000001US')->getData(true)['level'])->toBe(0);
+ 
+     $controller->user = (object) ['uuid' => 'user-2', 'type' => 'user', 'company_uuid' => 'co-1'];
+     expect($controller->show(trackingControllerRequest(), 'NOR1000000001US')->getData(true)['viewer'])->toBe('staff');
+@@ -421,27 +402,17 @@ test('signing out drops one delivery or the whole device', function () {
+         ->and($controller->fakeAccess->revoked[1])->toBeNull();
+ });
+ 
+-test('delivery instructions, proofs, reports and socket tokens need a verified viewer', function () {
++test('proofs, reports and socket tokens need a verified viewer and tracking instructions stay read-only', function () {
+     $controller = trackingController();
+ 
+-    foreach (['updateInstructions', 'report', 'socketToken'] as $method) {
++    foreach (['report', 'socketToken'] as $method) {
+         expect($controller->{$method}(trackingControllerRequest(), 'NOR1')->getStatusCode())->toBe(404);
+     }
+     expect($controller->proof(trackingControllerRequest(), 'NOR1', 'proof_1')->getStatusCode())->toBe(404);
+ 
+     $controller->fakeResolver->target = trackingControllerTarget();
+-    expect($controller->updateInstructions(trackingControllerRequest(), 'NOR1')->getStatusCode())->toBe(404);
+-
+     $controller->fakeAccess->granted = true;
+ 
+-    // Instructions
+-    expect($controller->updateInstructions(trackingControllerRequest(['text' => 'Gate 4']), 'NOR1')->getStatusCode())->toBe(403);
+-    $controller->fakeResolver->target = trackingControllerTarget(['visibility' => ['instructions_edit' => true]]);
+-    $controller->updateInstructions(trackingControllerRequest(['text' => '  Leave with concierge  ']), 'NOR1');
+-    $order = $controller->fakeResolver->target->order;
+-    expect($order->saved)->toBeTrue()
+-        ->and($order->getMeta('recipient_instructions'))->toBe([sha1('order-1:' . Contact::class . ':contact-1') => 'Leave with concierge']);
+-
+     // Proofs
+     expect($controller->proof(trackingControllerRequest(), 'NOR1', 'proof_1')->getStatusCode())->toBe(404);
+     $controller->fakeView->proof = new Proof();
+@@ -471,25 +442,3 @@ test('delivery instructions, proofs, reports and socket tokens need a verified v
+     expect($controller->socketToken(trackingControllerRequest(), 'NOR1')->getData(true))->toBe(['token' => 'jwt', 'expires_in' => 1800, 'expires_at' => '2026-10-08T09:30:00Z']);
+ });
+ 
+-test('a signed-in customer lists their orders with the number that opens their part', function () {
+-    $controller = trackingController();
+-    $db         = Illuminate\Database\Eloquent\Model::getConnectionResolver()->connection();
+-
+-    expect($controller->accountOrders(trackingControllerRequest())->getStatusCode())->toBe(401);
+-
+-    $controller->user = (object) ['uuid' => 'user-1', 'type' => 'customer'];
+-    TrackingPageDatabase::insert($db, 'contacts', ['uuid' => 'contact-1', 'user_uuid' => 'user-1']);
+-    TrackingPageDatabase::insert($db, 'tracking_numbers', ['uuid' => 'tn-own', 'tracking_number' => 'NOR1']);
+-    TrackingPageDatabase::insert($db, 'tracking_numbers', ['uuid' => 'tn-stop', 'tracking_number' => 'NOR2-STOP']);
+-    TrackingPageDatabase::insert($db, 'orders', ['uuid' => 'order-own', 'customer_uuid' => 'contact-1', 'customer_type' => Contact::class, 'tracking_number_uuid' => 'tn-own', 'payload_uuid' => 'p-own', 'status' => 'completed', 'created_at' => '2026-10-07 09:00:00', 'updated_at' => '2026-10-07 10:00:00']);
+-    TrackingPageDatabase::insert($db, 'orders', ['uuid' => 'order-stop', 'customer_uuid' => 'shipper', 'customer_type' => Contact::class, 'payload_uuid' => 'p-stop', 'status' => 'created', 'created_at' => '2026-10-08 09:00:00']);
+-    TrackingPageDatabase::insert($db, 'orders', ['uuid' => 'order-none', 'customer_uuid' => 'contact-1', 'customer_type' => Contact::class, 'payload_uuid' => 'p-none', 'created_at' => '2026-10-06 09:00:00']);
+-    TrackingPageDatabase::insert($db, 'waypoints', ['uuid' => 'wp-1', 'payload_uuid' => 'p-stop', 'customer_uuid' => 'contact-1', 'customer_type' => Contact::class, 'tracking_number_uuid' => 'tn-stop']);
+-    TrackingPageDatabase::insert($db, 'entities', ['uuid' => 'e-1', 'payload_uuid' => 'p-own', 'name' => 'Ceramic lamp']);
+-
+-    $orders = $controller->accountOrders(trackingControllerRequest())->getData(true)['orders'];
+-    expect($orders)->toBe([
+-        ['tracking_number' => 'NOR2-STOP', 'title' => null, 'status' => 'created', 'stage' => 'preparing', 'updated_at' => null],
+-        ['tracking_number' => 'NOR1', 'title' => 'Ceramic lamp', 'status' => 'completed', 'stage' => 'delivered', 'updated_at' => '2026-10-07T10:00:00.000000Z'],
+-    ]);
+-});
+diff --git a/server/tests/ObserverContractsTest.php b/server/tests/ObserverContractsTest.php
+index 015a004..7a5c2e6 100644
+--- a/server/tests/ObserverContractsTest.php
++++ b/server/tests/ObserverContractsTest.php
+@@ -281,7 +281,7 @@ class FleetOpsVehicleObserverProbe extends VehicleObserver
+         return $this->identifier;
+     }
+ 
+-    protected function findDriver(string $identifier): ?Driver
++    protected function findDriver(string $identifier, ?string $companyUuid): ?Driver
+     {
+         return $this->driver && $identifier === $this->identifier ? $this->driver : null;
+     }
+diff --git a/server/tests/RouteRegistrationExecutionTest.php b/server/tests/RouteRegistrationExecutionTest.php
+index 11b6eda..184ee6b 100644
+--- a/server/tests/RouteRegistrationExecutionTest.php
++++ b/server/tests/RouteRegistrationExecutionTest.php
+@@ -235,12 +235,10 @@ test('fleetops route file registers public internal analytics metrics and hub ro
+     $tracking = collect($recorder->routes)->filter(fn (array $route) => str_starts_with($route['uri'], 'public/track/'));
+     expect($tracking->pluck('action', 'uri')->all())->toMatchArray([
+         'public/track/config'                    => 'TrackingController@config',
+-        'public/track/account/orders'            => 'TrackingController@accountOrders',
+         'public/track/session'                   => 'TrackingController@signOut',
+         'public/track/{number}'                  => 'TrackingController@show',
+         'public/track/{number}/codes'            => 'TrackingController@sendCode',
+         'public/track/{number}/codes/verify'     => 'TrackingController@verifyCode',
+-        'public/track/{number}/instructions'     => 'TrackingController@updateInstructions',
+         'public/track/{number}/proofs/{id}'      => 'TrackingController@proof',
+         'public/track/{number}/report'           => 'TrackingController@report',
+         'public/track/{number}/socket-token'     => 'TrackingController@socketToken',
+diff --git a/server/tests/SupportValueObjectsTest.php b/server/tests/SupportValueObjectsTest.php
+index 32f816d..b4b9d24 100644
+--- a/server/tests/SupportValueObjectsTest.php
++++ b/server/tests/SupportValueObjectsTest.php
+@@ -133,6 +133,14 @@ namespace {
+             ->and(Point::hex2str('48656c6c6f'))->toBe('Hello');
+     });
+ 
++    test('point cast accepts numeric coordinates entered as text', function () {
++        $cast = new Point();
++        $place = new class { public array $geometries = []; };
++        $value = $cast->set($place, 'location', ['type' => 'Point', 'coordinates' => ['89.6393', '27.4728'], 'bbox' => ['89.6393', '27.4728', '89.6393', '27.4728']], []);
++
++        expect($value)->toBeInstanceOf(\Fleetbase\LaravelMysqlSpatial\Eloquent\SpatialExpression::class);
++    });
++
+     test('polyline encoding round trips flattened and paired coordinate lists', function () {
+         $points  = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]];
+         $encoded = Polyline::encode($points);
+diff --git a/server/tests/TrackingPageSettingsTest.php b/server/tests/TrackingPageSettingsTest.php
+index 9a027c7..8fa6270 100644
+--- a/server/tests/TrackingPageSettingsTest.php
++++ b/server/tests/TrackingPageSettingsTest.php
+@@ -11,7 +11,6 @@ class FleetOpsTrackingPageSettingProbe extends SettingController
+     public array $configured      = [];
+     public mixed $company         = null;
+     public array $smsProviders    = [];
+-    public array $extensions      = [];
+ 
+     public function __construct()
+     {
+@@ -52,10 +51,6 @@ class FleetOpsTrackingPageSettingProbe extends SettingController
+         return $this->smsProviders;
+     }
+ 
+-    protected function installedFleetbaseExtensions(): array
+-    {
+-        return $this->extensions;
+-    }
+ }
+ 
+ function fleetopsTrackingPageProbe(): FleetOpsTrackingPageSettingProbe
+@@ -96,8 +91,8 @@ test('tracking page config fills every key with defaults for an empty company se
+             'public_status'   => true,
+             'channels'        => ['sms' => true, 'email' => true],
+             'session_hours'   => 24,
+-            'account_sign_in' => true,
+-            'account_upsell'  => true,
++            'account_sign_in' => false,
++            'account_upsell'  => false,
+         ])
+         ->and($config['visibility'])->toBe([
+             'map'               => true,
+@@ -133,7 +128,7 @@ test('tracking page config keeps valid values and replaces invalid ones', functi
+             'unknown'        => 'dropped',
+         ],
+         'access'       => ['public_status' => 'no', 'channels' => ['sms' => 'maybe', 'email' => false], 'session_hours' => 500],
+-        'visibility'   => ['driver_contact' => 'driver', 'item_prices' => 1, 'map' => 'off'],
++        'visibility'   => ['driver_contact' => 'driver', 'item_prices' => 1, 'map' => 'off', 'instructions_edit' => true],
+         'extra'        => ['dropped' => true],
+     ], ['branding' => ['accent' => '#123456', 'powered_by' => false]], 'Ignored');
+ 
+@@ -158,6 +153,7 @@ test('tracking page config keeps valid values and replaces invalid ones', functi
+         ->and($config['access']['session_hours'])->toBe(168)
+         ->and($config['visibility']['driver_contact'])->toBe('driver')
+         ->and($config['visibility']['item_prices'])->toBeTrue()
++        ->and($config['visibility']['instructions_edit'])->toBeFalse()
+         ->and($config['visibility']['map'])->toBeFalse();
+ 
+     $fallback = TrackingPageConfig::sanitize([
+@@ -245,14 +241,14 @@ test('tracking page settings read back with what the settings screen explains',
+         ->and($view['accent_ink'])->toBe('#FFFFFF')
+         ->and($view['accent_contrast'])->toBeGreaterThan(4.5)
+         ->and($view['sms_available'])->toBeFalse()
+-        ->and($view['customer_portal_installed'])->toBeFalse()
++        ->and($view)->not->toHaveKey('customer_portal_installed')
+         ->and($view['admin']['generic_page'])->toBe(['enabled' => true]);
+ 
+-    $probe->extensions   = [['name' => 'fleetbase/customer-portal-api']];
+     $probe->smsProviders = ['twilio' => ['available' => true], 'vonage' => ['available' => true]];
+ 
+     expect($probe->getTrackingPageSettings()->getData(true))
+-        ->toMatchArray(['sms_available' => true, 'customer_portal_installed' => true]);
++        ->toMatchArray(['sms_available' => true])
++        ->not->toHaveKey('customer_portal_installed');
+ 
+     $probe->smsProviders = ['twilio' => ['available' => true]];
+     expect($probe->getTrackingPageSettings()->getData(true)['sms_available'])->toBeFalse();
+diff --git a/server/tests/Unit/Exports/VehicleExportTest.php b/server/tests/Unit/Exports/VehicleExportTest.php
+index c47985d..42cc7a8 100644
+--- a/server/tests/Unit/Exports/VehicleExportTest.php
++++ b/server/tests/Unit/Exports/VehicleExportTest.php
+@@ -278,7 +278,9 @@ test('vehicle export formats columns and helper fallbacks', function () {
+         ->and($export->currentOrderReferenceForTest($vehicle))->toBe('active_public')
+         ->and($export->locationPartForTest((object) ['latitude' => 12.34, 'longitude' => 56.78], 'lat'))->toBe(12.34)
+         ->and($export->locationPartForTest((object) ['latitude' => 12.34, 'longitude' => 56.78], 'lng'))->toBe(56.78)
+-        ->and($export->moneyForTest(12345, null))->toBe('$123.45');
++        ->and($export->moneyForTest(12345, null))->toContain('123.45')
++        ->and($export->moneyForTest(12345, null))->toContain('₹')
++        ->and($export->moneyForTest(12345, 'USD'))->toBe('$123.45');
+ 
+     Carbon::setTestNow();
+ });
+diff --git a/server/tests/Unit/Observers/ObserverListenerSeamsTest.php b/server/tests/Unit/Observers/ObserverListenerSeamsTest.php
+index 48e7277..7a0e8cd 100644
+--- a/server/tests/Unit/Observers/ObserverListenerSeamsTest.php
++++ b/server/tests/Unit/Observers/ObserverListenerSeamsTest.php
+@@ -117,10 +117,12 @@ test('vehicle observer seams resolve drivers and release assignments', function
+     $connection->table('users')->insert([
+         ['uuid' => 'user-veh-1', 'company_uuid' => 'company-seam-1', 'type' => 'driver'],
+         ['uuid' => 'user-veh-2', 'company_uuid' => 'company-seam-1', 'type' => 'driver'],
++        ['uuid' => 'user-veh-3', 'company_uuid' => 'company-seam-2', 'type' => 'driver'],
+     ]);
+     $connection->table('drivers')->insert([
+         ['uuid' => 'driver-veh-1', 'company_uuid' => 'company-seam-1', 'vehicle_uuid' => 'vehicle-seam-1', 'user_uuid' => 'user-veh-1'],
+         ['uuid' => 'driver-veh-2', 'company_uuid' => 'company-seam-1', 'vehicle_uuid' => 'vehicle-other', 'user_uuid' => 'user-veh-2'],
++        ['uuid' => 'driver-veh-3', 'company_uuid' => 'company-seam-2', 'vehicle_uuid' => 'vehicle-seam-1', 'user_uuid' => 'user-veh-3'],
+     ]);
+ 
+     // Identifiers come off the request under any of the accepted keys
+@@ -139,15 +141,17 @@ test('vehicle observer seams resolve drivers and release assignments', function
+     expect(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'getDriverIdentifier'))->toBe('driver-veh-1');
+ 
+     // Lookups ignore soft-deleted rows and bypass the driver scope
+-    expect(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'findDriver', ['driver-veh-1'])?->uuid)->toBe('driver-veh-1')
+-        ->and(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'findDriver', ['driver-missing']))->toBeNull();
++    expect(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'findDriver', ['driver-veh-1', 'company-seam-1'])?->uuid)->toBe('driver-veh-1')
++        ->and(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'findDriver', ['driver-veh-3', 'company-seam-1']))->toBeNull()
++        ->and(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'findDriver', ['driver-veh-1', null]))->toBeNull()
++        ->and(fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'findDriver', ['driver-missing', 'company-seam-1']))->toBeNull();
+ 
+     // Deleting a vehicle unassigns only the drivers assigned to it, and keeps them
+     $vehicle = new Vehicle();
+-    $vehicle->setRawAttributes(['uuid' => 'vehicle-seam-1'], true);
++    $vehicle->setRawAttributes(['uuid' => 'vehicle-seam-1', 'company_uuid' => 'company-seam-1'], true);
+     fleetopsObserverSeamInvoke(Fleetbase\FleetOps\Observers\VehicleObserver::class, 'unassignDriversFrom', [$vehicle]);
+ 
+-    expect($connection->table('drivers')->whereNull('deleted_at')->pluck('vehicle_uuid', 'uuid')->all())->toBe(['driver-veh-1' => null, 'driver-veh-2' => 'vehicle-other']);
++    expect($connection->table('drivers')->whereNull('deleted_at')->pluck('vehicle_uuid', 'uuid')->all())->toBe(['driver-veh-1' => null, 'driver-veh-2' => 'vehicle-other', 'driver-veh-3' => 'vehicle-seam-1']);
+ });
+ 
+ test('fleet observer clears the parent reference from child fleets', function () {
+diff --git a/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php b/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php
+index 4614c85..a352b9c 100644
+--- a/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php
++++ b/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php
+@@ -270,7 +270,7 @@ test('a verified customer sees only their own stop on an order with several cust
+         ->and($data['items'])->toBe([['id' => 'entity_a1', 'stop' => 'waypoint_wp-a', 'name' => 'Item a1', 'description' => 'Boxed', 'quantity' => 2]])
+         // The stop's own setup entry is left out; the rest name the stop.
+         ->and($data['timeline'])->toBe([['status' => 'Out for delivery', 'code' => 'enroute', 'complete' => false, 'created_at' => '2026-10-08T08:45:00.000000Z', 'stop' => 'waypoint_wp-a', 'place' => 'Maya Flat']])
+-        ->and($data['instructions'])->toBe(['text' => 'Leave with concierge', 'editable' => true])
++        ->and($data['instructions'])->toBe(['text' => 'Leave with concierge', 'editable' => false])
+         ->and($data['actions'])->toBe(['report' => true, 'driver_contact' => 'company'])
+         ->and($data['session'])->toBe(['expires_at' => '2026-10-09T09:00:00.000000Z'])
+         ->and($data['stale_after'])->toBe(300)
+@@ -305,9 +305,9 @@ test('the route line, prices and proofs appear only when the customer may see th
+     $scan->setRawAttributes(['public_id' => 'proof_scan', 'remarks' => 'Verified by QR Code Scan'], true);
+     $view->proofRows = collect([$signature, $photo, $scan]);
+ 
+-    $data = $view->fullView(trackingViewTarget($order, $scope, ['visibility' => ['item_prices' => true, 'pod_photo' => false]]), [], TrackingView::VIEWER_ACCOUNT);
++    $data = $view->fullView(trackingViewTarget($order, $scope, ['visibility' => ['item_prices' => true, 'pod_photo' => false]]), [], TrackingView::VIEWER_VERIFIED);
+ 
+-    expect($data['level'])->toBe(2)
++    expect($data['level'])->toBe(1)
+         ->and($data['stage'])->toBe('delivered')
+         ->and($data['driver'])->toBeNull()
+         ->and($data['location'])->toBeNull()
+diff --git a/server/tests/Unit/Support/UtilsAdditionalTest.php b/server/tests/Unit/Support/UtilsAdditionalTest.php
+index f438b87..b179d83 100644
+--- a/server/tests/Unit/Support/UtilsAdditionalTest.php
++++ b/server/tests/Unit/Support/UtilsAdditionalTest.php
+@@ -79,7 +79,7 @@ test('stored file url signing passes through values that are not absolute urls',
+         ->and(Utils::signStoredFileUrl('custom-avatars/vehicles/c/van.png'))->toBe('custom-avatars/vehicles/c/van.png');
+ });
+ 
+-test('company transaction currency prefers organization currency and falls back to usd', function () {
++test('company transaction currency prefers organization currency and falls back to INR', function () {
+     $company = new Company();
+     $company->setRawAttributes([
+         'uuid'     => 'company-test',
+@@ -87,7 +87,7 @@ test('company transaction currency prefers organization currency and falls back
+     ], true);
+ 
+     expect(Utils::getCompanyTransactionCurrency($company))->toBe('MNT')
+-        ->and(Utils::getCompanyTransactionCurrency())->toBe('USD');
++        ->and(Utils::getCompanyTransactionCurrency())->toBe('INR');
+ });
+ 
+ test('mixed point resolver reads location-bearing model instances', function () {
+diff --git a/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php b/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php
+index 999db82..8bcfd38 100644
+--- a/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php
++++ b/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php
+@@ -146,7 +146,7 @@ function fleetopsUtilsPointWkb(float $lat, float $lng): string
+     return pack('V', 0) . pack('C', 1) . pack('V', 1) . pack('d', $lng) . pack('d', $lat);
+ }
+ 
+-test('company transaction currency falls back to ledger settings then usd', function () {
++test('company transaction currency falls back to ledger settings then INR', function () {
+     $connection = fleetopsUtilsGeoBoot();
+     $connection->table('companies')->insert([
+         ['uuid' => 'co-1', 'name' => 'Acme', 'currency' => null],
+@@ -159,8 +159,8 @@ test('company transaction currency falls back to ledger settings then usd', func
+ 
+     expect(Utils::getCompanyTransactionCurrency('co-1'))->toBe('EUR')
+         ->and(Utils::getCompanyTransactionCurrency('co-2'))->toBe('SGD')
+-        ->and(Utils::getCompanyTransactionCurrency('co-missing'))->toBe('USD')
+-        ->and(Utils::getCompanyTransactionCurrency(null))->toBe('USD');
++        ->and(Utils::getCompanyTransactionCurrency('co-missing'))->toBe('INR')
++        ->and(Utils::getCompanyTransactionCurrency(null))->toBe('INR');
+ });
+ 
+ test('point from mixed resolves models expressions public ids and uuids', function () {
+diff --git a/tests/integration/components/widget/kpi-tile-test.js b/tests/integration/components/widget/kpi-tile-test.js
+index 2585610..2eed95f 100644
+--- a/tests/integration/components/widget/kpi-tile-test.js
++++ b/tests/integration/components/widget/kpi-tile-test.js
+@@ -51,6 +51,7 @@ module('Integration | Component | widget/kpi-tile', function (hooks) {
+         assert.strictEqual(this.fetch.callCount, 1, 'fetch invoked once');
+         assert.strictEqual(this.fetch.lastUrl, 'fleet-ops/metrics/earnings', 'hits per-slug endpoint');
+         assert.dom('.fleet-ops-kpi-tile').exists('tile wrapper rendered');
++        assert.dom('.kpi-tile-value-row').containsText('$', 'legacy metric currency is respected');
+     });
+ 
+     test('it inverts delta semantics when @deltaInverse={{true}}', async function (assert) {
+@@ -70,4 +71,17 @@ module('Integration | Component | widget/kpi-tile', function (hooks) {
+ 
+         assert.dom('.fleet-ops-kpi-tile .danger-status-badge, .fleet-ops-kpi-tile [class*="danger"]').exists('positive delta on an inverse metric renders as danger');
+     });
++
++    test('money tiles default a missing currency to INR', async function (assert) {
++        this.fetch.response = {
++            slug: 'earnings',
++            value: 12500,
++            format: 'money',
++        };
++
++        await render(hbs`<Widget::KpiTile @slug="earnings" @title="Earnings" @format="money" />`);
++        await waitFor('.fleet-ops-kpi-tile');
++
++        assert.dom('.kpi-tile-value-row').hasText('₹125.00');
++    });
+ });
+diff --git a/tests/integration/components/widget/revenue-trend-test.js b/tests/integration/components/widget/revenue-trend-test.js
+index 4c60dda..5733ad2 100644
+--- a/tests/integration/components/widget/revenue-trend-test.js
++++ b/tests/integration/components/widget/revenue-trend-test.js
+@@ -60,11 +60,25 @@ module('Integration | Component | widget/revenue-trend', function (hooks) {
+         await waitFor('[data-test-revenue-data]');
+ 
+         assert.dom('[data-test-revenue-data]').hasText('2675.45');
+-        assert.dom('[data-test-revenue-tick]').hasText('$2,675.45');
+-        assert.dom('[data-test-revenue-tooltip]').hasText('Revenue: $2,675.45');
++        assert.dom('[data-test-revenue-tick]').hasText('₹2,675.45');
++        assert.dom('[data-test-revenue-tooltip]').hasText('Revenue: ₹2,675.45');
+     });
+ 
+-    test('it uses currency precision when normalizing chart revenue', async function (assert) {
++    test('it defaults missing currency to INR', async function (assert) {
++        revenueTrendResponse = {
++            labels: ['2026-06-01'],
++            datasets: [{ label: 'Revenue', data: [267545] }],
++            summary: { total: 267545, currency: null, delta_pct: 0 },
++        };
++
++        await render(hbs`<Widget::RevenueTrend />`);
++        await waitFor('[data-test-revenue-data]');
++
++        assert.dom('[data-test-revenue-tick]').hasText('₹2,675.45');
++        assert.dom('[data-test-revenue-tooltip]').hasText('Revenue: ₹2,675.45');
++    });
++
++    test('it preserves the analytics currency for legacy financial records', async function (assert) {
+         revenueTrendResponse = {
+             labels: ['2026-06-01'],
+             datasets: [{ label: 'Revenue', data: [267545] }],
+@@ -74,7 +88,8 @@ module('Integration | Component | widget/revenue-trend', function (hooks) {
+         await render(hbs`<Widget::RevenueTrend />`);
+         await waitFor('[data-test-revenue-data]');
+ 
+-        assert.dom('[data-test-revenue-data]').hasText('267545');
++        assert.dom('[data-test-revenue-data]').hasText('267545', 'zero-decimal currencies are not divided by 100');
++        assert.dom('[data-test-revenue-tick]').doesNotContainText('₹', 'the chart does not relabel JPY as INR');
+ 
+         revenueTrendResponse = {
+             labels: ['2026-06-01'],
+@@ -85,6 +100,7 @@ module('Integration | Component | widget/revenue-trend', function (hooks) {
+         await render(hbs`<Widget::RevenueTrend />`);
+         await waitFor('[data-test-revenue-data]');
+ 
+-        assert.dom('[data-test-revenue-data]').hasText('1234.567');
++        assert.dom('[data-test-revenue-data]').hasText('1234.567', 'three-decimal currencies use their ISO minor unit');
++        assert.dom('[data-test-revenue-tick]').doesNotContainText('₹', 'the chart does not relabel KWD as INR');
+     });
+ });

@@ -1,0 +1,77 @@
+diff --git a/src/Support/Reporting/ReportQueryExporter.php b/src/Support/Reporting/ReportQueryExporter.php
+index d4dd525..eace5dd 100644
+--- a/src/Support/Reporting/ReportQueryExporter.php
++++ b/src/Support/Reporting/ReportQueryExporter.php
+@@ -352,7 +352,7 @@ class ReportQueryExporter
+                 $cell->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+                 break;
+             case 'currency':
+-                $cell->getStyle()->getNumberFormat()->setFormatCode('$#,##0.00');
++                $cell->getStyle()->getNumberFormat()->setFormatCode('"₹"#,##0.00');
+                 $cell->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+                 break;
+             case 'percentage':
+@@ -474,7 +474,7 @@ class ReportQueryExporter
+     /**
+      * Format currency value.
+      */
+-    protected function formatCurrency($value, string $currency = 'USD'): string
++    protected function formatCurrency($value, string $currency = 'INR'): string
+     {
+         return Utils::moneyFormat($value, $currency);
+     }
+diff --git a/src/Support/Utils.php b/src/Support/Utils.php
+index c44baa8..8d735c7 100644
+--- a/src/Support/Utils.php
++++ b/src/Support/Utils.php
+@@ -815,7 +815,7 @@ class Utils
+      *
+      * @return string
+      */
+-    public static function moneyFormat($amount, $currency = 'USD')
++    public static function moneyFormat($amount, $currency = 'INR')
+     {
+         $amount = static::numbersOnly($amount);
+         $money  = new \Cknow\Money\Money($amount, $currency);
+diff --git a/tests/Unit/Reporting/ReportQueryExporterTest.php b/tests/Unit/Reporting/ReportQueryExporterTest.php
+index 8d6fa41..14a03e4 100644
+--- a/tests/Unit/Reporting/ReportQueryExporterTest.php
++++ b/tests/Unit/Reporting/ReportQueryExporterTest.php
+@@ -140,7 +140,8 @@ test('report query exporter formats cell values and excel styles by declared col
+         ->and($exporter->formatValue('42', ['type' => 'number']))->toBe(42.0)
+         ->and($exporter->formatValue('42.75', ['type' => 'decimal']))->toBe(42.75)
+         ->and($exporter->formatValue('not numeric', ['type' => 'number']))->toBe('not numeric')
+-        ->and($exporter->formatValue(1234.56, ['type' => 'currency']))->toBe('$1,234.56')
++        ->and($exporter->formatValue(1234.56, ['type' => 'currency']))->toContain('1,234.56')
++        ->and($exporter->formatValue(1234.56, ['type' => 'currency']))->toContain('₹')
+         ->and($exporter->formatValue('', ['type' => 'currency']))->toBe('')
+         ->and($exporter->formatValue('n/a', ['type' => 'percentage']))->toBe('n/a')
+         ->and($exporter->formatValue(false, ['type' => 'boolean']))->toBe('No')
+@@ -149,7 +150,7 @@ test('report query exporter formats cell values and excel styles by declared col
+         ->and($exporter->applyFormattingFor(['type' => 'datetime'], '2026-07-17 12:34:56')['format'])->toBe('yyyy-mm-dd hh:mm:ss')
+         ->and($exporter->applyFormattingFor(['type' => 'number'], 42))->toMatchArray(['format' => '#,##0', 'alignment' => 'right'])
+         ->and($exporter->applyFormattingFor(['type' => 'decimal'], 42.75))->toMatchArray(['format' => '#,##0.00', 'alignment' => 'right'])
+-        ->and($exporter->applyFormattingFor(['type' => 'currency'], 12.34))->toMatchArray(['format' => '$#,##0.00', 'alignment' => 'right'])
++        ->and($exporter->applyFormattingFor(['type' => 'currency'], 12.34))->toMatchArray(['format' => '"₹"#,##0.00', 'alignment' => 'right'])
+         ->and($exporter->applyFormattingFor(['type' => 'percentage'], 0.25))->toMatchArray(['format' => '0.00%', 'alignment' => 'right']);
+ });
+ 
+diff --git a/tests/Unit/Support/UtilsMoneyFormatTest.php b/tests/Unit/Support/UtilsMoneyFormatTest.php
+index 183ecc4..4685db7 100644
+--- a/tests/Unit/Support/UtilsMoneyFormatTest.php
++++ b/tests/Unit/Support/UtilsMoneyFormatTest.php
+@@ -38,6 +38,14 @@ test('utils money format renders positive, zero, and negative two-decimal amount
+         ->and(Utils::moneyFormat(-500, 'USD'))->toContain('-');
+ });
+ 
++test('utils money format defaults to INR while explicit currencies remain supported', function () {
++    $default = Utils::moneyFormat(500);
++
++    expect(moneyNumericCore($default))->toBe('5.00')
++        ->and($default)->toContain('₹')
++        ->and(moneyNumericCore(Utils::moneyFormat(500, 'USD')))->toBe('5.00');
++});
++
+ test('utils money format normalizes formatted string input before formatting', function () {
+     expect(moneyNumericCore(Utils::moneyFormat('$1,234.56', 'USD')))->toBe('1234.56')
+         ->and(moneyNumericCore(Utils::moneyFormat('-$5.00', 'USD')))->toBe('-5.00');

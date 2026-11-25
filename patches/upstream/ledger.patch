@@ -1,0 +1,2721 @@
+diff --git a/addon/components/account/form.hbs b/addon/components/account/form.hbs
+index 060bf91..45e28b5 100644
+--- a/addon/components/account/form.hbs
++++ b/addon/components/account/form.hbs
+@@ -35,48 +35,12 @@
+             <InputGroup @name="Currency">
+                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                     <PowerSelect
+-                        @options={{array
+-                            "USD"
+-                            "EUR"
+-                            "GBP"
+-                            "AED"
+-                            "SAR"
+-                            "QAR"
+-                            "KWD"
+-                            "BHD"
+-                            "OMR"
+-                            "JOD"
+-                            "EGP"
+-                            "NGN"
+-                            "KES"
+-                            "GHS"
+-                            "ZAR"
+-                            "INR"
+-                            "PKR"
+-                            "BDT"
+-                            "MYR"
+-                            "SGD"
+-                            "IDR"
+-                            "PHP"
+-                            "THB"
+-                            "CNY"
+-                            "JPY"
+-                            "KRW"
+-                            "AUD"
+-                            "CAD"
+-                            "NZD"
+-                            "CHF"
+-                            "SEK"
+-                            "NOK"
+-                            "DKK"
+-                            "BRL"
+-                            "MXN"
+-                        }}
++                        @options={{if (and @resource.id @resource.currency (not (eq @resource.currency "INR"))) (array "INR" @resource.currency) (array "INR")}}
+                         @selected={{@resource.currency}}
+                         @onChange={{fn (mut @resource.currency)}}
+                         @placeholder="Select currency"
+                         @triggerClass="form-select form-input"
+-                        @disabled={{cannot-write @resource}}
++                        @disabled={{or (cannot-write @resource) @resource.id}}
+                         as |option|
+                     >
+                         <div class="text-sm">{{option}}</div>
+@@ -113,4 +77,4 @@
+     </ContentPanel>
+ 
+     <Spacer @height="100px" />
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/invoice/form.hbs b/addon/components/invoice/form.hbs
+index 28a11b5..fa58ea2 100644
+--- a/addon/components/invoice/form.hbs
++++ b/addon/components/invoice/form.hbs
+@@ -34,7 +34,11 @@
+ 
+             {{! Currency }}
+             <InputGroup @name="Currency">
+-                <CurrencySelect @currency={{this.currency}} @onCurrencyChange={{this.onCurrencyChange}} @triggerClass="w-full form-select form-input" @disabled={{cannot-write @resource}} />
++                {{#if @resource.id}}
++                    <div class="form-input flex items-center">{{n-a this.currency}}</div>
++                {{else}}
++                    <CurrencySelect @currency={{this.currency}} @onCurrencyChange={{this.onCurrencyChange}} @triggerClass="w-full form-select form-input" @disabled={{cannot-write @resource}} />
++                {{/if}}
+             </InputGroup>
+ 
+             {{! Template }}
+diff --git a/addon/components/invoice/form.js b/addon/components/invoice/form.js
+index 278b8f5..b1d4197 100644
+--- a/addon/components/invoice/form.js
++++ b/addon/components/invoice/form.js
+@@ -1,7 +1,6 @@
+ import Component from '@glimmer/component';
+ import { tracked } from '@glimmer/tracking';
+ import { action } from '@ember/object';
+-import { inject as service } from '@ember/service';
+ 
+ /**
+  * Invoice form component.
+@@ -20,8 +19,6 @@ import { inject as service } from '@ember/service';
+  * the EmbeddedRecordsMixin serializer includes them in the request payload.
+  */
+ export default class InvoiceFormComponent extends Component {
+-    @service currentUser;
+-
+     /** Holds the Invoice::LineItems component instance after it registers. */
+     lineItemsRef = null;
+ 
+@@ -61,14 +58,10 @@ export default class InvoiceFormComponent extends Component {
+         invoice.items = items;
+     }
+ 
+-    get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
+-    }
+-
+     constructor() {
+         super(...arguments);
+         const invoice = this.args.resource;
+-        this.currency = invoice?.currency ?? this.companyCurrency;
++        this.currency = invoice?.id ? invoice.currency : 'INR';
+         // Snapshot items ONCE so @items on Invoice::LineItems never changes.
+         // If this were a getter it would return a new array on every render,
+         // causing Glimmer to recreate the child component and reset user edits.
+diff --git a/addon/components/journal/form.hbs b/addon/components/journal/form.hbs
+index 4d8a763..ddb13a5 100644
+--- a/addon/components/journal/form.hbs
++++ b/addon/components/journal/form.hbs
+@@ -35,48 +35,12 @@
+             <InputGroup @name="Currency">
+                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                     <PowerSelect
+-                        @options={{array
+-                            "USD"
+-                            "EUR"
+-                            "GBP"
+-                            "AED"
+-                            "SAR"
+-                            "QAR"
+-                            "KWD"
+-                            "BHD"
+-                            "OMR"
+-                            "JOD"
+-                            "EGP"
+-                            "NGN"
+-                            "KES"
+-                            "GHS"
+-                            "ZAR"
+-                            "INR"
+-                            "PKR"
+-                            "BDT"
+-                            "MYR"
+-                            "SGD"
+-                            "IDR"
+-                            "PHP"
+-                            "THB"
+-                            "CNY"
+-                            "JPY"
+-                            "KRW"
+-                            "AUD"
+-                            "CAD"
+-                            "NZD"
+-                            "CHF"
+-                            "SEK"
+-                            "NOK"
+-                            "DKK"
+-                            "BRL"
+-                            "MXN"
+-                        }}
++                        @options={{if (and @resource.id @resource.currency (not (eq @resource.currency "INR"))) (array "INR" @resource.currency) (array "INR")}}
+                         @selected={{@resource.currency}}
+                         @onChange={{fn (mut @resource.currency)}}
+                         @placeholder="Select currency"
+                         @triggerClass="form-select form-input"
+-                        @disabled={{cannot-write @resource}}
++                        @disabled={{or (cannot-write @resource) @resource.id}}
+                         as |option|
+                     >
+                         <div class="text-sm">{{option}}</div>
+@@ -181,4 +145,4 @@
+     </ContentPanel>
+ 
+     <Spacer @height="100px" />
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/transaction/form.hbs b/addon/components/transaction/form.hbs
+index 787ed39..19be707 100644
+--- a/addon/components/transaction/form.hbs
++++ b/addon/components/transaction/form.hbs
+@@ -59,48 +59,12 @@
+             <InputGroup @name="Currency">
+                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                     <PowerSelect
+-                        @options={{array
+-                            "USD"
+-                            "EUR"
+-                            "GBP"
+-                            "AED"
+-                            "SAR"
+-                            "QAR"
+-                            "KWD"
+-                            "BHD"
+-                            "OMR"
+-                            "JOD"
+-                            "EGP"
+-                            "NGN"
+-                            "KES"
+-                            "GHS"
+-                            "ZAR"
+-                            "INR"
+-                            "PKR"
+-                            "BDT"
+-                            "MYR"
+-                            "SGD"
+-                            "IDR"
+-                            "PHP"
+-                            "THB"
+-                            "CNY"
+-                            "JPY"
+-                            "KRW"
+-                            "AUD"
+-                            "CAD"
+-                            "NZD"
+-                            "CHF"
+-                            "SEK"
+-                            "NOK"
+-                            "DKK"
+-                            "BRL"
+-                            "MXN"
+-                        }}
++                        @options={{if (and @resource.id @resource.currency (not (eq @resource.currency "INR"))) (array "INR" @resource.currency) (array "INR")}}
+                         @selected={{@resource.currency}}
+                         @onChange={{fn (mut @resource.currency)}}
+                         @placeholder="Select currency"
+                         @triggerClass="form-select form-input"
+-                        @disabled={{cannot-write @resource}}
++                        @disabled={{or (cannot-write @resource) @resource.id}}
+                         as |option|
+                     >
+                         <div class="text-sm">{{option}}</div>
+@@ -179,4 +143,4 @@
+     </ContentPanel>
+ 
+     <Spacer @height="100px" />
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/wallet/form.hbs b/addon/components/wallet/form.hbs
+index ca42a24..dbbd4c7 100644
+--- a/addon/components/wallet/form.hbs
++++ b/addon/components/wallet/form.hbs
+@@ -31,48 +31,12 @@
+             <InputGroup @name="Currency">
+                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                     <PowerSelect
+-                        @options={{array
+-                            "USD"
+-                            "EUR"
+-                            "GBP"
+-                            "AED"
+-                            "SAR"
+-                            "QAR"
+-                            "KWD"
+-                            "BHD"
+-                            "OMR"
+-                            "JOD"
+-                            "EGP"
+-                            "NGN"
+-                            "KES"
+-                            "GHS"
+-                            "ZAR"
+-                            "INR"
+-                            "PKR"
+-                            "BDT"
+-                            "MYR"
+-                            "SGD"
+-                            "IDR"
+-                            "PHP"
+-                            "THB"
+-                            "CNY"
+-                            "JPY"
+-                            "KRW"
+-                            "AUD"
+-                            "CAD"
+-                            "NZD"
+-                            "CHF"
+-                            "SEK"
+-                            "NOK"
+-                            "DKK"
+-                            "BRL"
+-                            "MXN"
+-                        }}
++                        @options={{if (and @resource.id @resource.currency (not (eq @resource.currency "INR"))) (array "INR" @resource.currency) (array "INR")}}
+                         @selected={{@resource.currency}}
+                         @onChange={{fn (mut @resource.currency)}}
+                         @placeholder="Select currency"
+                         @triggerClass="form-select form-input"
+-                        @disabled={{cannot-write @resource}}
++                        @disabled={{or (cannot-write @resource) @resource.id}}
+                         as |option|
+                     >
+                         <div class="text-sm">{{option}}</div>
+@@ -140,4 +104,4 @@
+     </ContentPanel>
+ 
+     <Spacer @height="100px" />
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/widget/activity-feed.js b/addon/components/widget/activity-feed.js
+index 140c735..96a7ab3 100644
+--- a/addon/components/widget/activity-feed.js
++++ b/addon/components/widget/activity-feed.js
+@@ -10,7 +10,7 @@ export default class WidgetActivityFeedComponent extends Component {
+     @tracked error = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/components/widget/ar-aging.js b/addon/components/widget/ar-aging.js
+index 7455360..eaee2ed 100644
+--- a/addon/components/widget/ar-aging.js
++++ b/addon/components/widget/ar-aging.js
+@@ -9,7 +9,7 @@ export default class WidgetArAgingComponent extends Component {
+     @tracked buckets = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/components/widget/cash-flow-summary.js b/addon/components/widget/cash-flow-summary.js
+index 363d766..3ffd86e 100644
+--- a/addon/components/widget/cash-flow-summary.js
++++ b/addon/components/widget/cash-flow-summary.js
+@@ -18,7 +18,7 @@ export default class WidgetCashFlowSummaryComponent extends Component {
+     }
+ 
+     get formattedNetChange() {
+-        return formatCurrency(this.data?.net_cash_change ?? 0, this.data?.currency ?? 'USD');
++        return formatCurrency(this.data?.net_cash_change ?? 0, 'INR');
+     }
+ 
+     get labels() {
+diff --git a/addon/components/widget/invoice-summary.js b/addon/components/widget/invoice-summary.js
+index af9fdc4..613911f 100644
+--- a/addon/components/widget/invoice-summary.js
++++ b/addon/components/widget/invoice-summary.js
+@@ -9,7 +9,7 @@ export default class WidgetInvoiceSummaryComponent extends Component {
+     @tracked counts = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/components/widget/ledger-kpi-tile.js b/addon/components/widget/ledger-kpi-tile.js
+index 28b465e..9666e4f 100644
+--- a/addon/components/widget/ledger-kpi-tile.js
++++ b/addon/components/widget/ledger-kpi-tile.js
+@@ -33,7 +33,9 @@ export default class WidgetLedgerKpiTileComponent extends Component {
+         const value = this.metric.value ?? 0;
+ 
+         if (this.metric.format === 'money') {
+-            return formatCurrency(value, this.metric.currency ?? this.data?.currency ?? 'USD');
++            // Dashboard financial metrics are reported in the platform's INR currency,
++            // regardless of stale or server-provided per-metric currency defaults.
++            return formatCurrency(value, 'INR');
+         }
+ 
+         if (this.metric.format === 'percent') {
+diff --git a/addon/components/widget/overview.hbs b/addon/components/widget/overview.hbs
+index 312004b..28a1141 100644
+--- a/addon/components/widget/overview.hbs
++++ b/addon/components/widget/overview.hbs
+@@ -5,7 +5,7 @@
+             {{#if this.loadData.isRunning}}
+                 <span class="text-gray-300 dark:text-gray-600">—</span>
+             {{else}}
+-                {{format-currency (or this.data.kpis.total_revenue.current 0) (or this.data.kpis.total_revenue.currency this.companyCurrency)}}
++                {{format-currency (or this.data.kpis.total_revenue.current 0) this.companyCurrency}}
+             {{/if}}
+         </span>
+     </div>
+@@ -15,7 +15,7 @@
+             {{#if this.loadData.isRunning}}
+                 <span class="text-gray-300 dark:text-gray-600">—</span>
+             {{else}}
+-                {{format-currency (or this.data.kpis.total_expenses.current 0) (or this.data.kpis.total_expenses.currency this.companyCurrency)}}
++                {{format-currency (or this.data.kpis.total_expenses.current 0) this.companyCurrency}}
+             {{/if}}
+         </span>
+     </div>
+@@ -25,7 +25,7 @@
+             {{#if this.loadData.isRunning}}
+                 <span class="text-gray-300 dark:text-gray-600">—</span>
+             {{else}}
+-                {{format-currency (or this.data.kpis.net_income.current 0) (or this.data.kpis.net_income.currency this.companyCurrency)}}
++                {{format-currency (or this.data.kpis.net_income.current 0) this.companyCurrency}}
+             {{/if}}
+         </span>
+     </div>
+@@ -35,8 +35,8 @@
+             {{#if this.loadData.isRunning}}
+                 <span class="text-gray-300 dark:text-gray-600">—</span>
+             {{else}}
+-                {{format-currency (or this.data.kpis.outstanding_ar.total 0) (or this.data.kpis.outstanding_ar.currency this.companyCurrency)}}
++                {{format-currency (or this.data.kpis.outstanding_ar.total 0) this.companyCurrency}}
+             {{/if}}
+         </span>
+     </div>
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/addon/components/widget/overview.js b/addon/components/widget/overview.js
+index b543805..afe5a64 100644
+--- a/addon/components/widget/overview.js
++++ b/addon/components/widget/overview.js
+@@ -9,7 +9,7 @@ export default class WidgetOverviewComponent extends Component {
+     @tracked data = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/components/widget/revenue-chart.js b/addon/components/widget/revenue-chart.js
+index 5c65f4b..f0b5ae5 100644
+--- a/addon/components/widget/revenue-chart.js
++++ b/addon/components/widget/revenue-chart.js
+@@ -9,7 +9,7 @@ export default class WidgetRevenueChartComponent extends Component {
+     @tracked data = [];
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/components/widget/revenue-trend.js b/addon/components/widget/revenue-trend.js
+index 6c73d47..bc88956 100644
+--- a/addon/components/widget/revenue-trend.js
++++ b/addon/components/widget/revenue-trend.js
+@@ -30,11 +30,11 @@ export default class WidgetRevenueTrendComponent extends Component {
+     }
+ 
+     get currencyCode() {
+-        return this.data?.currency ?? 'USD';
++        return 'INR';
+     }
+ 
+     get currency() {
+-        return getCurrency(this.currencyCode) ?? getCurrency('USD');
++        return getCurrency(this.currencyCode) ?? getCurrency('INR');
+     }
+ 
+     get currencyDivisor() {
+diff --git a/addon/components/widget/top-wallets.js b/addon/components/widget/top-wallets.js
+index 661071b..ec0df5d 100644
+--- a/addon/components/widget/top-wallets.js
++++ b/addon/components/widget/top-wallets.js
+@@ -9,7 +9,7 @@ export default class WidgetTopWalletsComponent extends Component {
+     @tracked wallets = [];
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/components/widget/wallet-balances.js b/addon/components/widget/wallet-balances.js
+index 00ba60b..52af59e 100644
+--- a/addon/components/widget/wallet-balances.js
++++ b/addon/components/widget/wallet-balances.js
+@@ -12,7 +12,7 @@ export default class WidgetWalletBalancesComponent extends Component {
+     @tracked error = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'USD';
++        return this.currentUser.company?.currency ?? this.currentUser.whoisData?.currency?.code ?? 'INR';
+     }
+ 
+     constructor() {
+diff --git a/addon/controllers/accounting/accounts/index/new.js b/addon/controllers/accounting/accounts/index/new.js
+index 6d3ff52..ace3a41 100644
+--- a/addon/controllers/accounting/accounts/index/new.js
++++ b/addon/controllers/accounting/accounts/index/new.js
+@@ -6,7 +6,7 @@ import { task } from 'ember-concurrency';
+ 
+ const DEFAULT_PROPERTIES = {
+     status: 'active',
+-    currency: 'USD',
++    currency: 'INR',
+     type: 'asset',
+ };
+ 
+diff --git a/addon/controllers/accounting/journal/index/new.js b/addon/controllers/accounting/journal/index/new.js
+index 464da49..dabdb0c 100644
+--- a/addon/controllers/accounting/journal/index/new.js
++++ b/addon/controllers/accounting/journal/index/new.js
+@@ -6,7 +6,7 @@ import { task } from 'ember-concurrency';
+ 
+ const DEFAULT_PROPERTIES = {
+     type: 'standard',
+-    currency: 'USD',
++    currency: 'INR',
+     is_system_entry: false,
+ };
+ 
+diff --git a/addon/controllers/billing/invoices/index/new.js b/addon/controllers/billing/invoices/index/new.js
+index 2a1895f..0404ddc 100644
+--- a/addon/controllers/billing/invoices/index/new.js
++++ b/addon/controllers/billing/invoices/index/new.js
+@@ -11,7 +11,6 @@ export default class BillingInvoicesIndexNewController extends Controller {
+     @service notifications;
+     @service intl;
+     @service events;
+-    @service currentUser;
+ 
+     @tracked overlay;
+     @tracked invoice = null;
+@@ -24,25 +23,19 @@ export default class BillingInvoicesIndexNewController extends Controller {
+ 
+     /**
+      * Load invoice settings from the backend and create a new invoice record
+-     * pre-populated with the company's configured defaults (currency, notes,
++     * pre-populated with INR and the company's configured defaults (notes,
+      * terms, due date offset). Falls back to sensible hard-coded values when
+      * settings have not yet been saved.
+      */
+     @task *loadDefaults() {
+         let defaults = {
+             status: 'draft',
+-            currency: this._companyCurrency(),
++            currency: 'INR',
+         };
+ 
+         try {
+             const { invoiceSettings } = yield this.fetch.get('settings/invoice-settings', {}, { namespace: 'ledger/int/v1' });
+             if (invoiceSettings) {
+-                // Currency — use the explicitly saved setting, otherwise fall
+-                // back to the organisation's currency.
+-                if (invoiceSettings.default_currency) {
+-                    defaults.currency = invoiceSettings.default_currency;
+-                }
+-
+                 // Notes and terms — pre-fill the form fields.
+                 if (invoiceSettings.default_notes) {
+                     defaults.notes = invoiceSettings.default_notes;
+@@ -101,15 +94,4 @@ export default class BillingInvoicesIndexNewController extends Controller {
+         this.formRef = null;
+     }
+ 
+-    /**
+-     * Safely read the organisation's currency from the already-loaded
+-     * organisations list. Does not call getCompany() to avoid the
+-     * store.peekRecord crash that occurs before the user session is fully loaded.
+-     */
+-    _companyCurrency() {
+-        const companyId = this.currentUser.companyId;
+-        if (!companyId) return 'USD';
+-        const org = (this.currentUser.organizations || []).find((o) => o.uuid === companyId || o.id === companyId);
+-        return org?.currency ?? 'USD';
+-    }
+ }
+diff --git a/addon/controllers/payments/wallets/index/new.js b/addon/controllers/payments/wallets/index/new.js
+index 36d9dbe..0368ae2 100644
+--- a/addon/controllers/payments/wallets/index/new.js
++++ b/addon/controllers/payments/wallets/index/new.js
+@@ -6,7 +6,7 @@ import { task } from 'ember-concurrency';
+ 
+ const DEFAULT_PROPERTIES = {
+     status: 'active',
+-    currency: 'USD',
++    currency: 'INR',
+     type: 'customer',
+     is_frozen: false,
+ };
+diff --git a/addon/controllers/reports/ar-aging.js b/addon/controllers/reports/ar-aging.js
+index 47739fc..7733858 100644
+--- a/addon/controllers/reports/ar-aging.js
++++ b/addon/controllers/reports/ar-aging.js
+@@ -13,7 +13,7 @@ export default class ReportsArAgingController extends Controller {
+     @tracked as_of = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
++        return this.currentUser.getCompany()?.currency ?? 'INR';
+     }
+ 
+     get bucketList() {
+diff --git a/addon/controllers/reports/balance-sheet.js b/addon/controllers/reports/balance-sheet.js
+index b3cb3ea..dedc3fd 100644
+--- a/addon/controllers/reports/balance-sheet.js
++++ b/addon/controllers/reports/balance-sheet.js
+@@ -14,7 +14,7 @@ export default class ReportsBalanceSheetController extends Controller {
+     @tracked as_of = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
++        return this.currentUser.getCompany()?.currency ?? 'INR';
+     }
+ 
+     @task *loadReport() {
+diff --git a/addon/controllers/reports/cash-flow.js b/addon/controllers/reports/cash-flow.js
+index 6d10c25..840c78e 100644
+--- a/addon/controllers/reports/cash-flow.js
++++ b/addon/controllers/reports/cash-flow.js
+@@ -15,7 +15,7 @@ export default class ReportsCashFlowController extends Controller {
+     @tracked end_date = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
++        return this.currentUser.getCompany()?.currency ?? 'INR';
+     }
+ 
+     @task *loadReport() {
+diff --git a/addon/controllers/reports/income-statement.js b/addon/controllers/reports/income-statement.js
+index e8a606a..7cb75a2 100644
+--- a/addon/controllers/reports/income-statement.js
++++ b/addon/controllers/reports/income-statement.js
+@@ -15,7 +15,7 @@ export default class ReportsIncomeStatementController extends Controller {
+     @tracked end_date = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
++        return this.currentUser.getCompany()?.currency ?? 'INR';
+     }
+ 
+     @task *loadReport() {
+diff --git a/addon/controllers/reports/trial-balance.js b/addon/controllers/reports/trial-balance.js
+index 099bce3..e3c3424 100644
+--- a/addon/controllers/reports/trial-balance.js
++++ b/addon/controllers/reports/trial-balance.js
+@@ -13,7 +13,7 @@ export default class ReportsTrialBalanceController extends Controller {
+     @tracked as_of = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
++        return this.currentUser.getCompany()?.currency ?? 'INR';
+     }
+ 
+     @task *loadReport() {
+diff --git a/addon/controllers/reports/wallet-summary.js b/addon/controllers/reports/wallet-summary.js
+index 90734ff..f22257c 100644
+--- a/addon/controllers/reports/wallet-summary.js
++++ b/addon/controllers/reports/wallet-summary.js
+@@ -15,7 +15,7 @@ export default class ReportsWalletSummaryController extends Controller {
+     @tracked date_to = null;
+ 
+     get companyCurrency() {
+-        return this.currentUser.getCompany()?.currency ?? 'USD';
++        return this.currentUser.getCompany()?.currency ?? 'INR';
+     }
+ 
+     get periodStats() {
+diff --git a/addon/controllers/settings/accounting.js b/addon/controllers/settings/accounting.js
+index 00f05df..a16e194 100644
+--- a/addon/controllers/settings/accounting.js
++++ b/addon/controllers/settings/accounting.js
+@@ -57,13 +57,13 @@ export default class SettingsAccountingController extends Controller {
+      * currentUser.organizations is @tracked and populated by loadOrganizations()
+      * during promiseUser() — it is always available by the time any console
+      * route is activated. Reading it in a getter is safe (no store.peekRecord,
+-     * no mutation). Falls back to 'USD' if the org record is not yet loaded.
++     * no mutation). Falls back to INR if the org record is not yet loaded.
+      */
+     get companyCurrency() {
+         const companyId = this.currentUser.companyId;
+-        if (!companyId) return 'USD';
++        if (!companyId) return 'INR';
+         const org = this.currentUser.organizations.find((o) => o.uuid === companyId || o.id === companyId);
+-        return org?.currency ?? 'USD';
++        return org?.currency ?? 'INR';
+     }
+ 
+     /**
+diff --git a/addon/controllers/settings/invoice.js b/addon/controllers/settings/invoice.js
+index 617e018..5d5075d 100644
+--- a/addon/controllers/settings/invoice.js
++++ b/addon/controllers/settings/invoice.js
+@@ -52,13 +52,13 @@ export default class SettingsInvoiceController extends Controller {
+      * currentUser.organizations is @tracked and populated by loadOrganizations()
+      * during promiseUser() — it is always available by the time any console
+      * route is activated. Reading it in a getter is safe (no store.peekRecord,
+-     * no mutation). Falls back to 'USD' if the org record is not yet loaded.
++     * no mutation). Falls back to INR if the org record is not yet loaded.
+      */
+     get companyCurrency() {
+         const companyId = this.currentUser.companyId;
+-        if (!companyId) return 'USD';
++        if (!companyId) return 'INR';
+         const org = this.currentUser.organizations.find((o) => o.uuid === companyId || o.id === companyId);
+-        return org?.currency ?? 'USD';
++        return org?.currency ?? 'INR';
+     }
+ 
+     /**
+diff --git a/server/src/Gateways/TalerDriver.php b/server/src/Gateways/TalerDriver.php
+index 4a4c407..2e1fa2f 100644
+--- a/server/src/Gateways/TalerDriver.php
++++ b/server/src/Gateways/TalerDriver.php
+@@ -880,12 +880,12 @@ class TalerDriver extends AbstractGatewayDriver
+     /**
+      * Parse a Taler amount string back into a [currency, integer cents] tuple.
+      *
+-     * Returns ['USD', 0] if the string is null, empty, or malformed.
++     * Returns ['INR', 0] if the string is null, empty, or malformed.
+      *
+      * Examples:
+      *   fromTalerAmount("USD:10.50") → ['USD', 1050]
+      *   fromTalerAmount("EUR:0.99")  → ['EUR', 99]
+-     *   fromTalerAmount(null)        → ['USD', 0]
++     *   fromTalerAmount(null)        → ['INR', 0]
+      *
+      * @param string|null $talerAmount Taler amount string
+      *
+@@ -894,14 +894,14 @@ class TalerDriver extends AbstractGatewayDriver
+     private function fromTalerAmount(?string $talerAmount): array
+     {
+         if (!$talerAmount) {
+-            return ['USD', 0];
++            return ['INR', 0];
+         }
+ 
+         // Match "CURRENCY:UNITS.FRACTION" — fraction is optional.
+         if (!preg_match('/^([A-Z]{2,8}):(\d+)(?:\.(\d{1,2}))?$/', $talerAmount, $m)) {
+             $this->logError('Could not parse Taler amount string', ['value' => $talerAmount]);
+ 
+-            return ['USD', 0];
++            return ['INR', 0];
+         }
+ 
+         $currency    = $m[1];
+diff --git a/server/src/Http/Controllers/Api/v1/WalletApiController.php b/server/src/Http/Controllers/Api/v1/WalletApiController.php
+index 3231937..ca94aa1 100644
+--- a/server/src/Http/Controllers/Api/v1/WalletApiController.php
++++ b/server/src/Http/Controllers/Api/v1/WalletApiController.php
+@@ -40,8 +40,9 @@ class WalletApiController extends Controller
+      */
+     public function getWallet(Request $request): WalletResource
+     {
++        $request->validate(['currency' => 'nullable|string|in:INR,inr']);
+         $subject = $this->resolveSubject($request);
+-        $wallet  = $this->walletService->getOrCreateWallet($subject, $request->input('currency', 'USD'));
++        $wallet  = $this->walletService->getOrCreateWallet($subject, 'INR');
+ 
+         return new WalletResource($wallet);
+     }
+@@ -59,8 +60,9 @@ class WalletApiController extends Controller
+      */
+     public function getBalance(Request $request): JsonResponse
+     {
++        $request->validate(['currency' => 'nullable|string|in:INR,inr']);
+         $subject = $this->resolveSubject($request);
+-        $wallet  = $this->walletService->getOrCreateWallet($subject, $request->input('currency', 'USD'));
++        $wallet  = $this->walletService->getOrCreateWallet($subject, 'INR');
+ 
+         return response()->json([
+             'balance'           => $wallet->balance,
+@@ -82,6 +84,9 @@ class WalletApiController extends Controller
+     {
+         $subject = $this->resolveSubject($request);
+         $wallet  = $this->walletService->getOrCreateWallet($subject);
++        if (strtoupper((string) $wallet->currency) !== 'INR') {
++            return response()->json(['error' => 'New wallet top-ups must use INR.'], 422);
++        }
+ 
+         $transactions = Transaction::where('owner_uuid', $wallet->uuid)
+             ->when($request->filled('type'), fn ($q) => $q->where('type', $request->input('type')))
+diff --git a/server/src/Http/Controllers/Internal/v1/AccountController.php b/server/src/Http/Controllers/Internal/v1/AccountController.php
+index ba344be..77a662d 100644
+--- a/server/src/Http/Controllers/Internal/v1/AccountController.php
++++ b/server/src/Http/Controllers/Internal/v1/AccountController.php
+@@ -3,6 +3,7 @@
+ namespace Fleetbase\Ledger\Http\Controllers\Internal\v1;
+ 
+ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
+ use Fleetbase\Ledger\Http\Resources\v1\Account as AccountResource;
+ use Fleetbase\Ledger\Models\Account;
+ use Fleetbase\Ledger\Services\LedgerService;
+@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
+ 
+ class AccountController extends LedgerResourceController
+ {
++    use EnforcesTmsCurrency;
++
+     /**
+      * The resource to query.
+      *
+@@ -18,6 +21,23 @@ class AccountController extends LedgerResourceController
+      */
+     public $resource = 'account';
+ 
++    public function createRecord(Request $request)
++    {
++        $this->setNewRecordCurrency($request, 'account');
++
++        return parent::createRecord($request);
++    }
++
++    public function updateRecord(Request $request, string $id)
++    {
++        $account = Account::where('company_uuid', session('company'))
++            ->where(fn ($query) => $query->where('uuid', $id)->orWhere('public_id', $id))
++            ->firstOrFail();
++        $this->preserveStoredCurrency($request, 'account', $account->currency);
++
++        return parent::updateRecord($request, $id);
++    }
++
+     /**
+      * Recalculate and update the balance for an account.
+      */
+diff --git a/server/src/Http/Controllers/Internal/v1/Concerns/EnforcesTmsCurrency.php b/server/src/Http/Controllers/Internal/v1/Concerns/EnforcesTmsCurrency.php
+new file mode 100644
+index 0000000..1befafd
+--- /dev/null
++++ b/server/src/Http/Controllers/Internal/v1/Concerns/EnforcesTmsCurrency.php
+@@ -0,0 +1,153 @@
++<?php
++
++namespace Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns;
++
++use Illuminate\Http\Request;
++use Illuminate\Validation\ValidationException;
++
++/**
++ * Enforce INR on newly entered TMS financial records without rewriting stored
++ * currencies when an existing historical record is edited.
++ */
++trait EnforcesTmsCurrency
++{
++    protected function setNewRecordCurrency(Request $request, string $resourceKey): void
++    {
++        $payload = $request->input($resourceKey);
++        $nested  = is_array($payload);
++        $currency = strtoupper((string) ($nested ? ($payload['currency'] ?? 'INR') : $request->input('currency', 'INR')));
++
++        if ($currency !== 'INR') {
++            throw ValidationException::withMessages(['currency' => ['New TMS financial records must use INR.']]);
++        }
++
++        if ($nested) {
++            $payload['currency'] = 'INR';
++            $request->merge([$resourceKey => $payload]);
++        } else {
++            $request->merge(['currency' => 'INR']);
++        }
++    }
++
++    protected function preserveStoredCurrency(Request $request, string $resourceKey, ?string $storedCurrency): void
++    {
++        $payload = $request->input($resourceKey);
++        $nested  = is_array($payload);
++        $hasCurrency = $nested
++            ? array_key_exists('currency', $payload)
++            : $request->exists('currency');
++
++        if (!$hasCurrency) {
++            return;
++        }
++
++        $submitted = $nested ? $payload['currency'] : $request->input('currency');
++        $submitted = is_string($submitted) ? strtoupper($submitted) : $submitted;
++        $stored     = $storedCurrency === null ? null : strtoupper($storedCurrency);
++
++        if ($submitted !== $stored) {
++            throw ValidationException::withMessages([
++                'currency' => ['A saved financial record currency cannot be changed. Create new records in INR.'],
++            ]);
++        }
++
++        if ($nested) {
++            $payload['currency'] = $storedCurrency;
++            $request->merge([$resourceKey => $payload]);
++        } else {
++            $request->merge(['currency' => $storedCurrency]);
++        }
++    }
++
++    protected function assertNewGatewayConfigCurrency(Request $request): void
++    {
++        $config = $request->input('gateway.config', $request->input('config', []));
++        foreach ($this->currencyConfigValues(is_array($config) ? $config : []) as $value) {
++            if (!is_string($value) || strtoupper($value) !== 'INR') {
++                throw ValidationException::withMessages([
++                    'config.currency' => ['New TMS gateway currency settings must use INR.'],
++                ]);
++            }
++        }
++    }
++
++    protected function preserveGatewayConfigCurrency(Request $request, array $storedConfig): void
++    {
++        $config = $request->input('gateway.config', $request->input('config'));
++        if (!is_array($config)) {
++            return;
++        }
++
++        $config = $this->restoreStoredCurrencyConfig($config, $storedConfig);
++        $submittedCurrencies = $this->currencyConfigValues($config);
++        $storedCurrencies    = $this->currencyConfigValues($storedConfig);
++
++        foreach ($submittedCurrencies as $path => $value) {
++            if (array_key_exists($path, $storedCurrencies)) {
++                if (strtoupper((string) $value) !== strtoupper((string) $storedCurrencies[$path])) {
++                    throw ValidationException::withMessages([
++                        'config.currency' => ['Saved gateway currency settings cannot be changed.'],
++                    ]);
++                }
++                continue;
++            }
++
++            if (!is_string($value) || strtoupper($value) !== 'INR') {
++                throw ValidationException::withMessages([
++                    'config.currency' => ['New TMS gateway currency settings must use INR.'],
++                ]);
++            }
++        }
++
++        $this->replaceGatewayConfig($request, $config);
++    }
++
++    private function currencyConfigValues(array $config): array
++    {
++        $currencies = [];
++        foreach ($config as $key => $value) {
++            if (preg_match('/currency$/i', (string) $key)) {
++                $currencies[(string) $key] = $value;
++            } elseif (is_array($value)) {
++                foreach ($this->currencyConfigValues($value) as $nestedKey => $nestedValue) {
++                    $currencies[$key . '.' . $nestedKey] = $nestedValue;
++                }
++            }
++        }
++
++        ksort($currencies);
++
++        return $currencies;
++    }
++
++    private function restoreStoredCurrencyConfig(array $submitted, array $stored): array
++    {
++        foreach ($stored as $key => $value) {
++            if (preg_match('/currency$/i', (string) $key)) {
++                if (!array_key_exists($key, $submitted)) {
++                    $submitted[$key] = $value;
++                }
++            } elseif (is_array($value)) {
++                if (isset($submitted[$key]) && is_array($submitted[$key])) {
++                    $submitted[$key] = $this->restoreStoredCurrencyConfig($submitted[$key], $value);
++                } elseif ($this->currencyConfigValues($value) !== []) {
++                    $submitted[$key] = $value;
++                }
++            }
++        }
++
++        return $submitted;
++    }
++
++    private function replaceGatewayConfig(Request $request, array $config): void
++    {
++        $gatewayPayload = $request->input('gateway');
++        if (is_array($gatewayPayload) && array_key_exists('config', $gatewayPayload)) {
++            $gatewayPayload['config'] = $config;
++            $request->merge(['gateway' => $gatewayPayload]);
++            return;
++        }
++
++        $request->merge(['config' => $config]);
++    }
++}
+diff --git a/server/src/Http/Controllers/Internal/v1/GatewayController.php b/server/src/Http/Controllers/Internal/v1/GatewayController.php
+index 0f4c044..35f6346 100644
+--- a/server/src/Http/Controllers/Internal/v1/GatewayController.php
++++ b/server/src/Http/Controllers/Internal/v1/GatewayController.php
+@@ -5,6 +5,7 @@ namespace Fleetbase\Ledger\Http\Controllers\Internal\v1;
+ use Fleetbase\Ledger\DTO\PurchaseRequest;
+ use Fleetbase\Ledger\DTO\RefundRequest;
+ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
+ use Fleetbase\Ledger\Http\Resources\v1\GatewayTransaction as GatewayTransactionResource;
+ use Fleetbase\Ledger\Models\Gateway;
+ use Fleetbase\Ledger\Models\GatewayTransaction;
+@@ -14,6 +15,8 @@ use Illuminate\Http\Request;
+ 
+ class GatewayController extends LedgerResourceController
+ {
++    use EnforcesTmsCurrency;
++
+     /**
+      * The resource to query.
+      *
+@@ -32,6 +35,21 @@ class GatewayController extends LedgerResourceController
+         $this->paymentService = $paymentService;
+     }
+ 
++    public function createRecord(Request $request)
++    {
++        $this->assertNewGatewayConfigCurrency($request);
++
++        return parent::createRecord($request);
++    }
++
++    public function updateRecord(Request $request, string $id)
++    {
++        $gateway = $this->resolveGateway($id);
++        $this->preserveGatewayConfigCurrency($request, $gateway->decryptedConfig());
++
++        return parent::updateRecord($request, $id);
++    }
++
+     /**
+      * Return all available payment driver manifests (name, config schema, capabilities).
+      */
+@@ -89,9 +107,10 @@ class GatewayController extends LedgerResourceController
+      */
+     public function charge(Request $request, string $id): JsonResponse
+     {
++        $request->merge(['currency' => strtoupper((string) $request->input('currency'))]);
+         $request->validate([
+             'amount'      => 'required|integer|min:1',
+-            'currency'    => 'required|string|size:3',
++            'currency'    => 'required|string|in:INR',
+             'description' => 'required|string|max:500',
+         ]);
+ 
+@@ -125,6 +144,8 @@ class GatewayController extends LedgerResourceController
+      */
+     public function refund(Request $request, string $id): JsonResponse
+     {
++        $request->merge(['currency' => strtoupper((string) $request->input('currency'))]);
++        $this->assertRefundCurrencyIsINROrMatchesHistoricalPayment($request, $id);
+         $request->validate([
+             'gateway_transaction_id' => 'required|string',
+             'amount'                 => 'required|integer|min:1',
+@@ -220,6 +241,7 @@ class GatewayController extends LedgerResourceController
+             'environment' => ['nullable', 'string', 'in:sandbox,live'],
+             'config'      => ['required', 'array'],
+         ]);
++        $this->assertNewGatewayConfigCurrency($request);
+ 
+         try {
+             $driver = app(\Fleetbase\Ledger\PaymentGatewayManager::class)
+@@ -401,6 +423,28 @@ class GatewayController extends LedgerResourceController
+             ->firstOrFail();
+     }
+ 
++    private function assertRefundCurrencyIsINROrMatchesHistoricalPayment(Request $request, string $gatewayId): void
++    {
++        $currency = strtoupper((string) $request->input('currency'));
++        if ($currency === 'INR') {
++            return;
++        }
++
++        $gateway = $this->resolveGateway($gatewayId);
++        $payment = GatewayTransaction::where('company_uuid', session('company'))
++            ->where('gateway_uuid', $gateway->uuid)
++            ->where('gateway_reference_id', $request->input('gateway_transaction_id'))
++            ->where('type', 'purchase')
++            ->where('currency', $currency)
++            ->first();
++
++        if (!$payment) {
++            throw \Illuminate\Validation\ValidationException::withMessages([
++                'currency' => ['New TMS refunds must use INR; historical refunds must match their original payment currency.'],
++            ]);
++        }
++    }
++
+     private function paymentServiceGatewayDriver(Gateway $gateway)
+     {
+         return app(\Fleetbase\Ledger\PaymentGatewayManager::class)
+diff --git a/server/src/Http/Controllers/Internal/v1/InvoiceController.php b/server/src/Http/Controllers/Internal/v1/InvoiceController.php
+index ecc3305..b56be4f 100644
+--- a/server/src/Http/Controllers/Internal/v1/InvoiceController.php
++++ b/server/src/Http/Controllers/Internal/v1/InvoiceController.php
+@@ -4,6 +4,7 @@ namespace Fleetbase\Ledger\Http\Controllers\Internal\v1;
+ 
+ use Fleetbase\Ledger\DTO\RefundRequest;
+ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
+ use Fleetbase\Ledger\Http\Resources\v1\Invoice as InvoiceResource;
+ use Fleetbase\Ledger\Http\Resources\v1\Transaction as TransactionResource;
+ use Fleetbase\Ledger\Models\GatewayTransaction;
+@@ -24,6 +25,8 @@ use Illuminate\Support\Str;
+ 
+ class InvoiceController extends LedgerResourceController
+ {
++    use EnforcesTmsCurrency;
++
+     /**
+      * The resource to query.
+      *
+@@ -31,6 +34,23 @@ class InvoiceController extends LedgerResourceController
+      */
+     public $resource = 'invoice';
+ 
++    public function createRecord(Request $request)
++    {
++        $this->setNewRecordCurrency($request, 'invoice');
++
++        return parent::createRecord($request);
++    }
++
++    public function updateRecord(Request $request, string $id)
++    {
++        $invoice = Invoice::where('company_uuid', session('company'))
++            ->where(fn ($query) => $query->where('uuid', $id)->orWhere('public_id', $id))
++            ->firstOrFail();
++        $this->preserveStoredCurrency($request, 'invoice', $invoice->currency);
++
++        return parent::updateRecord($request, $id);
++    }
++
+     // -------------------------------------------------------------------------
+     // Lifecycle hooks — called automatically by HasApiControllerBehavior
+     // -------------------------------------------------------------------------
+@@ -211,7 +231,7 @@ class InvoiceController extends LedgerResourceController
+         $response = $paymentService->refund(data_get($selected, 'gateway.id'), new RefundRequest(
+             gatewayTransactionId: data_get($selected, 'gateway_transaction_id'),
+             amount: $amount,
+-            currency: $invoice->currency ?? data_get($selected, 'currency', 'USD'),
++            currency: $invoice->currency ?? data_get($selected, 'currency', 'INR'),
+             reason: $request->input('reason'),
+             invoiceUuid: $invoice->uuid,
+             metadata: [
+diff --git a/server/src/Http/Controllers/Internal/v1/JournalController.php b/server/src/Http/Controllers/Internal/v1/JournalController.php
+index 7ec5e4f..feaca10 100644
+--- a/server/src/Http/Controllers/Internal/v1/JournalController.php
++++ b/server/src/Http/Controllers/Internal/v1/JournalController.php
+@@ -3,6 +3,7 @@
+ namespace Fleetbase\Ledger\Http\Controllers\Internal\v1;
+ 
+ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
+ use Fleetbase\Ledger\Http\Resources\v1\Journal as JournalResource;
+ use Fleetbase\Ledger\Models\Journal;
+ use Fleetbase\Ledger\Services\LedgerService;
+@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
+ 
+ class JournalController extends LedgerResourceController
+ {
++    use EnforcesTmsCurrency;
++
+     /**
+      * The resource to query.
+      *
+@@ -18,6 +21,23 @@ class JournalController extends LedgerResourceController
+      */
+     public $resource = 'journal';
+ 
++    public function createRecord(Request $request)
++    {
++        $this->setNewRecordCurrency($request, 'journal');
++
++        return parent::createRecord($request);
++    }
++
++    public function updateRecord(Request $request, string $id)
++    {
++        $journal = Journal::where('company_uuid', session('company'))
++            ->where(fn ($query) => $query->where('uuid', $id)->orWhere('public_id', $id))
++            ->firstOrFail();
++        $this->preserveStoredCurrency($request, 'journal', $journal->currency);
++
++        return parent::updateRecord($request, $id);
++    }
++
+     /**
+      * Create a manual journal entry.
+      *
+@@ -32,7 +52,7 @@ class JournalController extends LedgerResourceController
+             'debit_account_uuid'  => 'required|uuid|exists:ledger_accounts,uuid',
+             'credit_account_uuid' => 'required|uuid|exists:ledger_accounts,uuid|different:debit_account_uuid',
+             'amount'              => 'required|integer|min:1',
+-            'currency'            => 'nullable|string|size:3',
++            'currency'            => 'nullable|string|in:INR',
+             'description'         => 'required|string|max:500',
+             'entry_date'          => 'nullable|date',
+         ]);
+@@ -45,6 +65,12 @@ class JournalController extends LedgerResourceController
+             ->where('uuid', $request->input('credit_account_uuid'))
+             ->firstOrFail();
+ 
++        if (strtoupper((string) $debitAccount->currency) !== 'INR' || strtoupper((string) $creditAccount->currency) !== 'INR') {
++            throw \Illuminate\Validation\ValidationException::withMessages([
++                'currency' => ['New TMS journal entries require INR accounts.'],
++            ]);
++        }
++
+         $journal = app(LedgerService::class)->createJournalEntry(
+             $debitAccount,
+             $creditAccount,
+@@ -52,7 +78,7 @@ class JournalController extends LedgerResourceController
+             $request->input('description'),
+             [
+                 'company_uuid' => session('company'),
+-                'currency'     => $request->input('currency', 'USD'),
++                'currency'     => $request->input('currency') ?? 'INR',
+                 'type'         => 'manual_entry',
+                 'entry_date'   => $request->input('entry_date', now()),
+             ]
+diff --git a/server/src/Http/Controllers/Internal/v1/SettingController.php b/server/src/Http/Controllers/Internal/v1/SettingController.php
+index 95a31f0..695db12 100644
+--- a/server/src/Http/Controllers/Internal/v1/SettingController.php
++++ b/server/src/Http/Controllers/Internal/v1/SettingController.php
+@@ -35,7 +35,7 @@ class SettingController extends Controller
+     {
+         $defaults = [
+             'invoice_prefix'           => 'INV',
+-            'default_currency'         => 'USD',
++            'default_currency'         => 'INR',
+             'payment_terms_days'       => 30,
+             'due_date_offset_days'     => 30,
+             'default_notes'            => '',
+@@ -77,7 +77,7 @@ class SettingController extends Controller
+         $request->validate([
+             'invoiceSettings'                          => 'required|array',
+             'invoiceSettings.invoice_prefix'           => 'nullable|string|max:20',
+-            'invoiceSettings.default_currency'         => 'nullable|string|size:3',
++            'invoiceSettings.default_currency'         => 'nullable|string|in:INR',
+             'invoiceSettings.payment_terms_days'       => 'nullable|integer|min:0|max:365',
+             'invoiceSettings.due_date_offset_days'     => 'nullable|integer|min:0|max:365',
+             'invoiceSettings.default_notes'            => 'nullable|string|max:2000',
+@@ -289,7 +289,7 @@ class SettingController extends Controller
+     public function getAccountingSettings(): JsonResponse
+     {
+         $defaults = [
+-            'base_currency'                => 'USD',
++            'base_currency'                => 'INR',
+             'fiscal_year_start_month'      => 1,   // January
+             'auto_post_journal_entries'    => false,
+             'default_ar_account_uuid'      => null,
+@@ -315,7 +315,7 @@ class SettingController extends Controller
+     {
+         $request->validate([
+             'accountingSettings'                                => 'required|array',
+-            'accountingSettings.base_currency'                  => 'nullable|string|size:3',
++            'accountingSettings.base_currency'                  => 'nullable|string|in:INR',
+             'accountingSettings.fiscal_year_start_month'        => 'nullable|integer|min:1|max:12',
+             'accountingSettings.auto_post_journal_entries'      => 'nullable|boolean',
+             'accountingSettings.default_ar_account_uuid'        => 'nullable|string',
+diff --git a/server/src/Http/Controllers/Internal/v1/TransactionController.php b/server/src/Http/Controllers/Internal/v1/TransactionController.php
+index d355a28..d8a911e 100644
+--- a/server/src/Http/Controllers/Internal/v1/TransactionController.php
++++ b/server/src/Http/Controllers/Internal/v1/TransactionController.php
+@@ -3,6 +3,9 @@
+ namespace Fleetbase\Ledger\Http\Controllers\Internal\v1;
+ 
+ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
++use Fleetbase\Ledger\Models\Transaction;
++use Illuminate\Http\Request;
+ 
+ /**
+  * TransactionController.
+@@ -15,10 +18,29 @@ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
+  */
+ class TransactionController extends LedgerResourceController
+ {
++    use EnforcesTmsCurrency;
++
+     /**
+      * The resource to query.
+      *
+      * @var string
+      */
+     public $resource = 'transaction';
++
++    public function createRecord(Request $request)
++    {
++        $this->setNewRecordCurrency($request, 'transaction');
++
++        return parent::createRecord($request);
++    }
++
++    public function updateRecord(Request $request, string $id)
++    {
++        $transaction = Transaction::where('company_uuid', session('company'))
++            ->where(fn ($query) => $query->where('uuid', $id)->orWhere('public_id', $id))
++            ->firstOrFail();
++        $this->preserveStoredCurrency($request, 'transaction', $transaction->currency);
++
++        return parent::updateRecord($request, $id);
++    }
+ }
+diff --git a/server/src/Http/Controllers/Internal/v1/WalletController.php b/server/src/Http/Controllers/Internal/v1/WalletController.php
+index 5289091..c40c436 100644
+--- a/server/src/Http/Controllers/Internal/v1/WalletController.php
++++ b/server/src/Http/Controllers/Internal/v1/WalletController.php
+@@ -4,6 +4,7 @@ namespace Fleetbase\Ledger\Http\Controllers\Internal\v1;
+ 
+ use Fleetbase\Http\Resources\FleetbaseResourceCollection;
+ use Fleetbase\Ledger\Http\Controllers\LedgerResourceController;
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
+ use Fleetbase\Ledger\Http\Resources\v1\Transaction as TransactionResource;
+ use Fleetbase\Ledger\Http\Resources\v1\Wallet as WalletResource;
+ use Fleetbase\Ledger\Models\Transaction;
+@@ -16,6 +17,8 @@ use Illuminate\Support\Arr;
+ 
+ class WalletController extends LedgerResourceController
+ {
++    use EnforcesTmsCurrency;
++
+     /**
+      * The resource to query.
+      *
+@@ -34,6 +37,13 @@ class WalletController extends LedgerResourceController
+         $this->walletService = $walletService;
+     }
+ 
++    public function createRecord(Request $request)
++    {
++        $this->setNewRecordCurrency($request, 'wallet');
++
++        return parent::createRecord($request);
++    }
++
+     /**
+      * Update a wallet's details.
+      *
+@@ -44,7 +54,13 @@ class WalletController extends LedgerResourceController
+      */
+     public function updateRecord(Request $request, string $id)
+     {
+-        return parent::updateRecord($this->withoutReadOnlyFields($request), $id);
++        $request = $this->withoutReadOnlyFields($request);
++        $wallet  = Wallet::where('company_uuid', session('company'))
++            ->where(fn ($query) => $query->where('uuid', $id)->orWhere('public_id', $id))
++            ->firstOrFail();
++        $this->preserveStoredCurrency($request, 'wallet', $wallet->currency);
++
++        return parent::updateRecord($request, $id);
+     }
+ 
+     /**
+@@ -81,6 +97,8 @@ class WalletController extends LedgerResourceController
+ 
+         $fromWallet = $this->resolveWallet($id);
+         $toWallet   = $this->resolveWallet($request->input('to_wallet_uuid'));
++        $this->assertWalletCurrencyIsINR($fromWallet);
++        $this->assertWalletCurrencyIsINR($toWallet);
+ 
+         $result = $this->walletService->transfer(
+             $fromWallet,
+@@ -108,6 +126,7 @@ class WalletController extends LedgerResourceController
+         ]);
+ 
+         $wallet = $this->resolveWallet($id);
++        $this->assertWalletCurrencyIsINR($wallet);
+ 
+         $transaction = $this->walletService->deposit(
+             $wallet,
+@@ -135,6 +154,7 @@ class WalletController extends LedgerResourceController
+         ]);
+ 
+         $wallet = $this->resolveWallet($id);
++        $this->assertWalletCurrencyIsINR($wallet);
+ 
+         $result = $this->walletService->topUp(
+             $wallet,
+@@ -175,6 +195,7 @@ class WalletController extends LedgerResourceController
+         ]);
+ 
+         $wallet = $this->resolveWallet($id);
++        $this->assertWalletCurrencyIsINR($wallet);
+ 
+         $transaction = $this->walletService->withdraw(
+             $wallet,
+@@ -269,4 +290,13 @@ class WalletController extends LedgerResourceController
+             ->where(fn ($q) => $q->where('uuid', $id)->orWhere('public_id', $id))
+             ->firstOrFail();
+     }
++
++    protected function assertWalletCurrencyIsINR(Wallet $wallet): void
++    {
++        if (strtoupper((string) $wallet->currency) !== 'INR') {
++            throw \Illuminate\Validation\ValidationException::withMessages([
++                'currency' => ['New wallet operations must use INR.'],
++            ]);
++        }
++    }
+ }
+diff --git a/server/src/Http/Controllers/Public/PublicInvoiceController.php b/server/src/Http/Controllers/Public/PublicInvoiceController.php
+index 7641151..cddfe70 100644
+--- a/server/src/Http/Controllers/Public/PublicInvoiceController.php
++++ b/server/src/Http/Controllers/Public/PublicInvoiceController.php
+@@ -338,7 +338,7 @@ class PublicInvoiceController extends Controller
+ 
+         return new PurchaseRequest(
+             amount: (int) $invoice->balance,
+-            currency: $invoice->currency ?? 'USD',
++            currency: $invoice->currency ?? 'INR',
+             description: 'Invoice ' . $invoice->number,
+             customerEmail: $customerEmail,
+             invoiceUuid: $invoice->uuid,
+diff --git a/server/src/Listeners/HandleProcessedRefund.php b/server/src/Listeners/HandleProcessedRefund.php
+index df6d1fb..a25f1b5 100644
+--- a/server/src/Listeners/HandleProcessedRefund.php
++++ b/server/src/Listeners/HandleProcessedRefund.php
+@@ -58,7 +58,7 @@ class HandleProcessedRefund implements ShouldQueue
+                     : null;
+ 
+                 $amount   = (int) $response->amount;
+-                $currency = $response->currency ?? $invoice?->currency ?? 'USD';
++                $currency = $response->currency ?? $invoice?->currency ?? 'INR';
+ 
+                 if ($amount > 0) {
+                     $refundReference = $gatewayTransaction->public_id ?: $gatewayTransaction->uuid;
+diff --git a/server/src/Listeners/HandleSuccessfulPayment.php b/server/src/Listeners/HandleSuccessfulPayment.php
+index 0db4b66..6f7eb67 100644
+--- a/server/src/Listeners/HandleSuccessfulPayment.php
++++ b/server/src/Listeners/HandleSuccessfulPayment.php
+@@ -70,7 +70,7 @@ class HandleSuccessfulPayment implements ShouldQueue
+         try {
+             $companyUuid = $gateway->company_uuid;
+             $amount      = (int) $response->amount;
+-            $currency    = $response->currency ?? 'USD';
++            $currency    = $response->currency ?? 'INR';
+ 
+             // Resolve the linked invoice (if any) using a robust multi-path helper.
+             $invoiceUuid = $this->resolveInvoiceUuid($gatewayTransaction, $response);
+diff --git a/server/src/Models/Invoice.php b/server/src/Models/Invoice.php
+index c119309..ddda2b3 100644
+--- a/server/src/Models/Invoice.php
++++ b/server/src/Models/Invoice.php
+@@ -179,7 +179,6 @@ class Invoice extends Model
+             } elseif (isset($settings['due_date_offset_days'])) {
+                 $paymentTermsDays = (int) $settings['due_date_offset_days'];
+             }
+-            $defCurrency       = data_get($settings, 'default_currency');
+             $defNotes          = data_get($settings, 'default_notes');
+             $defTerms          = data_get($settings, 'default_terms');
+             $defTemplateUuid   = data_get($settings, 'default_template_uuid');
+@@ -192,10 +191,11 @@ class Invoice extends Model
+             }
+ 
+             // ── Currency ───────────────────────────────────────────────────────
+-            // Apply the settings default only when the caller has not already set
+-            // a currency on this invoice (e.g. createFromOrder sets it explicitly).
+-            if (empty($invoice->currency) && !empty($defCurrency)) {
+-                $invoice->currency = $defCurrency;
++            // Default new invoices to INR when the caller has not supplied a
++            // source currency. Legacy settings may contain a non-INR default;
++            // do not apply that old setting to newly created invoices.
++            if (empty($invoice->currency)) {
++                $invoice->currency = 'INR';
+             }
+ 
+             // ── Due date ───────────────────────────────────────────────────────
+diff --git a/server/src/Models/Wallet.php b/server/src/Models/Wallet.php
+index a8a5271..58506dc 100644
+--- a/server/src/Models/Wallet.php
++++ b/server/src/Models/Wallet.php
+@@ -357,15 +357,15 @@ class Wallet extends Model
+         string $subjectUuid,
+         string $subjectType,
+         string $companyUuid,
+-        string $currency = 'USD',
++        string $currency = 'INR',
+     ): static {
+         return static::firstOrCreate(
+             [
++                'company_uuid' => $companyUuid,
+                 'subject_uuid' => $subjectUuid,
+                 'subject_type' => $subjectType,
+             ],
+             [
+-                'company_uuid' => $companyUuid,
+                 'balance'      => 0,
+                 'currency'     => $currency,
+                 'status'       => self::STATUS_ACTIVE,
+diff --git a/server/src/Notifications/InvoiceSent.php b/server/src/Notifications/InvoiceSent.php
+index 714fe3e..cce1c60 100644
+--- a/server/src/Notifications/InvoiceSent.php
++++ b/server/src/Notifications/InvoiceSent.php
+@@ -33,7 +33,7 @@ class InvoiceSent extends Notification implements ShouldQueue
+ 
+         $number      = $this->invoiceNumber();
+         $companyName = $this->companyName();
+-        $currency    = strtoupper((string) ($this->invoice->currency ?: 'USD'));
++        $currency    = strtoupper((string) ($this->invoice->currency ?: 'INR'));
+ 
+         return (new MailMessage())
+             ->from(config('mail.from.address'), $companyName)
+@@ -96,7 +96,7 @@ class InvoiceSent extends Notification implements ShouldQueue
+ 
+         return $this->invoice->items
+             ->map(function ($item) {
+-                $currency  = strtoupper((string) ($this->invoice->currency ?: 'USD'));
++                $currency  = strtoupper((string) ($this->invoice->currency ?: 'INR'));
+                 $quantity  = (float) ($item->quantity ?: 1);
+                 $unitPrice = $item->unit_price ?? ($quantity > 0 ? ((int) $item->amount / $quantity) : $item->amount);
+ 
+diff --git a/server/src/Notifications/RefundUriAvailable.php b/server/src/Notifications/RefundUriAvailable.php
+index 997a4c9..31b1b1d 100644
+--- a/server/src/Notifications/RefundUriAvailable.php
++++ b/server/src/Notifications/RefundUriAvailable.php
+@@ -44,7 +44,7 @@ class RefundUriAvailable extends Notification implements ShouldQueue
+                 'customerName'   => $this->customerName(),
+                 'invoiceNumber'  => $this->invoiceNumber(),
+                 'orderLabel'     => $this->orderLabel(),
+-                'refundAmount'   => $this->formatMoney($this->refund->amount, strtoupper((string) ($this->refund->currency ?: $this->invoice->currency ?: 'USD'))),
++                'refundAmount'   => $this->formatMoney($this->refund->amount, strtoupper((string) ($this->refund->currency ?: $this->invoice->currency ?: 'INR'))),
+                 'refundUrl'      => $this->refundUrl(),
+                 'refundUri'      => $this->refundUri,
+                 'invoiceUrl'     => $this->invoiceUrl(),
+diff --git a/server/src/Observers/OrderAccountingObserver.php b/server/src/Observers/OrderAccountingObserver.php
+index 057a6a6..ed1b3ea 100644
+--- a/server/src/Observers/OrderAccountingObserver.php
++++ b/server/src/Observers/OrderAccountingObserver.php
+@@ -42,7 +42,7 @@ class OrderAccountingObserver
+         try {
+             DB::transaction(function () use ($order) {
+                 $companyUuid = $order->company_uuid;
+-                $currency    = $order->getMeta('currency', 'USD');
++                $currency    = $order->getMeta('currency', 'INR');
+                 $total       = (int) $order->getMeta('total', 0);
+ 
+                 if ($total <= 0) {
+diff --git a/server/src/Observers/PurchaseRateObserver.php b/server/src/Observers/PurchaseRateObserver.php
+index 4ad75c3..d6143b9 100644
+--- a/server/src/Observers/PurchaseRateObserver.php
++++ b/server/src/Observers/PurchaseRateObserver.php
+@@ -59,11 +59,10 @@ class PurchaseRateObserver
+ 
+             $this->supersedeDraftInvoices($order->uuid);
+ 
+-            // Resolve currency: prefer the service quote's currency, fall back to
+-            // the company's country-derived currency, then USD.
++            // Validate the quote/order currency in InvoiceService; missing source currency defaults to INR.
+             $currency = data_get($purchaseRate, 'serviceQuote.currency')
+                 ?? data_get($order, 'meta.currency')
+-                ?? 'USD';
++                ?? 'INR';
+ 
+             // Due date: use the order's scheduled_at date if set, otherwise +30 days.
+             $dueDate = $order->scheduled_at
+diff --git a/server/src/Services/InvoiceService.php b/server/src/Services/InvoiceService.php
+index 39e3001..37f7277 100644
+--- a/server/src/Services/InvoiceService.php
++++ b/server/src/Services/InvoiceService.php
+@@ -37,19 +37,19 @@ class InvoiceService
+      * relationship.
+      *
+      * @param Order       $order        the Fleet-Ops order to invoice
+-     * @param array       $options      Optional overrides (currency, due_date, notes, etc.).
++     * @param array       $options      Optional invoice metadata (INR currency, due_date, notes, etc.).
+      * @param object|null $purchaseRate The PurchaseRate model instance, if available.
+      *                                  When supplied, line items are built from the
+      *                                  service quote breakdown rather than order meta.
+      */
+     public function createFromOrder(Order $order, array $options = [], ?object $purchaseRate = null): Invoice
+     {
+-        $invoice = DB::transaction(function () use ($order, $options, $purchaseRate) {
+-            // Resolve currency from options, order meta, or company default
+-            $currency = $options['currency']
+-                ?? $order->getMeta('currency')
+-                ?? 'USD';
++        $currency = strtoupper((string) ($options['currency'] ?? $order->getMeta('currency') ?? 'INR'));
++        if ($currency !== 'INR') {
++            throw new \InvalidArgumentException('New TMS invoices must use INR. Existing order currency is not converted.');
++        }
+ 
++        $invoice = DB::transaction(function () use ($order, $options, $purchaseRate) {
+             // Create the invoice header.
+             // NOTE: do NOT pass 'number' here — the Invoice::boot() creating hook
+             // reads the company's invoice_prefix from settings and calls
+@@ -71,7 +71,7 @@ class InvoiceService
+                 'number'           => $options['number'] ?? null,
+                 'date'             => $options['date'] ?? now(),
+                 'due_date'         => $options['due_date'] ?? null,
+-                'currency'         => $currency,
++                'currency'         => 'INR',
+                 'status'           => 'draft',
+                 'notes'            => $options['notes'] ?? null,
+                 'terms'            => $options['terms'] ?? null,
+@@ -385,7 +385,7 @@ class InvoiceService
+                 'payee_type'         => \Fleetbase\Models\Company::class,
+                 'amount'             => $amount,
+                 'net_amount'         => $amount,
+-                'currency'           => $invoice->currency ?? 'USD',
++                'currency'           => $invoice->currency ?? 'INR',
+                 'description'        => "Payment for invoice {$invoice->number}",
+                 'type'               => 'invoice_payment',
+                 // credit = inbound money (company receives funds from the customer)
+@@ -396,7 +396,7 @@ class InvoiceService
+                 'reference'          => $reference,
+                 'settled_at'         => now(),
+                 'settled_amount'     => $amount,
+-                'settled_currency'   => $invoice->currency ?? 'USD',
++                'settled_currency'   => $invoice->currency ?? 'INR',
+                 'subject_uuid'       => $invoice->uuid,
+                 'subject_type'       => Invoice::class,
+                 'context_uuid'       => $invoice->uuid,
+diff --git a/server/src/Services/LedgerService.php b/server/src/Services/LedgerService.php
+index 5476741..e9cedc5 100644
+--- a/server/src/Services/LedgerService.php
++++ b/server/src/Services/LedgerService.php
+@@ -50,7 +50,7 @@ class LedgerService
+      *
+      * Supported $options keys:
+      *   - company_uuid      (string)  Company context; falls back to session('company').
+-     *   - currency          (string)  ISO 4217 currency code; defaults to account currency or 'USD'.
++     *   - currency          (string)  ISO 4217 currency code; defaults to account currency or INR.
+      *   - transaction_uuid  (string)  UUID of the caller's Transaction record to link to this journal.
+      *   - reference         (string)  Human-readable reference (invoice number, order ID, etc.).
+      *   - memo              (string)  Additional memo text; defaults to description.
+@@ -72,9 +72,15 @@ class LedgerService
+         string $description = '',
+         array $options = [],
+     ): Journal {
+-        return DB::transaction(function () use ($debitAccount, $creditAccount, $amount, $description, $options) {
++        $currency = strtoupper((string) ($options['currency'] ?? $debitAccount->currency ?? 'INR'));
++        foreach ([$debitAccount, $creditAccount] as $account) {
++            if (!empty($account->currency) && strtoupper((string) $account->currency) !== $currency) {
++                throw new \InvalidArgumentException('The journal currency must match both account currencies.');
++            }
++        }
++
++        return DB::transaction(function () use ($debitAccount, $creditAccount, $amount, $description, $options, $currency) {
+             $companyUuid = $options['company_uuid'] ?? session('company');
+-            $currency    = $options['currency'] ?? $debitAccount->currency ?? 'USD';
+             $meta        = $options['meta'] ?? [];
+             foreach (['subject_uuid', 'subject_type', 'gateway_transaction_uuid'] as $metaKey) {
+                 if (array_key_exists($metaKey, $options) && !array_key_exists($metaKey, $meta)) {
+@@ -991,7 +997,7 @@ class LedgerService
+             }
+         }
+ 
+-        return 'USD';
++        return 'INR';
+     }
+ 
+     // =========================================================================
+diff --git a/server/src/Services/WalletService.php b/server/src/Services/WalletService.php
+index 1e77d52..8cad5ae 100644
+--- a/server/src/Services/WalletService.php
++++ b/server/src/Services/WalletService.php
+@@ -55,16 +55,34 @@ class WalletService
+      * a wallet for a subject and don't know if one exists yet.
+      *
+      * @param Model  $subject  Any Eloquent model with a uuid and company_uuid
+-     * @param string $currency ISO 4217 currency code (default: USD)
++     * @param string $currency ISO 4217 currency code (default: INR)
+      */
+-    public function getOrCreateWallet(Model $subject, string $currency = 'USD'): Wallet
++    public function getOrCreateWallet(Model $subject, string $currency = 'INR'): Wallet
+     {
++        $companyUuid = $subject->company_uuid ?? session('company');
++        $existing = Wallet::query()
++            ->where('subject_uuid', $subject->uuid)
++            ->where('subject_type', get_class($subject))
++            ->where('company_uuid', $companyUuid)
++            ->first();
++
++        // Existing wallets can retain their original currency for history and
++        // reconciliation. New wallets created by the TMS always use INR.
++        if ($existing) {
++            return $existing;
++        }
++
++        if (strtoupper($currency) !== 'INR') {
++            throw new \InvalidArgumentException('New TMS wallets must use INR.');
++        }
++
+         return Wallet::forSubject(
+             subjectUuid: $subject->uuid,
+             subjectType: get_class($subject),
+-            companyUuid: $subject->company_uuid ?? session('company'),
+-            currency: $currency,
++            companyUuid: $companyUuid,
++            currency: 'INR',
+         );
++
+     }
+ 
+     /**
+@@ -75,7 +93,7 @@ class WalletService
+      *
+      * @return array<Wallet>
+      */
+-    public function provisionBatch(iterable $subjects, string $currency = 'USD'): array
++    public function provisionBatch(iterable $subjects, string $currency = 'INR'): array
+     {
+         $wallets = [];
+         foreach ($subjects as $subject) {
+@@ -109,6 +127,8 @@ class WalletService
+         string $type = 'deposit',
+         array $options = [],
+     ): Transaction {
++        $this->assertTmsWalletIsInr($wallet);
++
+         if (!$wallet->canCredit()) {
+             throw new \Exception("Wallet [{$wallet->public_id}] cannot accept credits (status: {$wallet->status}).");
+         }
+@@ -200,6 +220,8 @@ class WalletService
+         string $type = 'withdrawal',
+         array $options = [],
+     ): Transaction {
++        $this->assertTmsWalletIsInr($wallet);
++
+         if (!$wallet->canDebit()) {
+             throw new \Exception("Wallet [{$wallet->public_id}] cannot be debited (status: {$wallet->status}).");
+         }
+@@ -295,6 +317,9 @@ class WalletService
+         string $description = '',
+         array $options = [],
+     ): array {
++        $this->assertTmsWalletIsInr($fromWallet);
++        $this->assertTmsWalletIsInr($toWallet);
++
+         if (!$fromWallet->canDebit()) {
+             throw new \Exception("Source wallet [{$fromWallet->public_id}] cannot be debited.");
+         }
+@@ -429,6 +454,8 @@ class WalletService
+         array $paymentData = [],
+         string $description = '',
+     ): array {
++        $this->assertTmsWalletIsInr($wallet);
++
+         $paymentService = $this->resolvePaymentService();
+ 
+         $purchaseRequest = new PurchaseRequest(
+@@ -499,11 +526,19 @@ class WalletService
+     public function creditEarnings(
+         Model $driver,
+         int $amount,
+-        string $currency = 'USD',
++        string $currency = 'INR',
+         string $description = '',
+         array $options = [],
+     ): Transaction {
+-        $wallet = $this->getOrCreateWallet($driver, $currency);
++        if (strtoupper($currency) !== 'INR') {
++            throw new \InvalidArgumentException('New TMS driver earnings must use INR.');
++        }
++
++        $wallet = $this->getOrCreateWallet($driver, 'INR');
++
++        if (strtoupper($wallet->currency) !== strtoupper($currency)) {
++            throw new \InvalidArgumentException('The existing wallet currency does not match the earnings currency.');
++        }
+ 
+         return $this->deposit(
+             wallet: $wallet,
+@@ -535,7 +570,16 @@ class WalletService
+         string $description = '',
+         array $options = [],
+     ): Transaction {
+-        $wallet = $this->getOrCreateWallet($driver, $options['currency'] ?? 'USD');
++        if (isset($options['currency']) && strtoupper((string) $options['currency']) !== 'INR') {
++            throw new \InvalidArgumentException('New TMS driver payouts must use INR.');
++        }
++
++        unset($options['currency']);
++        $wallet = $this->getOrCreateWallet($driver, 'INR');
++
++        if (strtoupper($wallet->currency) !== 'INR') {
++            throw new \InvalidArgumentException('Driver payouts require an INR wallet.');
++        }
+ 
+         return $this->withdraw(
+             wallet: $wallet,
+@@ -649,7 +693,7 @@ class WalletService
+      */
+     public function provisionCompanyWallets(Company $company): Collection
+     {
+-        $currency    = $company->currency ?? config('ledger.default_currency', 'USD');
++        $currency    = 'INR';
+         $subjectType = Utils::getMutationType(Company::class);
+ 
+         $definitions = [
+@@ -718,7 +762,7 @@ class WalletService
+             return null;
+         }
+ 
+-        $currency    = optional($user->company)->currency ?? config('ledger.default_currency', 'USD');
++        $currency    = 'INR';
+         $subjectType = Utils::getMutationType(User::class);
+ 
+         return Wallet::firstOrCreate(
+@@ -753,4 +797,12 @@ class WalletService
+ 
+         return $this->paymentService;
+     }
++
++    /** Ensure newly initiated TMS wallet operations cannot post non-INR records. */
++    protected function assertTmsWalletIsInr(Wallet $wallet): void
++    {
++        if (strtoupper((string) $wallet->currency) !== 'INR') {
++            throw new \InvalidArgumentException('New TMS wallet transactions must use INR. Existing wallet currency is preserved.');
++        }
++    }
+ }
+diff --git a/server/tests/Gateways/TalerDriverTest.php b/server/tests/Gateways/TalerDriverTest.php
+index 5a8812e..4923ca7 100644
+--- a/server/tests/Gateways/TalerDriverTest.php
++++ b/server/tests/Gateways/TalerDriverTest.php
+@@ -951,7 +951,7 @@ test('webhook and refund preserve operation-specific configuration failures', fu
+         ->and($refund->message)->toBe('Taler API token is not configured.');
+ });
+ 
+-test('webhook safely normalizes absent and malformed taler amounts', function () {
++test('webhook defaults absent and malformed taler amounts to INR without altering provider currencies', function () {
+     fakeTalerHttp([
+         'https://backend.example.taler.net/instances/testmerchant/private/orders/order-no-amount' => Http::response([
+             'order_status'   => 'paid',
+@@ -972,8 +972,8 @@ test('webhook safely normalizes absent and malformed taler amounts', function ()
+ 
+     expect($absent->isSuccessful())->toBeTrue()
+         ->and($absent->amount)->toBe(0)
+-        ->and($absent->currency)->toBe('USD')
++        ->and($absent->currency)->toBe('INR')
+         ->and($malformed->isSuccessful())->toBeTrue()
+         ->and($malformed->amount)->toBe(0)
+-        ->and($malformed->currency)->toBe('USD');
++        ->and($malformed->currency)->toBe('INR');
+ });
+diff --git a/server/tests/Http/Controllers/GatewayControllerTest.php b/server/tests/Http/Controllers/GatewayControllerTest.php
+index 58b4a78..7728e47 100644
+--- a/server/tests/Http/Controllers/GatewayControllerTest.php
++++ b/server/tests/Http/Controllers/GatewayControllerTest.php
+@@ -18,8 +18,24 @@ use Illuminate\Support\Facades\Facade;
+ 
+ class GatewayControllerRequest extends Request
+ {
++    public array $validationRules = [];
++
+     public function validate(array $rules, ...$params)
+     {
++        $this->validationRules = $rules;
++
++        foreach ($rules as $field => $ruleSet) {
++            $ruleSet = is_array($ruleSet) ? implode('|', $ruleSet) : (string) $ruleSet;
++            if (preg_match('/(?:^|\|)in:([^|]+)/', $ruleSet, $matches)) {
++                $allowed = array_map('strtoupper', explode(',', $matches[1]));
++                if (in_array(strtoupper((string) $this->input($field)), $allowed, true)) {
++                    continue;
++                }
++
++                throw \Illuminate\Validation\ValidationException::withMessages([$field => ['The currency must be INR.']]);
++            }
++        }
++
+         return $this->all();
+     }
+ }
+@@ -289,7 +305,7 @@ test('gateway charge constructs the complete purchase contract and maps successf
+     $controller = new GatewayController($paymentService);
+     $request    = gatewayControllerRequest([
+         'amount'               => 1250,
+-        'currency'             => 'usd',
++        'currency'             => 'inr',
+         'description'          => 'Invoice payment',
+         'payment_method_token' => 'token-one',
+         'customer_id'          => 'customer-one',
+@@ -313,7 +329,7 @@ test('gateway charge constructs the complete purchase contract and maps successf
+         ])
+         ->and($gatewayId)->toBe('gateway-one')
+         ->and($purchase->amount)->toBe(1250)
+-        ->and($purchase->currency)->toBe('USD')
++        ->and($purchase->currency)->toBe('INR')
+         ->and($purchase->description)->toBe('Invoice payment')
+         ->and($purchase->paymentMethodToken)->toBe('token-one')
+         ->and($purchase->customerId)->toBe('customer-one')
+@@ -322,7 +338,8 @@ test('gateway charge constructs the complete purchase contract and maps successf
+         ->and($purchase->orderUuid)->toBe('order-one')
+         ->and($purchase->returnUrl)->toBe('https://app.test/return')
+         ->and($purchase->cancelUrl)->toBe('https://app.test/cancel')
+-        ->and($purchase->metadata)->toBe(['source' => 'invoice']);
++        ->and($purchase->metadata)->toBe(['source' => 'invoice'])
++        ->and($request->validationRules['currency'])->toBe('required|string|in:INR');
+ });
+ 
+ test('gateway charge returns provider failures with an unprocessable status', function () {
+@@ -336,7 +353,7 @@ test('gateway charge returns provider failures with an unprocessable status', fu
+ 
+     $response = $controller->charge(gatewayControllerRequest([
+         'amount'      => 500,
+-        'currency'    => 'EUR',
++        'currency'    => 'INR',
+         'description' => 'Failed payment',
+     ]), 'gateway-card');
+ 
+@@ -350,6 +367,32 @@ test('gateway charge returns provider failures with an unprocessable status', fu
+         ]);
+ });
+ 
++test('gateway charge rejects a non-INR request before calling the provider', function () {
++    $paymentService = new GatewayControllerPaymentService();
++    $controller = new GatewayController($paymentService);
++    $request = gatewayControllerRequest([
++        'amount' => 500,
++        'currency' => 'USD',
++        'description' => 'New TMS charge',
++    ]);
++
++    expect(fn () => $controller->charge($request, 'gateway-card'))
++        ->toThrow(\Illuminate\Validation\ValidationException::class)
++        ->and($paymentService->calls)->toBeEmpty();
++});
++
++test('gateway credential setup rejects non-INR currency settings before driver initialization', function () {
++    $controller = new GatewayController(new GatewayControllerPaymentService());
++    $request = gatewayControllerRequest([
++        'driver' => 'stripe',
++        'environment' => 'sandbox',
++        'config' => ['currency' => 'USD'],
++    ]);
++
++    expect(fn () => $controller->testDraftCredentials($request))
++        ->toThrow(\Illuminate\Validation\ValidationException::class);
++});
++
+ test('gateway refund forwards invoice metadata and maps both response states', function () {
+     $paymentService                 = new GatewayControllerPaymentService();
+     $paymentService->refundResponse = GatewayResponse::success(
+@@ -364,7 +407,7 @@ test('gateway refund forwards invoice metadata and maps both response states', f
+     $request    = gatewayControllerRequest([
+         'gateway_transaction_id' => 'payment-one',
+         'amount'                 => 300,
+-        'currency'               => 'usd',
++        'currency'               => 'inr',
+         'reason'                 => 'Damaged parcel',
+         'invoice_uuid'           => 'invoice-one',
+         'metadata'               => ['requested_by' => 'customer'],
+@@ -378,7 +421,7 @@ test('gateway refund forwards invoice metadata and maps both response states', f
+         ->and($gatewayId)->toBe('gateway-one')
+         ->and($refund->gatewayTransactionId)->toBe('payment-one')
+         ->and($refund->amount)->toBe(300)
+-        ->and($refund->currency)->toBe('USD')
++        ->and($refund->currency)->toBe('INR')
+         ->and($refund->reason)->toBe('Damaged parcel')
+         ->and($refund->invoiceUuid)->toBe('invoice-one')
+         ->and($refund->metadata)->toBe(['requested_by' => 'customer']);
+@@ -391,6 +434,44 @@ test('gateway refund forwards invoice metadata and maps both response states', f
+     expect($controller->refund($request, 'gateway-one')->getStatusCode())->toBe(422);
+ });
+ 
++test('gateway refund preserves the currency of an existing historical payment', function () {
++    bootGatewayControllerDatabase();
++    $gateway = gatewayControllerGateway();
++    gatewayControllerTransaction($gateway, [
++        'gateway_reference_id' => 'legacy-payment-usd',
++        'type' => 'purchase',
++        'currency' => 'USD',
++        'amount' => 2500,
++        'status' => 'succeeded',
++    ]);
++    $paymentService = new GatewayControllerPaymentService();
++    $paymentService->refundResponse = GatewayResponse::success('legacy-refund-usd', amount: 500, currency: 'USD');
++    $controller = new GatewayController($paymentService);
++
++    $request = gatewayControllerRequest([
++        'gateway_transaction_id' => 'legacy-payment-usd',
++        'amount' => 500,
++        'currency' => 'usd',
++    ]);
++    $controller->refund($request, $gateway->uuid);
++
++    expect($paymentService->calls[0][2]->currency)->toBe('USD');
++});
++
++test('gateway refund rejects non-INR currency without a matching historical payment', function () {
++    bootGatewayControllerDatabase();
++    $gateway = gatewayControllerGateway();
++    $controller = new GatewayController(new GatewayControllerPaymentService());
++    $request = gatewayControllerRequest([
++        'gateway_transaction_id' => 'missing-payment',
++        'amount' => 500,
++        'currency' => 'USD',
++    ]);
++
++    expect(fn () => $controller->refund($request, $gateway->uuid))
++        ->toThrow(\Illuminate\Validation\ValidationException::class);
++});
++
+ test('setup intent forwards arbitrary provider data and preserves response status', function () {
+     $paymentService                = new GatewayControllerPaymentService();
+     $paymentService->setupResponse = GatewayResponse::pending(
+diff --git a/server/tests/Http/Controllers/InvoiceControllerTest.php b/server/tests/Http/Controllers/InvoiceControllerTest.php
+index 75a0a48..245a1f8 100644
+--- a/server/tests/Http/Controllers/InvoiceControllerTest.php
++++ b/server/tests/Http/Controllers/InvoiceControllerTest.php
+@@ -758,6 +758,34 @@ test('invoice refunds classify partial and full requests and map provider respon
+         ->and($full->getData(true)['refund_kind'])->toBe('full');
+ });
+ 
++test('invoice refund request defaults to INR only when invoice and provider currencies are missing', function () {
++    $gateway = invoiceControllerGateway('cash');
++    $invoice = invoiceControllerInvoice([
++        'uuid'         => 'invoice-refund-inr-fallback',
++        'public_id'    => 'invoice_refund_inr_fallback',
++        'status'       => 'paid',
++        'currency'     => null,
++        'total_amount' => 1000,
++        'amount_paid'  => 1000,
++        'balance'      => 0,
++    ]);
++    invoiceControllerGatewayTransaction($gateway, [
++        'gateway_reference_id' => 'cash-payment-inr-fallback',
++        'currency'             => null,
++        'amount'               => 1000,
++        'raw_response'         => ['invoice_uuid' => $invoice->uuid],
++    ]);
++    $payment           = new InvoiceControllerPaymentService();
++    $payment->response = GatewayResponse::failure('refund-default', GatewayResponse::EVENT_REFUND_FAILED, 'Not processed');
++
++    (new InvoiceController())->refund($invoice->uuid, invoiceControllerRequest([
++        'gateway_transaction_id' => 'cash-payment-inr-fallback',
++        'amount'                 => 100,
++    ]), $payment);
++
++    expect($payment->calls[0][1]->currency)->toBe('INR');
++});
++
+ test('refund URI delivery validates URI and customer email fallbacks before notifying', function () {
+     Notification::fake();
+     $notificationFake = Notification::getFacadeRoot();
+diff --git a/server/tests/Http/Controllers/PublicInvoiceControllerTest.php b/server/tests/Http/Controllers/PublicInvoiceControllerTest.php
+index 0971e07..38ae698 100644
+--- a/server/tests/Http/Controllers/PublicInvoiceControllerTest.php
++++ b/server/tests/Http/Controllers/PublicInvoiceControllerTest.php
+@@ -126,6 +126,17 @@ beforeEach(function () {
+     Container::getInstance()->instance('request', Request::create('/ledger/public/invoices'));
+ });
+ 
++test('public invoice payment request defaults a missing invoice currency to INR and preserves explicit currency', function () {
++    $controller = publicInvoiceController(new PublicInvoiceAsyncDriver());
++    $method     = new ReflectionMethod(PublicInvoiceController::class, 'buildPurchaseRequest');
++
++    $defaulted = $method->invoke($controller, invoiceControllerInvoice(['currency' => null]));
++    $explicit  = $method->invoke($controller, invoiceControllerInvoice(['uuid' => 'invoice-explicit-currency', 'currency' => 'BTN']));
++
++    expect($defaulted->currency)->toBe('INR')
++        ->and($explicit->currency)->toBe('BTN');
++});
++
+ test('public invoice display blocks drafts and advances sent invoices to viewed once', function () {
+     $controller = publicInvoiceController(new PublicInvoiceAsyncDriver());
+     $draft      = invoiceControllerInvoice(['status' => 'draft']);
+diff --git a/server/tests/Http/Controllers/WalletControllerTest.php b/server/tests/Http/Controllers/WalletControllerTest.php
+index 7d13b2c..587c7eb 100644
+--- a/server/tests/Http/Controllers/WalletControllerTest.php
++++ b/server/tests/Http/Controllers/WalletControllerTest.php
+@@ -19,8 +19,19 @@ use Illuminate\Support\Facades\Facade;
+ 
+ class WalletControllerRequest extends Request
+ {
++    public array $validationRules = [];
++
+     public function validate(array $rules, ...$params)
+     {
++        $this->validationRules = $rules;
++        foreach ($rules as $field => $ruleSet) {
++            $ruleSet = is_array($ruleSet) ? implode('|', $ruleSet) : (string) $ruleSet;
++            $value = $this->input($field);
++            if ($value !== null && str_contains($ruleSet, 'in:INR,inr') && strtoupper((string) $value) !== 'INR') {
++                throw \Illuminate\Validation\ValidationException::withMessages([$field => ['Wallet currency must be INR.']]);
++            }
++        }
++
+         return $this->all();
+     }
+ }
+@@ -38,7 +49,7 @@ class WalletControllerService extends WalletService
+         $this->gatewayResponse = GatewayResponse::pending('gateway-pending', data: ['payment_url' => 'https://pay.test']);
+     }
+ 
+-    public function getOrCreateWallet(Model $subject, string $currency = 'USD'): Wallet
++    public function getOrCreateWallet(Model $subject, string $currency = 'INR'): Wallet
+     {
+         $this->calls[] = ['getOrCreateWallet', $subject->getAttribute('uuid'), $currency];
+ 
+@@ -169,7 +180,7 @@ function bootWalletControllerDatabase(): void
+         $table->string('name')->nullable();
+         $table->text('description')->nullable();
+         $table->bigInteger('balance')->default(0);
+-        $table->string('currency')->default('USD');
++        $table->string('currency')->default('INR');
+         $table->string('status')->default('active');
+         $table->text('meta')->nullable();
+         $table->softDeletes();
+@@ -217,7 +228,7 @@ function walletControllerWallet(array $attributes = []): Wallet
+             'subject_type' => Company::class,
+             'name'         => 'Operating wallet',
+             'balance'      => 2500,
+-            'currency'     => 'USD',
++            'currency'     => 'INR',
+             'status'       => 'active',
+         ], $attributes));
+         $wallet->save();
+@@ -392,6 +403,20 @@ test('editing a wallet never sends its balance on to the update', function () {
+     expect($strip->invoke($controller, $bare)->all())->toBe(['status' => 'active']);
+ });
+ 
++test('new wallet operations require INR while leaving the stored wallet currency untouched', function () {
++    $controller = new WalletController(new WalletControllerService());
++    $assertCurrency = new ReflectionMethod($controller, 'assertWalletCurrencyIsINR');
++    $assertCurrency->setAccessible(true);
++
++    $inrWallet = new Wallet(['currency' => 'INR']);
++    $assertCurrency->invoke($controller, $inrWallet);
++
++    $historicalWallet = new Wallet(['currency' => 'USD']);
++    expect(fn () => $assertCurrency->invoke($controller, $historicalWallet))
++        ->toThrow(\Illuminate\Validation\ValidationException::class)
++        ->and($historicalWallet->currency)->toBe('USD');
++});
++
+ test('wallet update delegates only editable fields to validation and persistence', function () {
+     $wallet  = walletControllerWallet(['uuid' => 'wallet-safe-edit']);
+     $request = WalletControllerRequest::create('/ledger/int/v1/wallets/wallet-safe-edit', 'PUT', [], [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
+@@ -439,7 +464,7 @@ test('wallet API provisions consumer wallets and returns exact balance contracts
+     $service    = new WalletControllerService();
+     $controller = new WalletApiController($service);
+     $consumer   = new Company(['uuid' => 'consumer-company']);
+-    $request    = walletControllerRequest(['_consumer' => $consumer, 'currency' => 'MNT']);
++    $request    = walletControllerRequest(['_consumer' => $consumer, 'currency' => 'INR']);
+ 
+     $resource = $controller->getWallet($request);
+     $balance  = walletControllerJson($controller->getBalance($request));
+@@ -447,10 +472,21 @@ test('wallet API provisions consumer wallets and returns exact balance contracts
+         ->and($balance)->toMatchArray([
+             'balance'           => 2500,
+             'formatted_balance' => '25.00',
+-            'currency'          => 'USD',
++            'currency'          => 'INR',
+             'status'            => 'active',
+         ])
+-        ->and($service->calls[0])->toBe(['getOrCreateWallet', 'consumer-company', 'MNT']);
++        ->and($service->calls[0])->toBe(['getOrCreateWallet', 'consumer-company', 'INR'])
++        ->and($request->validationRules['currency'])->toBe('nullable|string|in:INR,inr');
++});
++
++test('wallet API rejects creation requests for non-INR wallets', function () {
++    $service = new WalletControllerService();
++    $controller = new WalletApiController($service);
++    $request = walletControllerRequest(['_consumer' => new Company(['uuid' => 'consumer-company']), 'currency' => 'USD']);
++
++    expect(fn () => $controller->getWallet($request))
++        ->toThrow(\Illuminate\Validation\ValidationException::class)
++        ->and($service->calls)->toBeEmpty();
+ });
+ 
+ test('wallet API resolves authenticated users and rejects unauthenticated requests', function () {
+@@ -490,7 +526,7 @@ test('wallet API resolves the session user when no user resolver is bound', func
+     $request->setUserResolver(fn () => null);
+ 
+     expect($controller->getWallet($request)->resource)->toBeInstanceOf(Wallet::class)
+-        ->and($service->calls[0])->toBe(['getOrCreateWallet', 'session-user-uuid', 'USD']);
++        ->and($service->calls[0])->toBe(['getOrCreateWallet', 'session-user-uuid', 'INR']);
+ 
+     session(['user' => null]);
+ });
+diff --git a/server/tests/Listeners/HandleProcessedRefundTest.php b/server/tests/Listeners/HandleProcessedRefundTest.php
+index 592969c..8ada3f5 100644
+--- a/server/tests/Listeners/HandleProcessedRefundTest.php
++++ b/server/tests/Listeners/HandleProcessedRefundTest.php
+@@ -156,6 +156,7 @@ function insertRefundInvoice(
+     int $total,
+     string $status = 'paid',
+     array $meta = [],
++    ?string $currency = 'USD',
+ ): void {
+     Capsule::table('ledger_invoices')->insert([
+         'uuid'          => $uuid,
+@@ -165,7 +166,7 @@ function insertRefundInvoice(
+         'customer_type' => null,
+         'number'        => 'INV-' . $uuid,
+         'total_amount'  => $total,
+-        'currency'      => 'USD',
++        'currency'      => $currency,
+         'status'        => $status,
+         'meta'          => json_encode($meta),
+         'created_at'    => now(),
+@@ -251,6 +252,28 @@ test('partial refunds create a transaction, reversal journal, and invoice state'
+         ->and($ledger->calls[0]['options']['meta']['invoice_uuid'])->toBe('invoice-partial');
+ });
+ 
++test('refund transaction falls back to INR only when provider and invoice currencies are missing', function () {
++    insertRefundInvoice('invoice-refund-inr-fallback', 1000, currency: null);
++    $audit = createRefundAudit(['raw_response' => ['invoice_uuid' => 'invoice-refund-inr-fallback']]);
++
++    (new HandleProcessedRefund(new ProcessedRefundLedgerSpy()))
++        ->handle(processedRefundEvent($audit, 100, currency: null));
++
++    $transaction = Transaction::query()->firstOrFail();
++    expect($transaction->currency)->toBe('INR')
++        ->and($transaction->settled_currency)->toBe('INR');
++});
++
++test('refund transaction preserves an explicit provider currency when invoice currency is missing', function () {
++    insertRefundInvoice('invoice-refund-provider-currency', 1000, currency: null);
++    $audit = createRefundAudit(['raw_response' => ['invoice_uuid' => 'invoice-refund-provider-currency']]);
++
++    (new HandleProcessedRefund(new ProcessedRefundLedgerSpy()))
++        ->handle(processedRefundEvent($audit, 100, currency: 'EUR'));
++
++    expect(Transaction::query()->firstOrFail()->currency)->toBe('EUR');
++});
++
+ test('taler refunds track wallet pickup and all invoice refund statuses', function () {
+     $cases = [
+         ['uuid' => 'cash-full', 'driver' => 'cash', 'amount' => 1000, 'total' => 1000, 'wallet' => null, 'status' => 'refunded'],
+diff --git a/server/tests/Listeners/HandleSuccessfulPaymentTest.php b/server/tests/Listeners/HandleSuccessfulPaymentTest.php
+index 9cf0047..a42dc3f 100644
+--- a/server/tests/Listeners/HandleSuccessfulPaymentTest.php
++++ b/server/tests/Listeners/HandleSuccessfulPaymentTest.php
+@@ -254,7 +254,7 @@ test('standalone payments create the default cash and revenue accounting contrac
+         ->and($ledgerService->calls[0]['creditAccount']->code)->toBe('REV-DEFAULT')
+         ->and($ledgerService->calls[0]['amount'])->toBe(2500)
+         ->and($ledgerService->calls[0]['description'])->toContain('Test Provider')
+-        ->and($ledgerService->calls[0]['options']['currency'])->toBe('USD')
++        ->and($ledgerService->calls[0]['options']['currency'])->toBe('INR')
+         ->and($ledgerService->calls[0]['options']['journal_type'])->toBe('gateway_payment')
+         ->and($ledgerService->calls[0]['options']['gateway_transaction_uuid'])->toBe($transaction->uuid)
+         ->and($ledgerService->calls[0]['options']['meta']['gateway_driver'])->toBe('test-provider')
+diff --git a/server/tests/Models/ModelLifecycleTest.php b/server/tests/Models/ModelLifecycleTest.php
+index 37991d4..b7b5c4f 100644
+--- a/server/tests/Models/ModelLifecycleTest.php
++++ b/server/tests/Models/ModelLifecycleTest.php
+@@ -117,7 +117,7 @@ test('invoice creation normalizes malformed settings and applies complete config
+         'value' => json_encode([
+             'invoice_prefix'        => 'BILL',
+             'payment_terms_days'    => 14,
+-            'default_currency'      => 'MNT',
++            'default_currency'      => 'INR',
+             'default_notes'         => 'Thank you',
+             'default_terms'         => 'Net 14',
+             'default_template_uuid' => 'template-1',
+@@ -132,7 +132,7 @@ test('invoice creation normalizes malformed settings and applies complete config
+     $invoice->save();
+ 
+     expect($invoice->number)->toStartWith('BILL-')
+-        ->and($invoice->currency)->toBe('MNT')
++        ->and($invoice->currency)->toBe('INR')
+         ->and($invoice->due_date->format('Y-m-d'))->toBe('2026-07-15')
+         ->and($invoice->notes)->toBe('Thank you')
+         ->and($invoice->terms)->toBe('Net 14')
+@@ -170,7 +170,7 @@ test('invoice creation applies the invoice company settings without a company se
+     $invoice->save();
+ 
+     expect($invoice->number)->toStartWith('QUE-')
+-        ->and($invoice->currency)->toBe('SGD');
++        ->and($invoice->currency)->toBe('INR');
+ });
+ 
+ test('invoice settings use the invoice company even when another company is signed in', function () {
+@@ -189,7 +189,7 @@ test('invoice settings use the invoice company even when another company is sign
+     $invoice->save();
+ 
+     expect($invoice->number)->toStartWith('OWN-')
+-        ->and($invoice->currency)->toBe('SGD');
++        ->and($invoice->currency)->toBe('INR');
+ });
+ 
+ test('invoice creation without any company context uses safe defaults', function () {
+@@ -202,7 +202,25 @@ test('invoice creation without any company context uses safe defaults', function
+     $invoice->save();
+ 
+     expect($invoice->number)->toStartWith('INV-')
+-        ->and($invoice->currency)->toBeNull();
++        ->and($invoice->currency)->toBe('INR');
++});
++
++test('new invoice creation ignores legacy non-INR settings defaults and uses INR', function () {
++    Capsule::table('settings')->insert([
++        'key'   => 'company.company-model-lifecycle.ledger.invoice-settings',
++        'value' => json_encode(['default_currency' => 'USD']),
++    ]);
++    Cache::flush();
++
++    $invoice = new Invoice([
++        'uuid'         => 'invoice-legacy-currency-setting',
++        'public_id'    => 'invoice_legacy_currency_setting',
++        'company_uuid' => 'company-model-lifecycle',
++        'date'         => '2026-07-01',
++    ]);
++    $invoice->save();
++
++    expect($invoice->currency)->toBe('INR');
+ });
+ 
+ test('invoice number generation retries collisions including soft deleted records', function () {
+diff --git a/server/tests/Notifications/LedgerNotificationTest.php b/server/tests/Notifications/LedgerNotificationTest.php
+index 992b617..50bee17 100644
+--- a/server/tests/Notifications/LedgerNotificationTest.php
++++ b/server/tests/Notifications/LedgerNotificationTest.php
+@@ -147,7 +147,7 @@ test('invoice sent mail provides safe fallbacks for sparse invoice relationships
+         ->and($mail->viewData['invoiceDate'])->toBeNull()
+         ->and($mail->viewData['dueDate'])->toBeNull()
+         ->and($mail->viewData['hasAmountPaid'])->toBeFalse()
+-        ->and($mail->viewData['balance'])->toBe('USD 10.00');
++        ->and($mail->viewData['balance'])->toBe('INR 10.00');
+ 
+     $invoice->setRelation('order', null);
+     $mailWithoutOrder = $notification->toMail((object) []);
+@@ -211,6 +211,16 @@ test('refund URI mail falls back across missing company order currency and ident
+         ->and($mail->viewData['issuedAt'])->toBeNull();
+ });
+ 
++test('refund URI mail defaults to INR when both refund and invoice currencies are absent', function () {
++    $invoice = notificationInvoice(['currency' => null], null, null);
++    $refund  = new GatewayTransaction();
++    $refund->setRawAttributes(['amount' => 1000, 'currency' => null], true);
++    $notification = new RefundUriAvailableProbe($invoice, $refund, 'taler://refund/inr-default');
++    $notification->useCompany(new Company());
++
++    expect($notification->toMail((object) [])->viewData['refundAmount'])->toBe('INR 10.00');
++});
++
+ test('ledger notifications resolve and cache the invoice company when not preloaded', function () {
+     $invoice = notificationInvoice();
+     $refund  = new GatewayTransaction();
+diff --git a/server/tests/Observers/OrderAccountingObserverTest.php b/server/tests/Observers/OrderAccountingObserverTest.php
+index 0ba59f2..a9097fd 100644
+--- a/server/tests/Observers/OrderAccountingObserverTest.php
++++ b/server/tests/Observers/OrderAccountingObserverTest.php
+@@ -182,6 +182,17 @@ test('storefront creation provisions default accounts and posts the complete sal
+         ->toBe(['CASH-DEFAULT', 'REV-DEFAULT']);
+ });
+ 
++test('storefront accounting defaults missing order currency to INR', function () {
++    $ledger = new OrderAccountingLedgerSpy();
++    $order  = new OrderAccountingOrder();
++    unset($order->meta['currency']);
++
++    (new OrderAccountingObserver($ledger, new OrderAccountingRevenueSpy()))->created($order);
++
++    expect($ledger->calls)->toHaveCount(1)
++        ->and($ledger->calls[0]['options']['currency'])->toBe('INR');
++});
++
+ test('storefront creation skips irrelevant, zero-value, and previously recorded orders', function () {
+     $ledger   = new OrderAccountingLedgerSpy();
+     $observer = new OrderAccountingObserver($ledger, new OrderAccountingRevenueSpy());
+diff --git a/server/tests/Observers/PurchaseRateObserverTest.php b/server/tests/Observers/PurchaseRateObserverTest.php
+index f940029..50b9b75 100644
+--- a/server/tests/Observers/PurchaseRateObserverTest.php
++++ b/server/tests/Observers/PurchaseRateObserverTest.php
+@@ -131,6 +131,16 @@ test('purchase rate invoice defaults use order currency and a thirty day due dat
+         ->and($service->calls[0][1]['due_date']->between($before, now()->addDays(30)))->toBeTrue();
+ });
+ 
++test('purchase rate invoice defaults to INR when quote and order currency are absent', function () {
++    $service = new PurchaseRateObserverInvoiceService();
++    $order   = purchaseRateObserverOrder(['meta' => []]);
++    $rate    = purchaseRateObserverRate($order, ['serviceQuote' => null]);
++
++    (new PurchaseRateObserver($service))->created($rate);
++
++    expect($service->calls[0][1]['currency'])->toBe('INR');
++});
++
+ test('purchase rate creation reports unresolved orders without creating invoices', function () {
+     $service = new PurchaseRateObserverInvoiceService();
+ 
+diff --git a/server/tests/Services/InvoiceServiceTest.php b/server/tests/Services/InvoiceServiceTest.php
+index ebeb730..853064a 100644
+--- a/server/tests/Services/InvoiceServiceTest.php
++++ b/server/tests/Services/InvoiceServiceTest.php
+@@ -286,7 +286,7 @@ beforeEach(function () {
+ test('order invoices use structured meta items plus delivery and service fees', function () {
+     $service = new InvoiceService(new InvoiceServiceLedgerSpy());
+     $order   = invoiceServiceOrder([
+-        'currency'     => 'EUR',
++        'currency'     => 'INR',
+         'items'        => [
+             ['name' => 'Crate', 'price' => 250, 'quantity' => 2, 'tax_rate' => 5, 'tax_amount' => 25],
+             ['description' => 'Pallet', 'unit_price' => 300, 'qty' => 0],
+@@ -306,7 +306,7 @@ test('order invoices use structured meta items plus delivery and service fees',
+     ]);
+     $items = InvoiceItem::query()->where('invoice_uuid', $invoice->uuid)->orderBy('created_at')->get();
+ 
+-    expect($invoice->currency)->toBe('EUR')
++    expect($invoice->currency)->toBe('INR')
+         ->and($invoice->transaction_uuid)->toBe('purchase-rate-transaction')
+         ->and($invoice->template_uuid)->toBe('template-one')
+         ->and($invoice->subtotal)->toBe(950)
+@@ -318,6 +318,27 @@ test('order invoices use structured meta items plus delivery and service fees',
+         ->and($items[1]->quantity)->toBe(1);
+ });
+ 
++test('new order invoices default to INR and reject non-INR source currencies', function () {
++    $service = new InvoiceService(new InvoiceServiceLedgerSpy());
++
++    $defaultOrder = invoiceServiceOrder(['total' => 250]);
++    $defaultOrder->setAttribute('uuid', 'order-invoice-default-inr');
++    $defaultInvoice = $service->createFromOrder($defaultOrder, ['number' => 'INV-INR-DEFAULT']);
++
++    $sourceOrder = invoiceServiceOrder(['total' => 300, 'currency' => 'BTN']);
++    $sourceOrder->setAttribute('uuid', 'order-invoice-source-currency');
++    expect($defaultInvoice->currency)->toBe('INR')
++        ->and(fn () => $service->createFromOrder($sourceOrder, ['number' => 'INV-SOURCE-CURRENCY']))
++        ->toThrow(InvalidArgumentException::class);
++
++    $explicitCurrencyOrder = invoiceServiceOrder(['total' => 100]);
++    $explicitCurrencyOrder->setAttribute('uuid', 'order-invoice-explicit-currency');
++    expect(fn () => $service->createFromOrder($explicitCurrencyOrder, [
++        'number' => 'INV-EXPLICIT-CURRENCY',
++        'currency' => 'MNT',
++    ]))->toThrow(InvalidArgumentException::class);
++});
++
+ test('order invoice item resolution prefers payload entities and has a total fallback', function () {
+     $service = new InvoiceService(new InvoiceServiceLedgerSpy());
+     $order   = invoiceServiceOrder(['items' => [['name' => 'Ignored meta item', 'price' => 999]]]);
+@@ -341,11 +362,11 @@ test('order invoice item resolution prefers payload entities and has a total fal
+ 
+     $fallbackOrder = invoiceServiceOrder(['total' => 725]);
+     $fallbackOrder->setAttribute('uuid', 'order-fallback');
+-    $fallback      = $service->createFromOrder($fallbackOrder, ['number' => 'INV-FALLBACK', 'currency' => 'MNT']);
++    $fallback      = $service->createFromOrder($fallbackOrder, ['number' => 'INV-FALLBACK', 'currency' => 'INR']);
+ 
+     expect($fallback->items()->value('description'))->toBe('Delivery service — Order order_123')
+         ->and($fallback->total_amount)->toBe(725)
+-        ->and($fallback->currency)->toBe('MNT');
++        ->and($fallback->currency)->toBe('INR');
+ });
+ 
+ test('purchase-rate invoices cover quote items totals loading and order fallback', function () {
+@@ -416,6 +437,31 @@ test('recording partial and final payments persists transactions accounts and jo
+         ->and($ledger->calls[1]['options']['type'])->toBe('invoice_payment');
+ });
+ 
++test('invoice payment transactions use the invoice currency or default to INR when absent', function () {
++    $service = new InvoiceService(new InvoiceServiceLedgerSpy());
++
++    $foreignCurrencyInvoice = invoiceServiceInvoice([
++        'uuid' => 'invoice-service-btn',
++        'public_id' => 'invoice_service_btn',
++        'currency' => 'BTN',
++    ]);
++    $service->recordPayment($foreignCurrencyInvoice, 100);
++    $foreignCurrencyTransaction = Transaction::query()->firstOrFail();
++
++    $legacyInvoice = invoiceServiceInvoice([
++        'uuid' => 'invoice-service-null-currency',
++        'public_id' => 'invoice_service_null_currency',
++        'currency' => null,
++    ]);
++    $service->recordPayment($legacyInvoice, 100);
++    $fallbackTransaction = Transaction::query()->where('subject_uuid', $legacyInvoice->uuid)->firstOrFail();
++
++    expect($foreignCurrencyTransaction->currency)->toBe('BTN')
++        ->and($foreignCurrencyTransaction->settled_currency)->toBe('BTN')
++        ->and($fallbackTransaction->currency)->toBe('INR')
++        ->and($fallbackTransaction->settled_currency)->toBe('INR');
++});
++
+ test('revenue recognition provisions accounts and skips zero value invoices', function () {
+     $ledger  = new InvoiceServiceLedgerSpy();
+     $service = new InvoiceService($ledger);
+diff --git a/server/tests/Services/LedgerServiceTest.php b/server/tests/Services/LedgerServiceTest.php
+index c6499c9..e881324 100644
+--- a/server/tests/Services/LedgerServiceTest.php
++++ b/server/tests/Services/LedgerServiceTest.php
+@@ -258,6 +258,16 @@ beforeEach(function () {
+     LoggerManager::$records = [];
+ });
+ 
++test('journal creation rejects a currency mismatch before writing', function () {
++    $debit = ledgerAccount('INR-CASH', Account::TYPE_ASSET, currency: 'INR');
++    $credit = ledgerAccount('USD-REVENUE', Account::TYPE_REVENUE, currency: 'USD');
++    $service = new LedgerService();
++
++    expect(fn () => $service->createJournalEntry($debit, $credit, 100, 'Currency mismatch'))
++        ->toThrow(InvalidArgumentException::class);
++    expect(Journal::query()->count())->toBe(0);
++});
++
+ test('journal creation and convenience methods preserve double-entry contracts', function () {
+     $cash    = ledgerAccount('1000', Account::TYPE_ASSET);
+     $revenue = ledgerAccount('4000', Account::TYPE_REVENUE);
+@@ -530,7 +540,7 @@ test('dashboard aggregates metrics wallets activity and percentage changes', fun
+         ->and($probe->change(0, 0))->toBeNull()
+         ->and($probe->change(-20, 10))->toBe(150.0)
+         ->and($probe->dashboardCurrency([['currency' => 'MNT']]))->toBe('MNT')
+-        ->and($probe->dashboardCurrency([['currency' => ''], ['currency' => null]]))->toBe('USD')
++        ->and($probe->dashboardCurrency([['currency' => ''], ['currency' => null]]))->toBe('INR')
+         ->and($probe->metric('Revenue', [], 'money', 'USD'))->toMatchArray([
+             'value' => 0, 'previous' => null, 'delta_percent' => null, 'currency' => 'USD', 'inverse' => false,
+         ]);
+diff --git a/server/tests/Services/WalletServiceTest.php b/server/tests/Services/WalletServiceTest.php
+index 14e5989..a6b68ad 100644
+--- a/server/tests/Services/WalletServiceTest.php
++++ b/server/tests/Services/WalletServiceTest.php
+@@ -185,7 +185,7 @@ function walletFixture(
+     int $balance = 0,
+     string $status = Wallet::STATUS_ACTIVE,
+     string $company = 'company-wallet',
+-    string $currency = 'USD',
++    string $currency = 'INR',
+ ): Wallet {
+     static $sequence = 0;
+     $sequence++;
+@@ -215,18 +215,45 @@ test('wallet provisioning supports individual and batch subjects idempotently',
+     $first   = new Company(['uuid' => 'subject-one', 'company_uuid' => 'company-wallet']);
+     $second  = new Company(['uuid' => 'subject-two', 'company_uuid' => null]);
+ 
+-    $wallet = $service->getOrCreateWallet($first, 'MNT');
+-    $again  = $service->getOrCreateWallet($first, 'MNT');
+-    $batch  = $service->provisionBatch([$first, $second], 'EUR');
++    expect(fn () => $service->getOrCreateWallet($first, 'MNT'))
++        ->toThrow(InvalidArgumentException::class, 'New TMS wallets must use INR.');
++
++    $wallet = Wallet::forSubject('subject-one', Company::class, 'company-wallet', 'MNT');
++    $again  = $service->getOrCreateWallet($first, 'EUR');
++    $batch  = $service->provisionBatch([$first, $second]);
+ 
+     expect($wallet->is($again))->toBeTrue()
+         ->and($wallet->currency)->toBe('MNT')
+         ->and($batch)->toHaveCount(2)
+         ->and($batch[0]->is($wallet))->toBeTrue()
+         ->and($batch[1]->company_uuid)->toBe('company-wallet')
++        ->and($batch[1]->currency)->toBe('INR')
+         ->and(Wallet::query()->count())->toBe(2);
+ });
+ 
++test('wallet provisioning defaults to INR and rejects earnings in a different currency', function () {
++    $service = new WalletService(new WalletLedgerSpy());
++    $subject = new Company(['uuid' => 'subject-inr', 'company_uuid' => 'company-wallet']);
++    $wallet = $service->getOrCreateWallet($subject);
++
++    expect($wallet->currency)->toBe('INR');
++
++    $wallet->update(['currency' => 'USD']);
++    expect($service->getOrCreateWallet($subject)->currency)->toBe('USD');
++    expect(fn () => $service->creditEarnings($subject, 100))->toThrow(InvalidArgumentException::class);
++    expect($wallet->fresh()->balance)->toBe(0);
++});
++
++test('wallet lookup never returns another company wallet for the same subject', function () {
++    $first = Wallet::forSubject('shared-user', Company::class, 'company-a', 'INR');
++    $second = Wallet::forSubject('shared-user', Company::class, 'company-b', 'INR');
++
++    expect($first->company_uuid)->toBe('company-a')
++        ->and($second->company_uuid)->toBe('company-b')
++        ->and($second->uuid)->not->toBe($first->uuid)
++        ->and(Wallet::forSubject('shared-user', Company::class, 'company-a', 'INR')->uuid)->toBe($first->uuid);
++});
++
+ test('deposits persist audit details update balances and post the liability journal', function () {
+     $ledger  = new WalletLedgerSpy();
+     $service = new WalletService($ledger);
+@@ -269,6 +296,24 @@ test('deposit validation rejects closed wallets and non-positive amounts', funct
+         ->and(fn () => $service->deposit($active, 0))->toThrow(InvalidArgumentException::class, 'greater than zero');
+ });
+ 
++test('new wallet transactions reject legacy non-INR wallets without changing stored currency', function () {
++    $service = new WalletService(new WalletLedgerSpy());
++    $legacy  = walletFixture('Legacy Foreign Wallet', 100, currency: 'MNT');
++    $inr     = walletFixture('Current INR Wallet', currency: 'INR');
++
++    expect(fn () => $service->deposit($legacy, 10))
++        ->toThrow(InvalidArgumentException::class, 'Existing wallet currency is preserved.')
++        ->and(fn () => $service->withdraw($legacy, 10))
++            ->toThrow(InvalidArgumentException::class, 'Existing wallet currency is preserved.')
++        ->and(fn () => $service->transfer($legacy, $inr, 10))
++            ->toThrow(InvalidArgumentException::class, 'Existing wallet currency is preserved.')
++        ->and(fn () => $service->topUp($legacy, 10, 'gateway-one'))
++            ->toThrow(InvalidArgumentException::class, 'Existing wallet currency is preserved.')
++        ->and($legacy->fresh()->currency)->toBe('MNT')
++        ->and($legacy->fresh()->balance)->toBe(100)
++        ->and($inr->fresh()->balance)->toBe(0);
++});
++
+ test('withdrawals debit the wallet and use custom or default destination accounts', function () {
+     $ledger      = new WalletLedgerSpy();
+     $service     = new WalletService($ledger);
+@@ -380,20 +425,32 @@ test('synchronous gateway top ups credit immediately while pending responses wai
+         ->and($payment->calls[1]['request']->description)->toBe('Async top-up');
+ });
+ 
+-test('driver earnings and payouts reuse wallet lifecycle contracts', function () {
++test('driver earnings and payouts are INR-only and preserve existing wallet currencies', function () {
+     $ledger  = new WalletLedgerSpy();
+     $service = new WalletService($ledger);
+     $driver  = new Company(['uuid' => 'driver-one', 'company_uuid' => 'company-wallet']);
+ 
+-    $earning = $service->creditEarnings($driver, 900, 'MNT', options: ['reference' => 'order-one']);
+-    $payout  = $service->processPayout($driver, 400, options: ['currency' => 'MNT', 'reference' => 'payout-one']);
++    expect(fn () => $service->creditEarnings($driver, 900, 'MNT'))
++        ->toThrow(InvalidArgumentException::class, 'must use INR');
++
++    $earning = $service->creditEarnings($driver, 900, 'INR', options: ['reference' => 'order-one']);
++    $payout  = $service->processPayout($driver, 400, options: ['currency' => 'INR', 'reference' => 'payout-one']);
+ 
+     expect($earning->type)->toBe('earning')
+         ->and($earning->subject_uuid)->toBe('driver-one')
+-        ->and($earning->currency)->toBe('MNT')
++        ->and($earning->currency)->toBe('INR')
+         ->and($payout->type)->toBe('payout')
+         ->and($payout->subject_type)->toBe(Company::class)
+         ->and(Wallet::query()->first()->balance)->toBe(500);
++
++    $legacyDriver = new Company(['uuid' => 'driver-legacy', 'company_uuid' => 'company-wallet']);
++    $legacyWallet = $service->getOrCreateWallet($legacyDriver, 'MNT');
++    expect(fn () => $service->processPayout($legacyDriver, 100))
++        ->toThrow(InvalidArgumentException::class, 'require an INR wallet')
++        ->and($legacyWallet->fresh()->currency)->toBe('MNT')
++        ->and($legacyWallet->fresh()->balance)->toBe(0)
++        ->and(fn () => $service->processPayout($driver, 100, options: ['currency' => 'USD']))
++            ->toThrow(InvalidArgumentException::class, 'must use INR');
+ });
+ 
+ test('balance reconciliation corrects drift and leaves accurate balances untouched', function () {
+@@ -414,12 +471,13 @@ test('balance reconciliation corrects drift and leaves accurate balances untouch
+         ->and(LoggerManager::$records)->toBeEmpty();
+ });
+ 
+-test('company and user provisioning is idempotent and honors currency fallbacks', function () {
++test('company and user provisioning is idempotent and uses INR without relabeling existing wallets', function () {
+     $service = new WalletService(new WalletLedgerSpy());
+     $company = new Company(['uuid' => 'company-provision', 'currency' => 'MNT']);
+     $company->setConnection('testing');
+ 
+     $wallets = $service->provisionCompanyWallets($company);
++    $company->currency = 'EUR';
+     $again   = $service->provisionCompanyWallets($company);
+ 
+     $orphan               = new User();
+@@ -435,10 +493,10 @@ test('company and user provisioning is idempotent and honors currency fallbacks'
+         ->and($wallets->pluck('name')->all())->toBe([
+             'Operating Wallet', 'Revenue Wallet', 'Payout Reserve', 'Refund Reserve',
+         ])
+-        ->and($wallets->every(fn (Wallet $wallet) => $wallet->currency === 'MNT'))->toBeTrue()
++        ->and($wallets->every(fn (Wallet $wallet) => $wallet->currency === 'INR'))->toBeTrue()
+         ->and($service->provisionUserWallet($orphan))->toBeNull()
+         ->and($userWallet->name)->toBe('Personal Wallet')
+-        ->and($userWallet->currency)->toBe('MNT')
++        ->and($userWallet->currency)->toBe('INR')
+         ->and($service->provisionUserWallet($user)->is($userWallet))->toBeTrue();
+ });
+ 
+diff --git a/server/tests/Unit/Support/EnforcesTmsCurrencyTest.php b/server/tests/Unit/Support/EnforcesTmsCurrencyTest.php
+new file mode 100644
+index 0000000..2b800f6
+--- /dev/null
++++ b/server/tests/Unit/Support/EnforcesTmsCurrencyTest.php
+@@ -0,0 +1,76 @@
++<?php
++
++use Fleetbase\Ledger\Http\Controllers\Internal\v1\Concerns\EnforcesTmsCurrency;
++use Illuminate\Http\Request;
++use Illuminate\Validation\ValidationException;
++
++class EnforcesTmsCurrencyHarness
++{
++    use EnforcesTmsCurrency;
++
++    public function create(Request $request, string $resourceKey = 'wallet'): void
++    {
++        $this->setNewRecordCurrency($request, $resourceKey);
++    }
++
++    public function preserve(Request $request, string $stored, string $resourceKey = 'wallet'): void
++    {
++        $this->preserveStoredCurrency($request, $resourceKey, $stored);
++    }
++
++    public function newGatewayConfig(Request $request): void
++    {
++        $this->assertNewGatewayConfigCurrency($request);
++    }
++
++    public function preserveGatewayConfig(Request $request, array $stored): void
++    {
++        $this->preserveGatewayConfigCurrency($request, $stored);
++    }
++}
++
++test('new TMS records default to INR and reject explicit non-INR currencies', function () {
++    $policy = new EnforcesTmsCurrencyHarness();
++    $request = Request::create('/ledger/wallets', 'POST', ['wallet' => ['name' => 'Operating']]);
++
++    $policy->create($request);
++
++    expect($request->input('wallet.currency'))->toBe('INR');
++
++    $invalid = Request::create('/ledger/wallets', 'POST', ['currency' => 'USD']);
++    expect(fn () => $policy->create($invalid))->toThrow(ValidationException::class);
++});
++
++test('saved non-INR currencies can be submitted unchanged but cannot be relabeled', function () {
++    $policy = new EnforcesTmsCurrencyHarness();
++    $same = Request::create('/ledger/wallets/wallet-one', 'PUT', ['wallet' => ['currency' => 'usd']]);
++    $policy->preserve($same, 'USD');
++    expect($same->input('wallet.currency'))->toBe('USD');
++
++    $changed = Request::create('/ledger/wallets/wallet-one', 'PUT', ['wallet' => ['currency' => 'INR']]);
++    expect(fn () => $policy->preserve($changed, 'USD'))->toThrow(ValidationException::class);
++});
++
++test('invoice entry policy defaults new invoices to INR and keeps historical invoice currencies immutable', function () {
++    $policy = new EnforcesTmsCurrencyHarness();
++    $newInvoice = Request::create('/ledger/invoices', 'POST', ['invoice' => ['number' => 'INV-NEW']]);
++    $policy->create($newInvoice, 'invoice');
++    expect($newInvoice->input('invoice.currency'))->toBe('INR');
++
++    $historical = Request::create('/ledger/invoices/invoice-one', 'PUT', ['invoice' => ['currency' => 'BTN']]);
++    $policy->preserve($historical, 'BTN', 'invoice');
++    expect($historical->input('invoice.currency'))->toBe('BTN');
++});
++
++test('gateway currency configuration is INR for new gateways and immutable on existing gateways', function () {
++    $policy = new EnforcesTmsCurrencyHarness();
++    $policy->newGatewayConfig(Request::create('/ledger/gateways', 'POST', ['config' => ['api_key' => 'secret', 'currency' => 'inr']]));
++
++    expect(fn () => $policy->newGatewayConfig(Request::create('/ledger/gateways', 'POST', ['config' => ['currency' => 'USD']])))->toThrow(ValidationException::class);
++
++    $same = Request::create('/ledger/gateways/gateway-one', 'PUT', ['config' => ['currency' => 'USD']]);
++    $policy->preserveGatewayConfig($same, ['currency' => 'USD']);
++
++    $changed = Request::create('/ledger/gateways/gateway-one', 'PUT', ['config' => ['currency' => 'INR']]);
++    expect(fn () => $policy->preserveGatewayConfig($changed, ['currency' => 'USD']))->toThrow(ValidationException::class);
++});
