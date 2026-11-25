@@ -105,7 +105,7 @@ module('Unit | Controller | console/admin/branding', function (hooks) {
         this.controller.unsetLogo();
 
         assert.strictEqual(this.controller.model.logo_uuid, null);
-        assert.strictEqual(this.controller.model.logo_url, '/images/kodewaves-logo.svg', 'the default logo is restored after clearing');
+        assert.strictEqual(this.controller.model.logo_url, '/images/transport-diary-logo.svg?v=20261125-mark4', 'the default logo is restored after clearing');
     });
 
     test('save persists the brand and reports success', async function (assert) {
@@ -121,7 +121,7 @@ module('Unit | Controller | console/admin/branding', function (hooks) {
 
         await this.controller.save();
 
-        assert.strictEqual(this.controller.model.logo_url, '/images/kodewaves-logo.svg');
+        assert.strictEqual(this.controller.model.logo_url, '/images/transport-diary-logo.svg?v=20261125-mark4');
         assert.strictEqual(this.controller.model.icon_url, '/images/icon.png');
     });
 

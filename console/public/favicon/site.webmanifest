@@ -1,10 +1,10 @@
 {
-    "name": "Kodewaves Transport ERP",
-    "short_name": "Kodewaves",
+    "name": "Transport Diary",
+    "short_name": "Transport Diary",
     "theme_color": "#294b3a",
     "background_color": "#f6f6ef",
     "icons": [
-        { "src": "/images/kodewaves-icon.svg?v=20261108-forest", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+        { "src": "/images/transport-diary-icon.svg?v=20261125-mark4", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
     ],
     "display": "standalone"
 }
