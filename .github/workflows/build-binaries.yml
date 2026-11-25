@@ -20,6 +20,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Restore pinned package snapshots
+        run: node scripts/restore-package-bundles.mjs
       - name: Build Linux binary
         run: |
           set -o pipefail
@@ -50,6 +54,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Restore pinned package snapshots
+        run: node scripts/restore-package-bundles.mjs
       # Go is not on PATH on the macOS runner image. Pin to the same Go line as
       # the Linux builder image (FrankenPHP v1.9.0 and Caddy v2.10.0 need 1.24).
       - uses: actions/setup-go@v5

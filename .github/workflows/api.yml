@@ -68,6 +68,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Restore pinned package snapshots
+        working-directory: .
+        run: node scripts/restore-package-bundles.mjs
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

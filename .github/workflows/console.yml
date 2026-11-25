@@ -30,6 +30,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Restore pinned package snapshots
+        working-directory: .
+        run: node scripts/restore-package-bundles.mjs
 
       - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
