@@ -362,3 +362,150 @@ section[id] { scroll-margin-top:96px; }
   .nav-actions { margin-left: auto; gap: 14px; }
   .nav-actions > .button { min-height: 42px; padding-inline: 15px; }
 }
+
+.walkthrough-form { display:grid; gap:9px; margin-top:18px; }
+.walkthrough-form label { color:var(--green-deep); font-size:.9rem; font-weight:650; }
+.walkthrough-form label span { color:var(--muted); font-weight:400; }
+.walkthrough-form input:not([type="checkbox"]) { width:100%; min-height:44px; padding:10px 12px; border:1px solid #cbd5ca; border-radius:7px; background:#fff; color:var(--ink); font:inherit; }
+.walkthrough-form input:focus { outline:3px solid rgb(66 113 75 / 20%); border-color:var(--green); }
+.walkthrough-form .walkthrough-consent { display:flex; gap:10px; align-items:flex-start; margin:7px 0; color:var(--muted); font-weight:400; line-height:1.5; }
+.walkthrough-consent input { flex:0 0 auto; width:18px; height:18px; margin-top:2px; accent-color:var(--green); }
+.walkthrough-form button:disabled { cursor:wait; opacity:.7; }
+.walkthrough-status { min-height:1.5em; margin:0; color:var(--green-deep); font-size:.9rem; }
+.walkthrough-status[data-error="true"] { color:#9a332b; }
+
+/* Make the primary next step stay available on small screens. */
+@media (max-width: 760px) {
+  .nav-actions { gap: 8px; }
+  .nav-actions > .button { display: inline-flex; min-height: 40px; padding-inline: 11px; font-size: .76rem; white-space: nowrap; }
+  .nav-login { display: inline-flex; align-items: center; min-height: 40px; padding-inline: 8px; font-size: .76rem; white-space: nowrap; }
+  .nav { column-gap: 10px; }
+  .brand img { width: clamp(145px, 44vw, 190px); }
+}
+
+/* Give the four transport handoffs a clearer, scannable progression. */
+.workflow-list { gap: 12px; border: 0; }
+.workflow-step,
+.workflow-step:first-child,
+.workflow-step:last-child { padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.workflow-number { min-width: 38px; height: 32px; margin-bottom: 17px; border-color: #d5e2d7; border-radius: 7px; background: #eff5ef; color: var(--green-deep); }
+@media (max-width: 900px) {
+  .workflow-step:nth-child(2) { border-right: 1px solid var(--line); }
+  .workflow-step:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .workflow-step:nth-child(3) { padding-left: 22px; }
+  .workflow-step:nth-child(4) { padding-right: 22px; }
+}
+@media (max-width: 600px) {
+  .workflow-step,.workflow-step:first-child,.workflow-step:last-child { padding: 20px; border: 1px solid var(--line); }
+  .workflow-step:first-child { border-top: 1px solid var(--line); }
+}
+
+/* Transport Diary public experience: calm, workflow-led, and consistent. */
+:root {
+  --ink: #24372c;
+  --muted: #5c6b60;
+  --green: #35654a;
+  --green-deep: #203f2e;
+  --warm: #d2ad64;
+  --warm-soft: #f2ead7;
+  --paper: #f7f7f0;
+  --line: #d9e0d5;
+}
+body { background: #fbfbf7; }
+.topline { background: var(--green-deep); }
+.header { position: sticky; z-index: 20; top: 0; background: rgb(251 251 247 / 94%); backdrop-filter: blur(14px); }
+.nav { min-height: 76px; }
+.nav-links { gap: clamp(14px, 2vw, 27px); }
+.nav-links a { font-size: .86rem; }
+.nav-actions .button { box-shadow: 0 5px 12px rgb(32 63 46 / 12%); }
+.button { border-radius: 8px; }
+.button:focus-visible, .text-link:focus-visible, .topline a:focus-visible, .footer a:focus-visible,
+.nav-links a:focus-visible, .brand:focus-visible, .faq-items summary:focus-visible {
+  outline: 3px solid #a97926; outline-offset: 4px;
+}
+.hero {
+  padding: clamp(48px, 7vw, 82px) 0 48px;
+  background:
+    radial-gradient(ellipse at 50% 5%, rgb(222 233 219 / 78%), transparent 55%),
+    linear-gradient(180deg, #f1f4eb 0%, #fbfbf7 100%);
+}
+.hero-grid { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 30px; }
+.hero-copy { max-width: 900px; text-align: center; }
+.hero-copy .eyebrow { display: inline-flex; align-items: center; padding: 7px 12px; border: 1px solid #d8e3d7; border-radius: 99px; background: rgb(255 255 255 / 72%); letter-spacing: .08em; }
+.hero h1 { max-width: 900px; margin: 0 auto 18px; font-size: clamp(2.55rem, 6vw, 5.2rem); line-height: 1.02; }
+.hero-copy > p:not(.eyebrow) { max-width: 690px; margin-inline: auto; font-size: clamp(1rem, 1.45vw, 1.17rem); }
+.hero-actions { justify-content: center; margin-top: 24px; }
+.hero-note { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; padding: 7px 12px; border-radius: 6px; background: #eaf1e8; }
+.hero-art { width: min(100%, 970px); min-height: 0; padding: 13px; border: 1px solid #d8e1d7; border-radius: 20px; background: rgb(255 255 255 / 62%); box-shadow: 0 26px 80px rgb(36 55 44 / 12%); }
+.dashboard-frame { width: 100%; max-width: none; padding: 22px; border-color: #dfe5dc; border-radius: 14px; background: #fff; box-shadow: 0 8px 28px rgb(28 49 35 / 7%); transform: none; }
+.dash-top { padding-bottom: 13px; border-bottom: 1px solid #edf0e9; }
+.dash-greeting { margin: 15px 0; }
+.dash-stats { gap: 12px; }
+.dash-stat { padding: 14px; border: 1px solid #e6ebe3; border-radius: 10px; background: #fbfcf9; }
+.dash-stat > strong { color: var(--green-deep); }
+.dash-lower { gap: 14px; margin-top: 15px; }
+.dash-map, .dash-activity { border: 1px solid #e6ebe3; border-radius: 10px; background: #fcfdfb; }
+.float-chip { right: 25px; bottom: -18px; }
+.proof-strip { padding: 18px 0; background: #fff; }
+.proof-grid { justify-content: center; gap: clamp(16px, 4vw, 52px); }
+.proof-grid > span { color: #708073; }
+.proof-grid b { font-size: .96rem; }
+.section { padding-block: clamp(58px, 7vw, 88px); }
+.section-head { max-width: 760px; }
+.section-head h2, .tenant-copy h2, .roles h2, .modules h2, .faq-grid h2 { line-height: 1.08; }
+.workflow-step { box-shadow: 0 6px 18px rgb(36 55 44 / 4%); }
+.roles { background: #f5f6ef; }
+.role-card { border-top-color: #cfd9cc; }
+.modules { background: #e9efe6; }
+.module { padding: 10px 14px; border-radius: 99px; background: #f9faf6; }
+.automation-section { background: #f0f2e9; }
+.plan-section { padding-bottom: clamp(58px, 7vw, 88px); }
+.plan-panel { border-color: #d4dfd3; border-radius: 18px; background: linear-gradient(120deg, #fff 35%, #f1f5ed 100%); box-shadow: 0 18px 50px rgb(36 55 44 / 8%); }
+.plan-panel h2 { max-width: 570px; }
+.plan-actions .button { box-shadow: 0 8px 20px rgb(32 63 46 / 15%); }
+.band { background: var(--green-deep); }
+.footer { padding-top: 42px; }
+.footer-links { gap: clamp(30px, 6vw, 76px); }
+.footer-bottom { color: #68776b; }
+.page-hero { padding: clamp(56px, 8vw, 88px) 0 55px; background: radial-gradient(ellipse at 85% 18%, #e3ecdf, transparent 42%), #f3f5ed; }
+.page-hero .wrap { max-width: 900px; }
+.page-hero h1 { max-width: 850px; font-size: clamp(2.4rem, 5.5vw, 4.4rem); }
+.page-hero p { max-width: 720px; font-size: 1.08rem; }
+.feature-grid { border-top-color: #d6dfd4; }
+.feature { transition: background-color .18s ease; }
+.feature:hover { background: #f7f9f5; }
+.contact-box { border-radius: 14px; box-shadow: 0 14px 40px rgb(36 55 44 / 7%); }
+.walkthrough-form input:not([type="checkbox"]) { min-height: 48px; border-radius: 8px; }
+.walkthrough-form input:focus-visible, .walkthrough-consent input:focus-visible { outline: 3px solid #a97926; outline-offset: 2px; }
+.walkthrough-form button { min-height: 48px; }
+.walkthrough-status { margin-top: 4px; }
+@media (max-width: 760px) {
+  .header { position: sticky; }
+  .nav { gap: 8px; }
+  .nav-links { justify-content: flex-start; }
+  .hero { padding-top: 44px; }
+  .hero-grid { gap: 24px; }
+  .hero-copy { text-align: center; }
+  .hero-actions { width: 100%; align-items: stretch; flex-direction: column; }
+  .hero-actions .button { width: 100%; }
+  .hero-art { padding: 7px; border-radius: 13px; }
+  .dashboard-frame { padding: 12px; }
+  .float-chip { align-self: center; }
+  .proof-grid { flex-direction: column; gap: 4px; text-align: center; }
+  .proof-grid > span { display: none; }
+  .footer-links { width: 100%; }
+  .page-hero { text-align: left; }
+}
+@media (max-width: 420px) {
+  .topline .wrap { width: calc(100% - 24px); }
+  .topline .wrap > span { max-width: 57%; }
+  .nav-links { gap: 15px; }
+  .nav-links a { font-size: .72rem; }
+  .hero h1 { font-size: clamp(2.25rem, 11vw, 2.8rem); }
+  .dash-period { display: none; }
+  .footer-links { gap: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
