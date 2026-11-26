@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 
 const baseUrl = process.env.TMS_URL || 'https://tms.touratbhutan.info';
 const output = process.env.TMS_SCREENSHOT_DIR || '/work/screens';
-const pages = ['/', '/services', '/auth'];
+const pages = process.env.TMS_PATHS ? process.env.TMS_PATHS.split(',') : ['/', '/services', '/auth'];
 const viewports = [
     { name: 'desktop', width: 1440, height: 900 },
     { name: 'mobile', width: 390, height: 844 },
@@ -23,7 +23,7 @@ const viewports = [
             try {
                 await page.waitForLoadState('networkidle', { timeout: 10000 });
             } catch {}
-            const name = path === '/' ? 'home' : path.slice(1);
+            const name = path === '/' ? 'home' : path.slice(1).replaceAll('/', '-');
             await page.screenshot({ path: `${output}/${name}-${viewport.name}.png`, fullPage: true });
             const layout = await page.evaluate(() => {
                 const selectors = ['html', 'body', '#ember-app', '.auth-shell', '.auth-shell-main', '.auth-workspace'];
