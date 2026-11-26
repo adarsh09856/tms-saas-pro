@@ -58,12 +58,12 @@ importers:
       '@fleetbase/ledger-engine':
         specifier: file:../packages/ledger
         version: file:../packages/ledger(93581af21a6bd520cd4865ca07cdab92)
+      '@fleetbase/pallet-engine':
+        specifier: file:../packages/pallet
+        version: file:../packages/pallet(93581af21a6bd520cd4865ca07cdab92)
       '@fleetbase/registry-bridge-engine':
         specifier: file:../packages/registry-bridge
         version: file:../packages/registry-bridge(93581af21a6bd520cd4865ca07cdab92)
-      '@fleetbase/storefront-engine':
-        specifier: file:../packages/storefront
-        version: file:../packages/storefront(ca9691ab1ff73f83be578b65b304e949)
       '@fleetbase/valhalla-engine':
         specifier: file:../packages/valhalla
         version: file:../packages/valhalla(93581af21a6bd520cd4865ca07cdab92)
@@ -1617,14 +1617,14 @@ packages:
     peerDependencies:
       ember-engines: ^0.9.0
 
-  '@fleetbase/registry-bridge-engine@file:../packages/registry-bridge':
-    resolution: {directory: ../packages/registry-bridge, type: directory}
+  '@fleetbase/pallet-engine@file:../packages/pallet':
+    resolution: {directory: ../packages/pallet, type: directory}
     engines: {node: '>= 18'}
     peerDependencies:
       ember-engines: ^0.9.0
 
-  '@fleetbase/storefront-engine@file:../packages/storefront':
-    resolution: {directory: ../packages/storefront, type: directory}
+  '@fleetbase/registry-bridge-engine@file:../packages/registry-bridge':
+    resolution: {directory: ../packages/registry-bridge, type: directory}
     engines: {node: '>= 18'}
     peerDependencies:
       ember-engines: ^0.9.0
@@ -11405,6 +11405,66 @@ snapshots:
       - webpack-command
       - yaml
 
+  '@fleetbase/pallet-engine@file:../packages/pallet(93581af21a6bd520cd4865ca07cdab92)':
+    dependencies:
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@fleetbase/ember-core': file:../packages/ember-core(64e6ffffd74b26ae4c6e9311a1e0461b)
+      '@fleetbase/ember-ui': file:../packages/ember-ui(efbb41604fda61dbc8af0fa44a49d592)
+      '@fleetbase/fleetops-data': file:../packages/fleetops-data(64e6ffffd74b26ae4c6e9311a1e0461b)
+      '@fleetbase/leaflet-routing-machine': file:../packages/routing-machine
+      '@fortawesome/ember-fontawesome': 2.0.0(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(rollup@2.80.0)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
+      '@fortawesome/fontawesome-svg-core': 6.4.0
+      '@fortawesome/free-brands-svg-icons': 6.4.0
+      '@fortawesome/free-solid-svg-icons': 6.4.0
+      broccoli-funnel: 3.0.8(supports-color@8.1.1)
+      ember-auto-import: 2.13.1(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
+      ember-cli-babel: 8.3.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
+      ember-cli-clean-css: 3.0.0(supports-color@8.1.1)
+      ember-cli-htmlbars: 6.3.0(supports-color@8.1.1)
+      ember-engines: 0.9.0(@ember/legacy-built-in-components@0.4.2(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(supports-color@8.1.1))(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(supports-color@8.1.1)
+      ember-intl: 6.3.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
+      ember-leaflet: 5.1.3(@babel/core@7.29.7(supports-color@8.1.1))(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(leaflet@1.9.4)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
+      ember-radio-button: 3.0.0-beta.1(clean-css@5.3.3)(postcss@8.5.26)(supports-color@8.1.1)(uglify-js@3.19.3)
+      ember-wormhole: 0.6.1(supports-color@8.1.1)
+      leaflet: 1.9.4
+    transitivePeerDependencies:
+      - '@ember/string'
+      - '@ember/test-helpers'
+      - '@glimmer/component'
+      - '@glimmer/tracking'
+      - '@glint/environment-ember-loose'
+      - '@glint/template'
+      - '@minify-html/node'
+      - '@swc/core'
+      - '@swc/css'
+      - '@swc/html'
+      - '@typescript-eslint/types'
+      - bufferutil
+      - clean-css
+      - cssnano
+      - csso
+      - ember-cli-mirage
+      - ember-resolver
+      - ember-source
+      - encoding
+      - esbuild
+      - eslint
+      - html-minifier-terser
+      - lightningcss
+      - miragejs
+      - postcss
+      - rollup
+      - supports-color
+      - tracked-built-ins
+      - tsx
+      - typescript
+      - uglify-js
+      - utf-8-validate
+      - webpack
+      - webpack-cli
+      - webpack-command
+      - yaml
+
   '@fleetbase/registry-bridge-engine@file:../packages/registry-bridge(93581af21a6bd520cd4865ca07cdab92)':
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
@@ -11456,51 +11516,6 @@ snapshots:
       - tsx
       - typescript
       - uglify-js
-      - utf-8-validate
-      - webpack
-      - webpack-cli
-      - webpack-command
-      - yaml
-
-  '@fleetbase/storefront-engine@file:../packages/storefront(ca9691ab1ff73f83be578b65b304e949)':
-    dependencies:
-      '@babel/core': 7.29.7(supports-color@8.1.1)
-      '@fleetbase/ember-core': file:../packages/ember-core(64e6ffffd74b26ae4c6e9311a1e0461b)
-      '@fleetbase/ember-ui': file:../packages/ember-ui(efbb41604fda61dbc8af0fa44a49d592)
-      '@fleetbase/fleetops-data': file:../packages/fleetops-data(64e6ffffd74b26ae4c6e9311a1e0461b)
-      '@fortawesome/ember-fontawesome': 2.0.0(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(rollup@2.80.0)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
-      '@fortawesome/fontawesome-svg-core': 6.4.0
-      '@fortawesome/free-brands-svg-icons': 6.4.0
-      '@fortawesome/free-solid-svg-icons': 6.4.0
-      ember-auto-import: 2.13.1(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
-      ember-cli-babel: 8.3.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
-      ember-cli-clean-css: 3.0.0(supports-color@8.1.1)
-      ember-cli-htmlbars: 6.3.0(supports-color@8.1.1)
-      ember-engines: 0.9.0(@ember/legacy-built-in-components@0.4.2(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(supports-color@8.1.1))(ember-source@5.4.1(@babel/core@7.29.7(supports-color@8.1.1))(@glimmer/component@1.1.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(rsvp@4.8.5)(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3)))(supports-color@8.1.1)
-      ember-intl: 6.3.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)(webpack@5.109.2(clean-css@5.3.3)(postcss@8.5.26)(uglify-js@3.19.3))
-      ember-tag-input: 3.1.0(supports-color@8.1.1)
-      ember-wormhole: 0.6.1(supports-color@8.1.1)
-    transitivePeerDependencies:
-      - '@ember/string'
-      - '@ember/test-helpers'
-      - '@glimmer/component'
-      - '@glimmer/tracking'
-      - '@glint/environment-ember-loose'
-      - '@glint/template'
-      - '@typescript-eslint/types'
-      - bufferutil
-      - ember-cli-mirage
-      - ember-resolver
-      - ember-source
-      - encoding
-      - eslint
-      - miragejs
-      - postcss
-      - rollup
-      - supports-color
-      - tracked-built-ins
-      - tsx
-      - typescript
       - utf-8-validate
       - webpack
       - webpack-cli
