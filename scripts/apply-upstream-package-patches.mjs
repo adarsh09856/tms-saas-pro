@@ -12,11 +12,11 @@ if (!packagesArg || !patchesArg) {
 const packagesRoot = path.resolve(packagesArg);
 const patchesRoot = path.resolve(patchesArg);
 const packages = [
-    { name: 'core-api', base: '9ded4c6c3bc16303b65f2137879f52ef2969a918' },
+    { name: 'core-api', base: '7e32b861e690bb79f0db9e91a56e6223cefcb1b4' },
     { name: 'ember-core', base: '20262cf26edafaf2f67b052ce5fbba00e5041dad' },
     { name: 'ember-ui', base: '82ccf2634f372405a4ac363b6b9e7bb562cbcc1b' },
-    { name: 'fleetops', base: '1d9cb33dd8fa4782ded2bc802c66304aa25a500f' },
-    { name: 'ledger', base: '9e23340a962884088de03b0973e23e40f97e35ee' },
+    { name: 'fleetops', base: '69a6e03bf9af947cf8c84456002f54ce9f595273' },
+    { name: 'ledger', base: 'cc7638f8987316cfd19dbeb609f2eb230ff55f1e' },
 ];
 
 function git(packageDir, args) {
@@ -68,6 +68,11 @@ for (const entry of packages) {
     }
     if (!fs.existsSync(patchFile)) {
         throw new Error(`Missing upstream source patch: ${patchFile}`);
+    }
+
+    if (fs.statSync(patchFile).size === 0) {
+        console.log(`No additional ${entry.name} patch required at pinned revision`);
+        continue;
     }
 
     const patchExclusions = getPatchExclusions(packageDir, patchFile);
