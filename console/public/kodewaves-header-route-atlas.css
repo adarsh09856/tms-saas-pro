@@ -27,6 +27,30 @@ body[class*='console-'] header.next-view-header .next-view-header-item:focus-vis
     outline-offset: 2px;
 }
 
+/* Keep the icon centered and at the same size as its header hit area. The
+   upstream navbar stylesheet otherwise forces the image back to 32px. */
+body[class*='console-'] header.next-view-header a.kodewaves-console-brand {
+    display: inline-flex;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 0;
+}
+
+body[class*='console-'] header.next-view-header a.kodewaves-console-brand > img.kodewaves-console-mark {
+    display: block;
+    width: 40px !important;
+    min-width: 40px;
+    height: 40px !important;
+    flex: 0 0 40px;
+    object-fit: contain;
+    border-radius: 0.75rem;
+}
+
 /* stylelint-disable no-descending-specificity -- independent header and FleetOps selectors share SVG descendants only. */
 
 /* Keep navigation labels and the company switcher readable on the forest header. */

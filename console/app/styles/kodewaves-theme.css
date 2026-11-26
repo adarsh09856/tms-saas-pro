@@ -553,10 +553,29 @@ body[data-theme='dark'] .fleet-ops-control-hub-tone-blue {
 
 /* Preserve the requested compact icon-only console mark without changing branding assets. */
 body[class*='console-'] .kodewaves-console-brand {
+    display: inline-flex;
     width: 40px;
     min-width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    align-items: center;
+    justify-content: center;
     gap: 0;
+    padding: 0;
+    line-height: 0;
     margin-right: 0.5rem !important;
+}
+
+/* Upstream navbar-logo rules size its image to 32px, which left the 40px brand
+   link with an optically off-center, undersized Transport Diary mark. */
+body[class*='console-'] header.next-view-header a.kodewaves-console-brand > img.kodewaves-console-mark {
+    display: block;
+    width: 40px !important;
+    min-width: 40px;
+    height: 40px !important;
+    flex: 0 0 40px;
+    object-fit: contain;
+    border-radius: 0.75rem;
 }
 
 body[class*='console-'] .kodewaves-console-brand-name {
