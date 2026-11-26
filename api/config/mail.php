@@ -73,7 +73,7 @@ return [
             'tenant_id' => env('MICROSOFT_GRAPH_TENANT_ID'),
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS'),
-                'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Kodewaves Transport ERP')),
+                'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Transport Diary')),
             ],
             'save_to_sent_items' =>  env('MAIL_SAVE_TO_SENT_ITEMS', false),
         ],
@@ -114,7 +114,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS'),
-        'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Kodewaves Transport ERP')),
+        'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Transport Diary')),
     ],
 
     /*

@@ -37,6 +37,8 @@ class VendorDomainManagementTest extends TestCase
         Schema::connection('mysql')->create('companies', function (Blueprint $table) {
             $table->string('uuid', 64)->primary();
             $table->string('owner_uuid', 64)->nullable();
+            $table->string('status', 24)->default('active');
+            $table->timestamp('deleted_at')->nullable();
         });
         Schema::connection('mysql')->create('company_users', function (Blueprint $table) {
             $table->string('uuid', 64)->primary();
@@ -83,8 +85,8 @@ class VendorDomainManagementTest extends TestCase
             $table->timestamp('created_at')->useCurrent();
         });
         DB::connection('mysql')->table('companies')->insert([
-            ['uuid' => 'company-1', 'owner_uuid' => 'vendor-owner'],
-            ['uuid' => 'company-2', 'owner_uuid' => 'other-owner'],
+            ['uuid' => 'company-1', 'owner_uuid' => 'vendor-owner', 'status' => 'active'],
+            ['uuid' => 'company-2', 'owner_uuid' => 'other-owner', 'status' => 'active'],
         ]);
 
         // Exercise the first-party route handlers directly in this isolated
@@ -166,17 +168,30 @@ class VendorDomainManagementTest extends TestCase
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DB::connection('mysql')->table('company_users')->insert([
+            'uuid' => 'membership-2',
+            'company_uuid' => 'company-2',
+            'user_uuid' => 'vendor-owner',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         $request = Request::create('https://north.vendors.example.com/int/v1/orders');
         $session = new \Illuminate\Session\Store('test-session', new \Illuminate\Session\ArraySessionHandler(120));
         $session->start();
+        $session->put('company', 'company-2');
         $request->setLaravelSession($session);
-        $request->setUserResolver(fn () => new \Fleetbase\Models\User(['uuid' => 'vendor-owner']));
+        $user = new \Fleetbase\Models\User();
+        $user->forceFill(['uuid' => 'vendor-owner', 'company_uuid' => 'company-2']);
+        $request->setUserResolver(fn () => $user);
 
         $response = app(ResolveVendorDomainTenant::class)->handle($request, function ($request) {
             return response()->json([
                 'company_uuid' => $request->session()->get('company'),
                 'context_company_uuid' => $request->attributes->get('vendor_domain_company_uuid'),
+                'user_company_uuid' => $request->user()->company_uuid,
+                'role_company_uuid' => $request->user()->companyUser->company_uuid,
             ]);
         });
 
@@ -184,6 +199,8 @@ class VendorDomainManagementTest extends TestCase
         $this->assertSame([
             'company_uuid' => 'company-1',
             'context_company_uuid' => 'company-1',
+            'user_company_uuid' => 'company-1',
+            'role_company_uuid' => 'company-1',
         ], $response->getData(true));
     }
 
@@ -199,17 +216,73 @@ class VendorDomainManagementTest extends TestCase
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DB::connection('mysql')->table('vendor_domain_claims')->insert([
+            'host' => 'missing-proof.vendors.example.com',
+            'kind' => 'platform_subdomain',
+            'company_uuid' => 'company-1',
+            'status' => 'verified',
+            'verification_token_hash' => hash('sha256', 'missing-proof'),
+            'verification_expires_at' => now()->addHour(),
+            'verified_at' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DB::connection('mysql')->table('companies')->where('uuid', 'company-2')->update(['status' => 'suspended']);
+        DB::connection('mysql')->table('vendor_domain_claims')->insert([
+            'host' => 'suspended.vendors.example.com',
+            'kind' => 'platform_subdomain',
+            'company_uuid' => 'company-2',
+            'status' => 'verified',
+            'verification_token_hash' => hash('sha256', 'suspended'),
+            'verification_expires_at' => now()->addHour(),
+            'verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         $middleware = app(ResolveVendorDomainTenant::class);
         $session = new \Illuminate\Session\Store('test-session', new \Illuminate\Session\ArraySessionHandler(120));
         $session->start();
 
-        foreach (['disabled.vendors.example.com', 'missing.vendors.example.com'] as $host) {
+        foreach ([
+            'disabled.vendors.example.com',
+            'missing.vendors.example.com',
+            'missing-proof.vendors.example.com',
+            'suspended.vendors.example.com',
+            'unclaimed-custom-domain.example.org',
+        ] as $host) {
             $request = Request::create('https://' . $host . '/int/v1/orders');
             $request->setLaravelSession(clone $session);
             $response = $middleware->handle($request, fn () => response()->json(['unexpected' => true]));
             $this->assertSame(404, $response->getStatusCode());
         }
+    }
+
+    public function test_verified_host_denies_authenticated_user_without_active_membership(): void
+    {
+        DB::connection('mysql')->table('vendor_domain_claims')->insert([
+            'host' => 'north.vendors.example.com',
+            'kind' => 'platform_subdomain',
+            'company_uuid' => 'company-1',
+            'status' => 'verified',
+            'verification_token_hash' => hash('sha256', 'verified'),
+            'verification_expires_at' => now()->addHour(),
+            'verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $request = Request::create('https://north.vendors.example.com/int/v1/orders');
+        $session = new \Illuminate\Session\Store('test-session', new \Illuminate\Session\ArraySessionHandler(120));
+        $session->start();
+        $request->setLaravelSession($session);
+        $outsider = new \Fleetbase\Models\User();
+        $outsider->forceFill(['uuid' => 'outsider', 'company_uuid' => 'company-2']);
+        $request->setUserResolver(fn () => $outsider);
+
+        $response = app(ResolveVendorDomainTenant::class)->handle($request, fn () => response()->json(['unexpected' => true]));
+        $this->assertSame(403, $response->getStatusCode());
+        $this->assertNull($session->get('company'));
     }
 
     public function test_vendor_context_is_registered_between_fleetbase_session_and_authorization(): void
@@ -379,7 +452,7 @@ class VendorDomainManagementTest extends TestCase
 
     private function asCompanyOwner(string $companyUuid, string $userUuid, string $membershipStatus, ?string $ownerUuid = null): void
     {
-        DB::connection('mysql')->table('companies')->where('uuid', $companyUuid)->update(['owner_uuid' => $ownerUuid ?? $userUuid]);
+        DB::connection('mysql')->table('companies')->where('uuid', $companyUuid)->update(['owner_uuid' => $ownerUuid ?? $userUuid, 'status' => 'active']);
         DB::connection('mysql')->table('company_users')->updateOrInsert(
             ['uuid' => 'membership-' . $companyUuid . '-' . $userUuid],
             [

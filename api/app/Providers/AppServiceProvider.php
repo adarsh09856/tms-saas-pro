@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\SecureMailSettingsController;
+use App\Http\Controllers\DriverCredentialController;
+use App\Http\Controllers\StaffCredentialController;
+use App\Services\SecureMailSettings;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\Events\TransactionBeginning;
@@ -9,6 +13,7 @@ use Illuminate\Database\Events\TransactionCommitting;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Psr\Http\Message\RequestInterface;
@@ -52,6 +57,53 @@ class AppServiceProvider extends ServiceProvider
                 'fleetbase.protected',
                 \App\Http\Middleware\ResolveVendorDomainTenant::class
             );
+            $this->app['router']->pushMiddlewareToGroup(
+                'fleetbase.protected',
+                \App\Http\Middleware\BlockCustomerPortalCredentials::class
+            );
+
+            // The core package registers these same admin mail routes during its
+            // provider boot. App booted callbacks run after every provider has
+            // loaded routes, so these definitions intentionally replace the
+            // package handlers while retaining their protected/throttled path.
+            $apiPrefix = trim((string) config('fleetbase.api.routing.prefix', ''), '/');
+            $internalPrefix = trim((string) config('fleetbase.api.routing.internal_prefix', 'int'), '/');
+            $settingsPrefix = trim(implode('/', array_filter([$apiPrefix, $internalPrefix, 'v1', 'settings'])), '/');
+
+            Route::prefix($settingsPrefix)
+                ->middleware(['api', 'fleetbase.protected', \Fleetbase\Http\Middleware\ThrottleRequests::class])
+                ->group(function () {
+                    Route::get('mail-config', [SecureMailSettingsController::class, 'show']);
+                    Route::post('mail-config', [SecureMailSettingsController::class, 'update']);
+                    Route::post('test-mail-config', [SecureMailSettingsController::class, 'sendTestEmail']);
+                });
+
+            $operationsPrefix = trim(implode('/', array_filter([$apiPrefix, $internalPrefix, 'v1', 'drivers'])), '/');
+            Route::prefix($operationsPrefix)
+                ->middleware([
+                    'api',
+                    'fleetbase.protected',
+                    \Fleetbase\FleetOps\Http\Middleware\TransformLocationMiddleware::class,
+                    \Fleetbase\FleetOps\Http\Middleware\SetupDriverSession::class,
+                ])
+                ->group(function () {
+                    Route::post('{id}/send-credentials', [DriverCredentialController::class, 'sendCredentials']);
+                    Route::post('{id}/reset-credentials', [DriverCredentialController::class, 'resetCredentials']);
+                });
+
+            Route::prefix(trim(implode('/', array_filter([$apiPrefix, $internalPrefix, 'v1', 'auth'])), '/'))
+                ->middleware(['api', 'fleetbase.protected'])
+                ->post('change-user-password', [StaffCredentialController::class, 'changeUserPassword']);
+
+            try {
+                $this->app->make(SecureMailSettings::class)->hydrate();
+            } catch (\Throwable $exception) {
+                // DB is not guaranteed to be configured during package discovery
+                // or a first install. Defer settings hydration until a live app boot.
+                Log::notice('Mail settings were not hydrated during application boot.', [
+                    'exception' => get_class($exception),
+                ]);
+            }
         });
 
         $this->configureOutboundHttpLogging();

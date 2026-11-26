@@ -184,8 +184,16 @@ body[data-theme='dark'] .kodewaves-route-error-card p {
 }
 
 /* Responsive Transport Diary sign-in shell. */
+html:has(.auth-shell),
+html:has(.auth-shell) body {
+    height: auto !important;
+    min-height: 100%;
+    overflow-y: auto !important;
+}
+
 .auth-shell {
     min-height: 100vh;
+    min-height: 100dvh;
     display: grid;
     grid-template-rows: minmax(0, 1fr) auto;
     background: var(--kodewaves-paper);

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class VendorDomainClaim extends Model
 {
+    /** Domain ownership claims belong to the platform database, never a tenant sandbox. */
+    protected $connection = 'mysql';
+
     protected $table = 'vendor_domain_claims';
 
     protected $fillable = [

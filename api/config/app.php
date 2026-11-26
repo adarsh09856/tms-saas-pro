@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Kodewaves Transport ERP'),
+    'name' => env('APP_NAME', 'Transport Diary'),
 
     /*
     |--------------------------------------------------------------------------
