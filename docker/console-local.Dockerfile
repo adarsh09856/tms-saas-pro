@@ -3,7 +3,17 @@ FROM node:22.22.0-alpine3.22 AS builder
 WORKDIR /console
 ENV PNPM_HOME=/root/.pnpm
 ENV PATH=/root/.pnpm/bin:$PATH
-ARG ENVIRONMENT=development
+ARG ENVIRONMENT=production
+ARG API_HOST
+ARG SOCKETCLUSTER_HOST
+ENV API_HOST=$API_HOST \
+    API_SECURE=true \
+    API_NAMESPACE=int/v1 \
+    DISABLE_RUNTIME_CONFIG=false \
+    SOCKETCLUSTER_HOST=$SOCKETCLUSTER_HOST \
+    SOCKETCLUSTER_PATH=/socketcluster/ \
+    SOCKETCLUSTER_SECURE=true \
+    SOCKETCLUSTER_PORT=443
 
 RUN npm install -g ember-cli pnpm && apk add --no-cache git openssh-client
 COPY console/package.json console/pnpm-lock.yaml console/pnpm-workspace.yaml ./
