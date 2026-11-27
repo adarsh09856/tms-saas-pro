@@ -836,7 +836,7 @@ index 6a6f05a96a2cb4dbc9cdf4b09d724ca7b71dd685..7098349106f2c26d674a66778a2fdf47
  
      /**
 diff --git a/server/src/Http/Controllers/Internal/v1/OrderController.php b/server/src/Http/Controllers/Internal/v1/OrderController.php
-index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..1776d147292ed08ae9382f6afe769ba2f79a0277 100644
+index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..1bb2d33a27050457efa2804e1e136bd3ab16f795 100644
 --- a/server/src/Http/Controllers/Internal/v1/OrderController.php
 +++ b/server/src/Http/Controllers/Internal/v1/OrderController.php
 @@ -48,6 +48,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -952,6 +952,271 @@ index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..1776d147292ed08ae9382f6afe769ba2
          // Create validation request
          $createOrderRequest  = CreateOrderRequest::createFrom($request);
          $rules               = $createOrderRequest->rules();
+@@ -132,142 +231,148 @@ class OrderController extends FleetOpsController
+         }
+ 
+         try {
+-            $record = $this->model->createRecordFromRequest(
+-                $request,
+-                function ($request, &$input) {
+-                    $serviceQuote = ServiceQuote::resolveFromRequest($request);
+-
+-                    $this->normalizeCustomerType($input);
+-
+-                    // if service quote is applied, resolve it
+-                    if ($serviceQuote instanceof ServiceQuote && $serviceQuote->fromIntegratedVendor()) {
+-                        // create order with integrated vendor, then resume fleetbase order creation
+-                        try {
+-                            $integratedVendorOrder = $serviceQuote->integratedVendor->api()->createOrderFromServiceQuote($serviceQuote, $request);
+-                        } catch (\Exception $e) {
+-                            return response()->error($e->getMessage());
+-                        }
++            // Let persistence errors roll back before converting them to API responses.
++            return $this->model->getConnection()->transaction(fn () => $this->persistNewOrder($request));
++        } catch (QueryException $e) {
++            return response()->error(app()->hasDebugModeEnabled() ? $e->getMessage() : 'Error occurred while trying to create a ' . $this->resourceSingularlName);
++        } catch (FleetbaseRequestValidationException $e) {
++            return response()->error($e->getErrors());
++        } catch (\Exception $e) {
++            return response()->error($e->getMessage());
++        }
++    }
+ 
+-                        $input['integrated_vendor_order'] = $integratedVendorOrder;
+-                    }
++    private function persistNewOrder(Request $request)
++    {
++        $record = $this->model->createRecordFromRequest(
++            $request,
++            function ($request, &$input) {
++                $serviceQuote = ServiceQuote::resolveFromRequest($request);
+ 
+-                    // Normalize order config + type. Invalid explicit configs must
+-                    // not silently fall back to the default transport config.
+-                    $hasExplicitOrderConfig = !empty($input['order_config_uuid']);
+-                    $hasExplicitOrderType   = !empty($input['type']);
+-                    $resolvedOrderConfig    = OrderConfig::resolveFromIdentifier([$input['order_config_uuid'] ?? null, $input['type'] ?? null]);
++                $this->normalizeCustomerType($input);
+ 
+-                    if (!$resolvedOrderConfig && $hasExplicitOrderConfig) {
+-                        throw new FleetbaseRequestValidationException(['order_config_uuid' => 'The selected order config is invalid.']);
++                // if service quote is applied, resolve it
++                if ($serviceQuote instanceof ServiceQuote && $serviceQuote->fromIntegratedVendor()) {
++                    // create order with integrated vendor, then resume fleetbase order creation
++                    try {
++                        $integratedVendorOrder = $serviceQuote->integratedVendor->api()->createOrderFromServiceQuote($serviceQuote, $request);
++                    } catch (\Exception $e) {
++                        return response()->error($e->getMessage());
+                     }
+ 
+-                    if (!$resolvedOrderConfig && !$hasExplicitOrderType) {
+-                        $resolvedOrderConfig = OrderConfig::defaultOrCreate();
+-                    }
++                    $input['integrated_vendor_order'] = $integratedVendorOrder;
++                }
+ 
+-                    if ($resolvedOrderConfig) {
+-                        $input['order_config_uuid'] = $resolvedOrderConfig->uuid;
+-                        $input['type']              = $resolvedOrderConfig->key;
+-                    } elseif (!isset($input['type'])) {
+-                        $input['type'] = 'transport';
+-                    }
++                // Normalize order config + type. Invalid explicit configs must
++                // not silently fall back to the default transport config.
++                $hasExplicitOrderConfig = !empty($input['order_config_uuid']);
++                $hasExplicitOrderType   = !empty($input['type']);
++                $resolvedOrderConfig    = OrderConfig::resolveFromIdentifier([$input['order_config_uuid'] ?? null, $input['type'] ?? null]);
+ 
+-                    // a configured lifecycle always starts at its initial activity; otherwise
+-                    // if no status is set its default to `created`
+-                    if ($resolvedOrderConfig && $resolvedOrderConfig->hasConfiguredLifecycle()) {
+-                        $input['status'] = $resolvedOrderConfig->getInitialStatusCode();
+-                        if (!$resolvedOrderConfig->allowsDispatch()) {
+-                            $input['dispatched'] = false;
+-                            $input['adhoc']      = false;
+-                        }
+-                    } elseif (!isset($input['status'])) {
+-                        $input['status'] = 'created';
+-                    }
++                if (!$resolvedOrderConfig && $hasExplicitOrderConfig) {
++                    throw new FleetbaseRequestValidationException(['order_config_uuid' => 'The selected order config is invalid.']);
++                }
+ 
+-                    // Ensure orchestrator_priority is never null — the column is NOT NULL
+-                    // and the DB default is bypassed when Eloquent receives an explicit null.
+-                    if (!isset($input['orchestrator_priority']) || !is_numeric($input['orchestrator_priority'])) {
+-                        $input['orchestrator_priority'] = 50;
+-                    }
+-                },
+-                function (&$request, Order &$order, &$requestInput) {
+-                    $input                   = $request->input('order');
+-                    $isIntegratedVendorOrder = isset($requestInput['integrated_vendor_order']);
+-                    $serviceQuote            = ServiceQuote::resolveFromRequest($request);
+-
+-                    $route               = Utils::get($input, 'route');
+-                    $payload             = Utils::get($input, 'payload');
+-                    $waypoints           = Utils::get($input, 'payload.waypoints');
+-                    $entities            = Utils::get($input, 'payload.entities');
+-                    $uploads             = Utils::get($input, 'files', []);
+-                    $customFieldValues   = Utils::get($input, 'custom_field_values', []);
+-                    $orderConfig         = $order->config();
+-                    $hasLifecycle        = $orderConfig && $orderConfig->hasConfiguredLifecycle();
+-
+-                    // save order route & payload with request input
+-                    $order
+-                        ->setRoute($route)
+-                        ->setStatus($hasLifecycle ? $orderConfig->getInitialStatusCode() : 'created', false)
+-                        ->insertPayload($payload)
+-                        ->insertWaypoints($waypoints)
+-                        ->insertEntities($entities);
+-
+-                    // If order creation includes files assosciate each to this order
+-                    $order->attachFiles($uploads);
+-
+-                    // save custom field values
+-                    if (is_array($customFieldValues)) {
+-                        $order->syncCustomFieldValues($customFieldValues);
+-                    }
++                if (!$resolvedOrderConfig && !$hasExplicitOrderType) {
++                    $resolvedOrderConfig = OrderConfig::defaultOrCreate();
++                }
+ 
+-                    // if it's integrated vendor order apply to meta
+-                    if ($isIntegratedVendorOrder) {
+-                        $order->updateMeta(
+-                            [
+-                                'integrated_vendor'       => Utils::get($requestInput['integrated_vendor_order'], 'metadata.integrated_vendor'),
+-                                'integrated_vendor_order' => $requestInput['integrated_vendor_order'],
+-                            ]
+-                        );
+-                    }
++                if ($resolvedOrderConfig) {
++                    $input['order_config_uuid'] = $resolvedOrderConfig->uuid;
++                    $input['type']              = $resolvedOrderConfig->key;
++                } elseif (!isset($input['type'])) {
++                    $input['type'] = 'transport';
++                }
+ 
+-                    // Check dispatch flag with backward compatibility (default true).
+-                    // Configs with a lifecycle that disables dispatch are never dispatched.
+-                    $shouldDispatch = isset($input['dispatched']) ? (bool) $input['dispatched'] : true;
+-                    if ($hasLifecycle && !$orderConfig->allowsDispatch()) {
+-                        $shouldDispatch = false;
++                // a configured lifecycle always starts at its initial activity; otherwise
++                // if no status is set its default to `created`
++                if ($resolvedOrderConfig && $resolvedOrderConfig->hasConfiguredLifecycle()) {
++                    $input['status'] = $resolvedOrderConfig->getInitialStatusCode();
++                    if (!$resolvedOrderConfig->allowsDispatch()) {
++                        $input['dispatched'] = false;
++                        $input['adhoc']      = false;
+                     }
++                } elseif (!isset($input['status'])) {
++                    $input['status'] = 'created';
++                }
+ 
+-                    // dispatch if flagged true, otherwise ensure order stays in created state
+-                    if ($shouldDispatch) {
+-                        $order->firstDispatchWithActivity();
+-                    }
++                // Ensure orchestrator_priority is never null — the column is NOT NULL
++                // and the DB default is bypassed when Eloquent receives an explicit null.
++                if (!isset($input['orchestrator_priority']) || !is_numeric($input['orchestrator_priority'])) {
++                    $input['orchestrator_priority'] = 50;
++                }
++            },
++            function (&$request, Order &$order, &$requestInput) {
++                $input                   = $request->input('order');
++                $isIntegratedVendorOrder = isset($requestInput['integrated_vendor_order']);
++                $serviceQuote            = ServiceQuote::resolveFromRequest($request);
++
++                $route               = Utils::get($input, 'route');
++                $payload             = Utils::get($input, 'payload');
++                $waypoints           = Utils::get($input, 'payload.waypoints');
++                $entities            = Utils::get($input, 'payload.entities');
++                $uploads             = Utils::get($input, 'files', []);
++                $customFieldValues   = Utils::get($input, 'custom_field_values', []);
++                $orderConfig         = $order->config();
++                $hasLifecycle        = $orderConfig && $orderConfig->hasConfiguredLifecycle();
++
++                // save order route & payload with request input
++                $order
++                    ->setRoute($route)
++                    ->setStatus($hasLifecycle ? $orderConfig->getInitialStatusCode() : 'created', false)
++                    ->insertPayload($payload)
++                    ->insertWaypoints($waypoints)
++                    ->insertEntities($entities);
++
++                // If order creation includes files assosciate each to this order
++                $order->attachFiles($uploads);
++
++                // save custom field values
++                if (is_array($customFieldValues)) {
++                    $order->syncCustomFieldValues($customFieldValues);
++                }
+ 
+-                    // set driving distance and time
+-                    $order->setPreliminaryDistanceAndTime();
++                // if it's integrated vendor order apply to meta
++                if ($isIntegratedVendorOrder) {
++                    $order->updateMeta(
++                        [
++                            'integrated_vendor'       => Utils::get($requestInput['integrated_vendor_order'], 'metadata.integrated_vendor'),
++                            'integrated_vendor_order' => $requestInput['integrated_vendor_order'],
++                        ]
++                    );
++                }
+ 
+-                    // if service quote attached purchase
+-                    $order->purchaseServiceQuote($serviceQuote);
++                // Check dispatch flag with backward compatibility (default true).
++                // Configs with a lifecycle that disables dispatch are never dispatched.
++                $shouldDispatch = isset($input['dispatched']) ? (bool) $input['dispatched'] : true;
++                if ($hasLifecycle && !$orderConfig->allowsDispatch()) {
++                    $shouldDispatch = false;
++                }
+ 
+-                    FinalizeInternalOrderCreation::dispatch($order->uuid)->afterCommit();
++                // dispatch if flagged true, otherwise ensure order stays in created state
++                if ($shouldDispatch) {
++                    $order->firstDispatchWithActivity();
+                 }
+-            );
+ 
+-            // Surface early error responses (e.g. integrated vendor failures) as-is
+-            if ($record instanceof \Illuminate\Http\JsonResponse) {
+-                return $record;
+-            }
++                // set driving distance and time
++                $order->setPreliminaryDistanceAndTime();
+ 
+-            // Reload payload and tracking number
+-            $record->load(['payload', 'trackingNumber']);
++                // if service quote attached purchase
++                $order->purchaseServiceQuote($serviceQuote);
+ 
+-            return ['order' => new $this->resource($record)];
+-        } catch (QueryException $e) {
+-            return response()->error(app()->hasDebugModeEnabled() ? $e->getMessage() : 'Error occurred while trying to create a ' . $this->resourceSingularlName);
+-        } catch (FleetbaseRequestValidationException $e) {
+-            return response()->error($e->getErrors());
+-        } catch (\Exception $e) {
+-            return response()->error($e->getMessage());
++                FinalizeInternalOrderCreation::dispatch($order->uuid)->afterCommit();
++            }
++        );
++
++        // Surface early error responses (e.g. integrated vendor failures) as-is
++        if ($record instanceof \Illuminate\Http\JsonResponse) {
++            return $record;
+         }
++
++        // Reload payload and tracking number
++        $record->load(['payload', 'trackingNumber']);
++
++        return ['order' => new $this->resource($record)];
+     }
+ 
+     /**
 diff --git a/server/src/Http/Controllers/Internal/v1/SettingController.php b/server/src/Http/Controllers/Internal/v1/SettingController.php
 index 6f06e0e83bf116322147f0b4bc3d5eb3d224e128..f99f9a329ae888c6c8ef3b8f31acc7b1c12edb51 100644
 --- a/server/src/Http/Controllers/Internal/v1/SettingController.php
@@ -1861,7 +2126,7 @@ index 07f78f0f0eea9cc18931a02e105cb7f0adcadfc4..58aae0cde7a734c0d80d740bddb57a79
 +        ->and($rollbackConnection->table('orders')->count())->toBe(0);
  });
 diff --git a/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php b/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
-index 855ac2f52ac3d34f6953a260737283fec879628b..8ff8b9e772582da0504dc4c2dffca38cd787727f 100644
+index 855ac2f52ac3d34f6953a260737283fec879628b..157584dc61759c03f947ce711fb5f70b768ba6cc 100644
 --- a/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
 +++ b/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
 @@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
@@ -1872,7 +2137,15 @@ index 855ac2f52ac3d34f6953a260737283fec879628b..8ff8b9e772582da0504dc4c2dffca38c
  
  /**
   * Covers the internal OrderController createRecord flow end to end against an
-@@ -217,6 +218,7 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
+@@ -201,6 +202,7 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
+         'tracking_statuses'   => ['uuid', 'public_id', 'company_uuid', 'tracking_number_uuid', 'code', 'status', 'details', 'location', 'city', 'province', 'country', '_key'],
+         'contacts'            => ['uuid', 'public_id', 'company_uuid', 'name'],
+         'vendors'             => ['uuid', 'public_id', 'company_uuid', 'name'],
++        'comments'            => ['subject_uuid', 'parent_comment_uuid'],
+         'custom_fields'       => ['uuid', 'public_id', 'company_uuid', 'subject_uuid', 'subject_type', 'name', 'label'],
+         'custom_field_values' => ['uuid', 'company_uuid', 'custom_field_uuid', 'subject_uuid', 'subject_type', 'value'],
+         'companies'           => ['uuid', 'public_id', 'name', 'options'],
+@@ -217,6 +219,7 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
      }
  
      session(['company' => 'company-1']);
@@ -1880,7 +2153,7 @@ index 855ac2f52ac3d34f6953a260737283fec879628b..8ff8b9e772582da0504dc4c2dffca38c
      $connection->table('companies')->insert(['uuid' => 'company-1', 'name' => 'Acme']);
      $connection->table('order_configs')->insert([
          'uuid'         => 'config-1',
-@@ -234,6 +236,13 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
+@@ -234,6 +237,13 @@ function fleetopsInternalOrderCreateBoot(array $validatorErrors = []): SQLiteCon
      return $connection;
  }
  
@@ -1894,10 +2167,30 @@ index 855ac2f52ac3d34f6953a260737283fec879628b..8ff8b9e772582da0504dc4c2dffca38c
  test('create record persists an order with the default transport config', function () {
      $connection = fleetopsInternalOrderCreateBoot();
  
-@@ -254,6 +263,43 @@ test('create record persists an order with the default transport config', functi
+@@ -254,6 +264,63 @@ test('create record persists an order with the default transport config', functi
          ->and($connection->table('payloads')->count())->toBe(1);
  });
  
++test('internal order creation rolls back a partially written booking and permits a retry', function () {
++    $connection = fleetopsInternalOrderCreateBoot();
++    $controller = new OrderController();
++    $orderInput = ['dispatched' => false, 'payload' => ['type' => 'transport']];
++    $connection->statement("CREATE TRIGGER fail_booking_payload BEFORE INSERT ON payloads BEGIN SELECT RAISE(ABORT, 'payload unavailable'); END");
++
++    $failed = $controller->createRecord(fleetopsInternalOrderCreateRequest($orderInput, 'retry-after-rollback'));
++
++    expect($failed)->toBeInstanceOf(JsonResponse::class)
++        ->and($connection->table('orders')->count())->toBe(0)
++        ->and($connection->table('payloads')->count())->toBe(0);
++
++    $connection->statement('DROP TRIGGER fail_booking_payload');
++    $retried = $controller->createRecord(fleetopsInternalOrderCreateRequest($orderInput, 'retry-after-rollback'));
++
++    expect($retried)->toBeArray()
++        ->and($connection->table('orders')->count())->toBe(1)
++        ->and($connection->table('payloads')->count())->toBe(1);
++});
++
 +test('internal order creation replays a successful request with the same idempotency key', function () {
 +    $connection = fleetopsInternalOrderCreateBoot();
 +    $controller = new OrderController();
