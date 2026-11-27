@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112" role="img" aria-labelledby="title desc">
   <title id="title">Transport Diary</title>
   <desc id="desc">A balanced open dispatch diary with a route running through its pages.</desc>
-  <rect x="4" y="4" width="104" height="104" rx="26" fill="#294b3a"/>
-  <path d="M23 32c12-6 25-5 33 3 8-8 21-9 33-3v48c-12-5-25-4-33 4-8-8-21-9-33-4V32Z" fill="none" stroke="#f6f6ef" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M56 35v49M30 64h12c6 0 6-10 13-10 7 0 7 12 14 12h8c5 0 5-9 11-9" fill="none" stroke="#c28b44" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="30" cy="64" r="3.5" fill="#f6f6ef"/><circle cx="88" cy="57" r="3.5" fill="#f6f6ef"/>
+  <rect x="4" y="4" width="104" height="104" rx="26" fill="#1e40af"/>
+  <path d="M23 32c12-6 25-5 33 3 8-8 21-9 33-3v48c-12-5-25-4-33 4-8-8-21-9-33-4V32Z" fill="none" stroke="#f8fafc" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M56 35v49M30 64h12c6 0 6-10 13-10 7 0 7 12 14 12h8c5 0 5-9 11-9" fill="none" stroke="#60a5fa" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="30" cy="64" r="3.5" fill="#f8fafc"/><circle cx="88" cy="57" r="3.5" fill="#f8fafc"/>
 </svg>

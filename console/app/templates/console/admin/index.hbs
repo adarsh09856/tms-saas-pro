@@ -1,6 +1,21 @@
 {{page-title "Overview"}}
 
 <Layout::Section::Body class="overflow-y-scroll h-full">
+    <section class="tms-workspace-overview tms-platform-overview" aria-labelledby="platform-workflow-title">
+        <div class="tms-workspace-heading">
+            <div>
+                <p class="tms-workspace-eyebrow">Transport Diary · Platform administration</p>
+                <h1 id="platform-workflow-title">Platform overview</h1>
+                <p>Manage company access, service plans, walkthrough requests, and platform operations.</p>
+            </div>
+        </div>
+    </section>
+    <section class="tms-platform-workflows" aria-label="Platform administration tasks">
+        <LinkTo @route="console.admin.organizations.index" class="tms-platform-task tms-platform-task-primary"><span class="tms-platform-task-icon"><FaIcon @icon="building" /></span><span><strong>Companies</strong><small>Provision and manage transport workspaces</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+        <LinkTo @route="console.admin.billing-plans" class="tms-platform-task"><span class="tms-platform-task-icon"><FaIcon @icon="credit-card" /></span><span><strong>Plans and access</strong><small>Review INR plans and entitlements</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+        <LinkTo @route="console.admin.walkthrough-requests" class="tms-platform-task"><span class="tms-platform-task-icon"><FaIcon @icon="calendar-check" /></span><span><strong>Walkthrough requests</strong><small>Follow up with prospective companies</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+        <LinkTo @route="console.admin.schedule-monitor" class="tms-platform-task"><span class="tms-platform-task-icon"><FaIcon @icon="clock" /></span><span><strong>Scheduled work</strong><small>Review background operations</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+    </section>
     <Dashboard
         @defaultDashboardId="admin"
         @defaultDashboardName="Admin Dashboard"
@@ -11,5 +26,4 @@
         @stickyHeader={{true}}
         class="console-dashboard-page"
     />
-    <Spacer @height="300px" />
 </Layout::Section::Body>

@@ -1,6 +1,6 @@
-<ContentPanel @title="Continue with Kodewaves" @open={{true}} @wrapperClass="bordered-classic">
+<ContentPanel @title="Continue with Transport Diary" @open={{true}} @wrapperClass="bordered-classic">
     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-        Apps registered here can sign people in with their Kodewaves account and, when the person agrees on the consent screen, act on one organization they administer. Kodewaves is the
+        Apps registered here can sign people in with their Transport Diary account and, when the person agrees on the consent screen, act on one organization they administer. Transport Diary is the
         OAuth 2.0 and OpenID Connect provider; discovery is at
         <code class="text-xs">/.well-known/openid-configuration</code>
         on this API.
@@ -55,7 +55,7 @@
                         {{/if}}
                     </div>
                 </InputGroup>
-                <InputGroup @name="Name" @helpText="Shown on the consent screen as “{{if this.form.name this.form.name 'App'}} wants to access your Kodewaves account”.">
+                <InputGroup @name="Name" @helpText="Shown on the consent screen as “{{if this.form.name this.form.name 'App'}} wants to access your Transport Diary account”.">
                     <Input class="form-input w-full" @value={{this.form.name}} placeholder="e.g. AppHelm" {{on "input" (fn this.setField "name")}} />
                 </InputGroup>
                 <InputGroup @name="Description">
@@ -110,8 +110,8 @@
                     <Toggle
                         @isToggled={{this.form.official}}
                         @onToggle={{fn this.setField "official"}}
-                        @label="Made by Kodewaves"
-                        @helpText="Shows a “Made by Kodewaves” badge on the consent screen."
+                        @label="Official Transport Diary app"
+                        @helpText="Shows an “Official Transport Diary app” badge on the consent screen."
                     />
                 </InputGroup>
                 <InputGroup>
@@ -183,7 +183,7 @@
                     <div class="flex flex-wrap items-center gap-1">
                         <Badge @status="default" @hideStatusDot={{true}} @size="xs">{{if app.confidential "Confidential" "Public"}}</Badge>
                         {{#if app.official}}
-                            <Badge @status="info" @hideStatusDot={{true}} @size="xs">Made by Kodewaves</Badge>
+                            <Badge @status="info" @hideStatusDot={{true}} @size="xs">Official Transport Diary app</Badge>
                         {{/if}}
                         {{#if app.development}}
                             <Badge @status="warning" @hideStatusDot={{true}} @size="xs">Development</Badge>
@@ -260,7 +260,7 @@
 {{else if (not this.load.isRunning)}}
     <div class="rounded-md border border-dashed border-gray-300 px-4 py-8 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
         <FaIcon @icon="plug" class="mb-2 text-gray-400" />
-        <p>No apps yet. Register one to offer “Continue with Kodewaves”.</p>
+        <p>No apps yet. Register one to offer “Continue with Transport Diary”.</p>
     </div>
 {{/if}}
 

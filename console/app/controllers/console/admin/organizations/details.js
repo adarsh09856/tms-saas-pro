@@ -191,6 +191,7 @@ export default class ConsoleAdminOrganizationsDetailsController extends Controll
     }
 
     @action editOrganization() {
+        this.organization.currency = 'INR';
         this.modalsManager.show('modals/edit-organization', {
             title: 'Edit Organization',
             acceptButtonText: 'Save Changes',

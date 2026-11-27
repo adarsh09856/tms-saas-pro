@@ -1,0 +1,64 @@
+<div class="tms-walkthrough-queue space-y-4" ...attributes>
+    <section class="tms-walkthrough-intro" aria-labelledby="walkthrough-queue-title">
+        <div>
+            <p class="tms-workspace-eyebrow">Platform enquiries</p>
+            <h2 id="walkthrough-queue-title">Walkthrough follow-up</h2>
+            <p>Review incoming transport company enquiries and update each request as your team follows up.</p>
+        </div>
+        <div class="tms-walkthrough-total"><strong>{{this.total}}</strong><span>total requests</span></div>
+    </section>
+    <div class="flex flex-wrap items-end justify-between gap-3">
+        <div class="flex flex-wrap items-end gap-2">
+            <label class="text-sm">Status
+                <select class="form-select form-input ml-2" value={{this.statusFilter}} aria-label="Filter walkthrough requests by status" {{on "change" this.setStatusFilter}} data-test-status-filter>
+                    <option value="" selected={{eq this.statusFilter ""}}>All statuses</option>
+                    {{#each this.statuses as |status|}}<option value={{status.value}} selected={{eq this.statusFilter status.value}}>{{status.label}}</option>{{/each}}
+                </select>
+            </label>
+            <Button @size="xs" @icon="arrows-rotate" @text="Refresh" @onClick={{fn this.load this.page}} @isLoading={{this.loading}} data-test-refresh />
+        </div>
+    </div>
+
+    {{#if this.errorMessage}}
+        <div class="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200" role="alert" data-test-error>{{this.errorMessage}}</div>
+    {{/if}}
+    {{#if this.successMessage}}
+        <div class="rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-blue-300" role="status" data-test-success>{{this.successMessage}}</div>
+    {{/if}}
+
+    <div class="overflow-x-auto rounded-md border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800" data-test-requests-table>
+        <table class="min-w-[850px] w-full text-left text-sm">
+            <thead class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                <tr><th class="px-3 py-3">Contact</th><th class="px-3 py-3">Company</th><th class="px-3 py-3">Business email</th><th class="px-3 py-3">Phone</th><th class="px-3 py-3">Received</th><th class="px-3 py-3">Status</th></tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                {{#if this.loading}}
+                    <tr><td colspan="6" class="px-3 py-10 text-center text-gray-500" data-test-loading>Loading walkthrough requests…</td></tr>
+                {{else}}
+                    {{#each this.rows as |row|}}
+                        <tr data-test-request={{row.id}}>
+                            <td class="px-3 py-3 font-medium">{{row.name}}</td>
+                            <td class="px-3 py-3">{{row.company}}</td>
+                            <td class="px-3 py-3"><a class="text-[var(--kodewaves-primary-deep)] underline underline-offset-2 hover:text-[var(--kodewaves-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--kodewaves-primary)] dark:text-blue-300" href="mailto:{{row.email}}">{{row.email}}</a></td>
+                            <td class="px-3 py-3">{{or row.phone "—"}}</td>
+                            <td class="whitespace-nowrap px-3 py-3">{{format-date row.created_at}}</td>
+                            <td class="px-3 py-3">
+                                <select class="form-select form-input" value={{row.status}} aria-label="Status for {{row.company}} request" disabled={{eq this.updatingId row.id}} {{on "change" (fn this.updateStatus row)}} data-test-request-status={{row.id}}>
+                                    {{#each this.statuses as |status|}}<option value={{status.value}} selected={{eq row.status status.value}}>{{status.label}}</option>{{/each}}
+                                </select>
+                                {{#if (eq this.updatingId row.id)}}<span class="ml-2 text-xs text-gray-500" role="status">Saving…</span>{{/if}}
+                            </td>
+                        </tr>
+                    {{else}}
+                        <tr><td colspan="6" class="px-3 py-10 text-center text-gray-500" data-test-empty>No walkthrough requests match this filter.</td></tr>
+                    {{/each}}
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <div class="flex items-center justify-end gap-2 text-sm">
+        <span class="mr-2 text-gray-600 dark:text-gray-300">Page {{this.page}} of {{this.lastPage}}</span>
+        <Button @size="xs" @text="Previous" @disabled={{or this.loading (eq this.page 1)}} @onClick={{this.previousPage}} data-test-previous />
+        <Button @size="xs" @text="Next" @disabled={{or this.loading (eq this.page this.lastPage)}} @onClick={{this.nextPage}} data-test-next />
+    </div>
+</div>

@@ -22,6 +22,7 @@ module('Integration | Component | modals/edit-organization', function (hooks) {
 
         assert.dom(this.element).containsText('Organization name');
         assert.dom(this.element).containsText('Organization description');
+        assert.dom(this.element).containsText('INR — Indian Rupee', 'organization currency is fixed to INR');
 
         // The inputs receive their value as a property, not a value="" attribute, so an
         // attribute selector would not match.

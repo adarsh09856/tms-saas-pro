@@ -21,10 +21,10 @@ module('Integration | Component | dashboard/count', function (hooks) {
         assert.dom(this.element).containsText('explicit', 'the provided value is not reformatted');
     });
 
-    test('it formats a money value from options', async function (assert) {
+    test('it formats a money value as INR regardless of stored currency', async function (assert) {
         await render(hbs`<Dashboard::Count @title="Revenue" @options={{hash format="money" value=1000 currency="USD"}} />`);
 
-        assert.dom(this.element).containsText('$', 'the money format is applied');
+        assert.dom(this.element).containsText('₹', 'dashboard money uses Indian rupees');
     });
 
     test('it formats a bytes value from options', async function (assert) {
@@ -97,18 +97,19 @@ module('Integration | Component | dashboard/count | formatting', function (hooks
         assert.strictEqual(component.value, 'passed through', 'an unrecognised format is left alone');
     });
 
-    test('the configured currency is used for money values', async function (assert) {
+    test('money values always use INR even when options contain other currencies', async function (assert) {
         this.set('options', { value: 'seed' });
         const component = await this.build();
 
         component.createRenderValueFromOptions({ format: 'money', value: 1234, currency: 'USD' });
-        const inDollars = component.value;
+        const fromUsd = component.value;
 
         component.createRenderValueFromOptions({ format: 'money', value: 1234, currency: 'EUR' });
-        const inEuros = component.value;
+        const fromEur = component.value;
 
-        assert.notStrictEqual(inDollars, 1234, `money is formatted (got ${inDollars})`);
-        assert.notStrictEqual(inDollars, inEuros, `the currency changes the output (${inDollars} vs ${inEuros})`);
+        assert.notStrictEqual(fromUsd, 1234, `money is formatted (got ${fromUsd})`);
+        assert.strictEqual(fromUsd, fromEur, 'stored foreign currency codes do not change TMS display currency');
+        assert.ok(String(fromUsd).includes('₹'), 'money is displayed in Indian rupees');
     });
 
     test('a count with no options at all still builds', async function (assert) {

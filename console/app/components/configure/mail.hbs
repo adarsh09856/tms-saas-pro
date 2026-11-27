@@ -1,5 +1,5 @@
 <ContentPanel @title="Mail" @open={{true}} @wrapperClass="bordered-classic">
-    <InputGroup @name="Mailer" @helpText="Select the default mailer for Kodewaves Transport ERP to use.">
+    <InputGroup @name="Mailer" @helpText="Select the default mailer for Transport Diary to use.">
         <Select @options={{this.mailers}} @value={{this.mailer}} @onSelect={{this.setMailer}} @placeholder="Select mailer" class="w-full" />
     </InputGroup>
     {{#if (eq this.mailer "smtp")}}
@@ -10,12 +10,18 @@
         </InputGroup>
         <InputGroup @name="SMTP Username" @value={{this.smtpUsername}} disabled={{this.loadConfigValues.isRunning}} />
         <InputGroup @name="SMTP Password" @value={{this.smtpPassword}} disabled={{this.loadConfigValues.isRunning}} />
+        {{#if this.smtpPasswordConfigured}}
+            <p class="mb-3 text-xs text-gray-500 dark:text-gray-400">A password is saved. Leave this blank to keep it, or enter a new value to replace it.</p>
+        {{/if}}
         <InputGroup @name="SMTP Timeout" @value={{this.smtpTimeout}} disabled={{this.loadConfigValues.isRunning}} />
         <InputGroup @name="SMTP Auth Mode" @value={{this.smtpAuth_mode}} disabled={{this.loadConfigValues.isRunning}} />
     {{/if}}
     {{#if (eq this.mailer "microsoft-graph")}}
         <InputGroup @name="Client ID" @value={{this.microsoftGraphClient_id}} disabled={{this.loadConfigValues.isRunning}} />
         <InputGroup @name="Client Secret" @value={{this.microsoftGraphClient_secret}} disabled={{this.loadConfigValues.isRunning}} />
+        {{#if this.microsoftGraphClient_secretConfigured}}
+            <p class="mb-3 text-xs text-gray-500 dark:text-gray-400">A client secret is saved. Leave this blank to keep it, or enter a new value to replace it.</p>
+        {{/if}}
         <InputGroup @name="Tenant ID" @value={{this.microsoftGraphTenant_id}} disabled={{this.loadConfigValues.isRunning}} />
         <InputGroup>
             <Toggle @isToggled={{this.microsoftGraphSave_to_sent_items}} @onToggle={{fn (mut this.microsoftGraphSave_to_sent_items)}} @label="Save to sent items"  />
@@ -25,24 +31,36 @@
         <InputGroup @name="Mailgun Domain" @value={{this.mailgunDomain}} disabled={{this.loadConfigValues.isRunning}} />
         <InputGroup @name="Mailgun Endpoint" @value={{this.mailgunEndpoint}} disabled={{this.loadConfigValues.isRunning}} />
         <InputGroup @name="Mailgun Secret" @value={{this.mailgunSecret}} disabled={{this.loadConfigValues.isRunning}} />
+        {{#if this.mailgunSecretConfigured}}
+            <p class="mb-3 text-xs text-gray-500 dark:text-gray-400">A Mailgun secret is saved. Leave this blank to keep it, or enter a new value to replace it.</p>
+        {{/if}}
     {{/if}}
     {{#if (eq this.mailer "postmark")}}
         <InputGroup @name="Postmark Token" @value={{this.postmarkToken}} disabled={{this.loadConfigValues.isRunning}} />
+        {{#if this.postmarkTokenConfigured}}
+            <p class="mb-3 text-xs text-gray-500 dark:text-gray-400">A Postmark token is saved. Leave this blank to keep it, or enter a new value to replace it.</p>
+        {{/if}}
     {{/if}}
     {{#if (eq this.mailer "sendgrid")}}
         <InputGroup @name="Sendgrid API Key" @value={{this.sendgridApi_key}} disabled={{this.loadConfigValues.isRunning}} />
+        {{#if this.sendgridApi_keyConfigured}}
+            <p class="mb-3 text-xs text-gray-500 dark:text-gray-400">A SendGrid API key is saved. Leave this blank to keep it, or enter a new value to replace it.</p>
+        {{/if}}
     {{/if}}
     {{#if (eq this.mailer "resend")}}
         <InputGroup @name="Resend API Key" @value={{this.resendKey}} disabled={{this.loadConfigValues.isRunning}} />
+        {{#if this.resendKeyConfigured}}
+            <p class="mb-3 text-xs text-gray-500 dark:text-gray-400">A Resend API key is saved. Leave this blank to keep it, or enter a new value to replace it.</p>
+        {{/if}}
     {{/if}}
     <InputGroup
         @name="From Address"
-        @helpText="Input the email address Kodewaves Transport ERP should send emails from."
+        @helpText="Input the email address Transport Diary should send emails from."
         @value={{this.fromAddress}}
         @placeholder="From Address"
         disabled={{this.isLoading}}
     />
-    <InputGroup @name="From Name" @helpText="Input the name Kodewaves Transport ERP should send emails from." @value={{this.fromName}} @placeholder="From Name" disabled={{this.isLoading}} />
+    <InputGroup @name="From Name" @helpText="Input the name Transport Diary should send emails from." @value={{this.fromName}} @placeholder="From Name" disabled={{this.isLoading}} />
     {{#if this.testResponse}}
         <div
             class="flex flex-row items-center rounded-lg border

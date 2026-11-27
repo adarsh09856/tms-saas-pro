@@ -62,6 +62,7 @@ export default class ConsoleSettingsIndexController extends Controller {
         event?.preventDefault();
 
         try {
+            this.model.currency = 'INR';
             yield this.model.save();
             this.notifications.success('Organization changes successfully saved.');
         } catch (error) {

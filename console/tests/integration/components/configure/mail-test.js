@@ -173,6 +173,25 @@ module('Integration | Component | configure/mail | actions', function (hooks) {
         assert.deepEqual(this.notifications().successes, [], 'nothing is claimed to have been saved');
     });
 
+    test('configured SMTP secrets stay redacted and survive a blank save', async function (assert) {
+        this.getResponse = {
+            mailer: 'smtp',
+            smtpHost: 'smtp.acme.test',
+            smtpPassword: '',
+            smtpPasswordConfigured: true,
+        };
+        const component = await this.build();
+
+        assert.strictEqual(component.smtpPassword, '', 'the server never returns the saved secret');
+        assert.true(component.smtpPasswordConfigured, 'the UI receives only a configured status flag');
+        assert.dom(this.element).containsText('A password is saved. Leave this blank to keep it');
+
+        await component.save.perform();
+
+        assert.strictEqual(this.posted.at(-1).payload.smtp.password, '', 'a normal save sends the blank secret field');
+        assert.notOk(JSON.stringify(this.posted.at(-1).payload).includes('saved-smtp-password'), 'the saved secret is not present in browser data');
+    });
+
     test('a failed config load is reported and leaves the defaults in place', async function (assert) {
         const failure = new Error('mail config unavailable');
         this.getRejectsWith = failure;

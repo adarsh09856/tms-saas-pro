@@ -83,6 +83,6 @@ class StaffCredentialController extends Controller
             'status' => 'active',
         ]);
 
-        $user->notify(new UserForgotPassword($verificationCode));
+        $user->notify((new UserForgotPassword($verificationCode))->afterCommit());
     }
 }

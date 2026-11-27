@@ -5,9 +5,7 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import window from 'ember-window-mock';
 
-const ZERO_DECIMAL_CURRENCIES = new Set(['BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF']);
-const THREE_DECIMAL_CURRENCIES = new Set(['BHD', 'IQD', 'JOD', 'KWD', 'LYD', 'OMR', 'TND']);
-const currencyDivisor = (currency) => 10 ** (ZERO_DECIMAL_CURRENCIES.has(String(currency).toUpperCase()) ? 0 : THREE_DECIMAL_CURRENCIES.has(String(currency).toUpperCase()) ? 3 : 2);
+const CURRENCY_DIVISOR = 100;
 
 export default class SettingsBillingPanelComponent extends Component {
     @service fetch;
@@ -23,15 +21,18 @@ export default class SettingsBillingPanelComponent extends Component {
 
     @task *load() {
         const [plans, current] = yield Promise.all([this.fetch.get('billing/plans'), this.fetch.get('billing/subscription')]);
-        this.plans = (plans?.plans || []).map((plan) => ({
-            ...plan,
-            formattedPrice: new Intl.NumberFormat('en-IN', { style: 'currency', currency: String(plan.currency || 'INR').toUpperCase() }).format(
-                Number(plan.amount || 0) / currencyDivisor(plan.currency)
-            ),
-            entitlementsText: Object.entries(plan.entitlements || {})
-                .map(([key, value]) => `${key.replaceAll('_', ' ')}: ${Array.isArray(value) ? value.join(', ') : value}`)
-                .join(' · '),
-        }));
+        this.plans = (plans?.plans || []).map((plan) => {
+            const requiresInrSetup = String(plan.currency || 'INR').toUpperCase() !== 'INR';
+
+            return {
+                ...plan,
+                requiresInrSetup,
+                formattedPrice: requiresInrSetup ? null : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(plan.amount || 0) / CURRENCY_DIVISOR),
+                entitlementsText: Object.entries(plan.entitlements || {})
+                    .map(([key, value]) => `${key.replaceAll('_', ' ')}: ${Array.isArray(value) ? value.join(', ') : value}`)
+                    .join(' · '),
+            };
+        });
         this.subscription = current?.subscription || null;
         this.usage = current?.usage || {};
     }

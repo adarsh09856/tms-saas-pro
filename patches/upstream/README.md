@@ -11,4 +11,4 @@ node scripts/apply-upstream-package-patches.mjs packages patches/upstream
 
 The application is idempotent: it first detects an already-applied patch, applies a patch to its pinned source, and stops if the source does not match either state. A test file absent from an upstream pin is skipped; missing runtime source files remain an error. Docker API and console builds apply the same patches automatically.
 
-The patches cover `core-api`, `ember-core`, `ember-ui`, `fleetops`, and `ledger`. The upstream package `LICENSE.md` files and the Fleetbase open-source notice remain part of the package source and stay accessible in the product.
+The patches cover `core-api`, `ember-core`, `ember-ui`, `fleetops`, `registry-bridge`, `ledger`, and `pallet`. The upstream package `LICENSE.md` files and the Fleetbase open-source notice remain part of the package source and stay accessible in the product.

@@ -1,5 +1,5 @@
 app:
-  name: Kodewaves Transport ERP
+  name: Transport Diary
 
 common:
   new: Neu
@@ -609,7 +609,7 @@ auth:
       divider: 'Oder fortfahren mit'
       continue-with: 'Mit {provider} fortfahren'
       signing-in: 'Sie werden angemeldet...'
-      finish-signup: 'Schließen Sie die Einrichtung Ihres Kodewaves-Kontos ab, um fortzufahren.'
+      finish-signup: 'Schließen Sie die Einrichtung Ihres Transport Diary-Kontos ab, um fortzufahren.'
       connected-accounts: 'Verknüpfte Konten'
       connected-accounts-help: 'Melden Sie sich über einen Anbieter statt mit einem Passwort an. Sie können mehrere verknüpfen.'
       linked-heading: 'Verknüpft'
@@ -637,7 +637,7 @@ auth:
         not-verified: 'Ihr Konto muss verifiziert werden, um fortzufahren.'
         rate-limited: 'Zu viele Versuche. Bitte versuchen Sie es in Kürze erneut.'
         already-linked: 'Dieser Anbieter ist bereits mit Ihrem Konto verknüpft.'
-        identity-already-linked: 'Dieses Konto ist bereits mit einem anderen Kodewaves-Benutzer verknüpft.'
+        identity-already-linked: 'Dieses Konto ist bereits mit einem anderen Transport Diary-Benutzer verknüpft.'
         last-credential: 'Legen Sie zuerst ein Passwort fest oder verknüpfen Sie einen anderen Anbieter, sonst könnten Sie sich nicht mehr anmelden.'
         link-failed: 'Der Anbieter konnte nicht verknüpft werden. Bitte versuchen Sie es erneut.'
     slow-connection-message: Es treten Verbindungsprobleme auf.
@@ -663,7 +663,7 @@ auth:
     success-message: Your email address has been updated.
     invalid-verification-code: This email change link is invalid or expired.
     title: Confirm email change
-    message-text: Confirm this change to update the login email for your Kodewaves account.
+    message-text: Confirm this change to update the login email for your Transport Diary account.
     form:
       code:
         label: Confirmation code
@@ -802,9 +802,9 @@ invite:
 
 oauth:
   authorize:
-    title: "Weiter mit Kodewaves"
+    title: "Weiter mit Transport Diary"
     loading: "Anfrage wird geprüft..."
-    heading: "{app} möchte auf Ihr Kodewaves-Konto zugreifen"
+    heading: "{app} möchte auf Ihr Transport Diary-Konto zugreifen"
     official: "Von Kodewaves"
     signed-in-as: "Angemeldet als {email}"
     not-you: "Nicht Sie?"
@@ -816,20 +816,20 @@ oauth:
     will-be-able-to: "{app} kann dann:"
     allow: "Erlauben"
     cancel: "Abbrechen"
-    footnote: "Sie geben dies an {app} frei, nicht an Kodewaves."
+    footnote: "Sie geben dies an {app} frei, nicht an Transport Diary."
     privacy: "Datenschutz"
     terms: "Bedingungen"
     reauthenticate: "Melden Sie sich erneut an, um fortzufahren..."
     errors:
       generic: "Diese Anfrage konnte nicht abgeschlossen werden."
-      invalid-client: "Diese App ist nicht bei Kodewaves registriert oder wurde deaktiviert."
+      invalid-client: "Diese App ist nicht bei Transport Diary registriert oder wurde deaktiviert."
       invalid-request: "Der Link der App ist ungültig. Kehren Sie zur App zurück und versuchen Sie es erneut."
       invalid-scope: "Die App hat einen Zugriff angefordert, der ihr nicht erlaubt ist."
       no-organization: "Wählen Sie eine Organisation, die Sie verwalten, um sie für diese App freizugeben."
       go-back: "Sie können diese Seite schließen und zur App zurückkehren."
   connected-apps:
     title: "Verbundene Apps"
-    help: "Apps, bei denen Sie sich mit Ihrem Kodewaves-Konto angemeldet haben, und was jede davon kann. Wenn Sie eine App entfernen, werden Sie abgemeldet und ihr Zugriff endet sofort."
+    help: "Apps, bei denen Sie sich mit Ihrem Transport Diary-Konto angemeldet haben, und was jede davon kann. Wenn Sie eine App entfernen, werden Sie abgemeldet und ihr Zugriff endet sofort."
     organization: "Hat Zugriff auf {organization}"
     sign-in-only: "Nur Anmeldung"
     last-used: "zuletzt verwendet {date}"

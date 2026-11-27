@@ -1,5 +1,5 @@
 diff --git a/addon/components/modals/orchestrator-import.js b/addon/components/modals/orchestrator-import.js
-index 1d29569..4f6e478 100644
+index 1d29569d79fcb05f4b4f6f9e8c3bd2337d7354f2..7480aad75c4835868e30882ca684e669490009a9 100644
 --- a/addon/components/modals/orchestrator-import.js
 +++ b/addon/components/modals/orchestrator-import.js
 @@ -82,7 +82,7 @@ const FIELD_SECTIONS = [
@@ -21,7 +21,7 @@ index 1d29569..4f6e478 100644
              { key: 'entity_sale_price', label: 'Entity Sale Price', required: false },
              { key: 'entity_weight', label: 'Entity Weight', required: false },
 diff --git a/addon/components/modals/order-form.hbs b/addon/components/modals/order-form.hbs
-index 1ae8769..ed57aee 100644
+index 1ae876941fc8161efe44473ad4e6527b3cd01824..0599ef8d0ca8f3f591fbae662a192de838bea599 100644
 --- a/addon/components/modals/order-form.hbs
 +++ b/addon/components/modals/order-form.hbs
 @@ -1,7 +1,7 @@
@@ -33,15 +33,8 @@ index 1ae8769..ed57aee 100644
  
              <div class="input-group">
                  <InputLabel @labelText={{t "order.fields.date-scheduled"}} @helpText={{t "order.fields.schedule-help-text"}} />
-@@ -87,4 +87,4 @@
-             </InputGroup>
-         </div>
-     </div>
--</Modal::Default>
-\ No newline at end of file
-+</Modal::Default>
 diff --git a/addon/components/tracking-page.hbs b/addon/components/tracking-page.hbs
-index 588ac45..902d517 100644
+index 588ac45dcf7f466bc179f5f1601291986d27b150..2d4ab4e4e8fdf55fc06d0f72655a92b6ad2b1cd6 100644
 --- a/addon/components/tracking-page.hbs
 +++ b/addon/components/tracking-page.hbs
 @@ -59,17 +59,9 @@
@@ -83,7 +76,7 @@ index 588ac45..902d517 100644
                  @loadProof={{perform this.loadProof}}
              />
 diff --git a/addon/components/tracking-page.js b/addon/components/tracking-page.js
-index 6b8f70d..9c59222 100644
+index 6b8f70d75ac7d58a5644ab830cd7a12c5df56dc5..fa46d725f95f6492cb6865635c013fd687479494 100644
 --- a/addon/components/tracking-page.js
 +++ b/addon/components/tracking-page.js
 @@ -35,7 +35,6 @@ export default class TrackingPageComponent extends Component {
@@ -183,7 +176,7 @@ index 6b8f70d..9c59222 100644
          try {
              yield this.fetch.post(`track/${encodeURIComponent(this.number)}/report${this.queryString()}`, { message }, REQUEST_OPTIONS);
 diff --git a/addon/components/tracking-page/full-view.js b/addon/components/tracking-page/full-view.js
-index 26270c5..6da47c1 100644
+index 26270c5dcca17c8e88a227bfdd8818b4a18af413..b08b29bd25987559e8798a1b02dcab93389d32c9 100644
 --- a/addon/components/tracking-page/full-view.js
 +++ b/addon/components/tracking-page/full-view.js
 @@ -32,8 +32,6 @@ export default class TrackingPageFullViewComponent extends Component {
@@ -232,7 +225,7 @@ index 26270c5..6da47c1 100644
          this.reporting = !this.reporting;
      }
 diff --git a/addon/components/tracking-page/public-view.hbs b/addon/components/tracking-page/public-view.hbs
-index 1c09d0d..9cad941 100644
+index 1c09d0d51c561e89263c89669b29beccfe383ed8..3ff4094ee3f8858f3f7a936efbd4f79c91422150 100644
 --- a/addon/components/tracking-page/public-view.hbs
 +++ b/addon/components/tracking-page/public-view.hbs
 @@ -35,9 +35,6 @@
@@ -246,7 +239,7 @@ index 1c09d0d..9cad941 100644
      </section>
  
 diff --git a/addon/components/widget/fleet-ops-key-metrics.js b/addon/components/widget/fleet-ops-key-metrics.js
-index 1328036..1d0cd94 100644
+index 1328036c289140e5981366a8a37405b616feae88..e9a19577b93a6d41eef75a1df5e50e6832d3c730 100644
 --- a/addon/components/widget/fleet-ops-key-metrics.js
 +++ b/addon/components/widget/fleet-ops-key-metrics.js
 @@ -10,7 +10,7 @@ import formatMeters from '@fleetbase/ember-ui/utils/format-meters';
@@ -259,7 +252,7 @@ index 1328036..1d0cd94 100644
      count: (v) => v ?? 0,
  };
 diff --git a/addon/components/widget/fuel-providers.hbs b/addon/components/widget/fuel-providers.hbs
-index 9c050ac..4a7f5a0 100644
+index 9c050ac1adbbf7d9ca7c5b26f31f3be659009f5c..c40cda0fd45acd4ec173c9bbbf3a01452ca6b065 100644
 --- a/addon/components/widget/fuel-providers.hbs
 +++ b/addon/components/widget/fuel-providers.hbs
 @@ -14,7 +14,11 @@
@@ -276,7 +269,7 @@ index 9c050ac..4a7f5a0 100644
                          <div class="text-sm font-bold text-gray-900 dark:text-gray-100">—</div>
                      {{/each}}
 diff --git a/addon/controllers/settings/tracking-page.js b/addon/controllers/settings/tracking-page.js
-index abe5cc0..b5f0999 100644
+index abe5cc072d34edd7128a5a83694a173aa6d9982d..2888a8cbf6132d1c3abf6edda495318354d8f650 100644
 --- a/addon/controllers/settings/tracking-page.js
 +++ b/addon/controllers/settings/tracking-page.js
 @@ -25,7 +25,7 @@ export const TRACKING_PAGE_LOCALES = [
@@ -305,7 +298,7 @@ index abe5cc0..b5f0999 100644
      }
  
 diff --git a/addon/extension.js b/addon/extension.js
-index 2e899ea..efd2774 100644
+index 2e899eafcddd60fc42bfc338746cded6fc63e812..741637120f2eccbf800c5cfa912338fde4a74970 100644
 --- a/addon/extension.js
 +++ b/addon/extension.js
 @@ -8,7 +8,10 @@ export default {
@@ -321,7 +314,7 @@ index 2e899ea..efd2774 100644
              priority: 0,
              description: 'Dispatch, fleet management, driver tracking, and logistics operations.',
 diff --git a/addon/services/equipment-actions.js b/addon/services/equipment-actions.js
-index 9e08636..82fe361 100644
+index 9e0863684af4990256b99475eb120deb4b898235..a5c2ac7defcb6ab47bbb22298118ba2461e3e5b0 100644
 --- a/addon/services/equipment-actions.js
 +++ b/addon/services/equipment-actions.js
 @@ -5,7 +5,7 @@ export default class EquipmentActionsService extends ResourceActionService {
@@ -334,7 +327,7 @@ index 9e08636..82fe361 100644
  
      constructor() {
 diff --git a/addon/services/maintenance-actions.js b/addon/services/maintenance-actions.js
-index d7eb894..8875c6f 100644
+index d7eb894c25ebc7535b850d92fcf09a72175e049b..d8c3bdb197eacbada64404888a37447c7216bd27 100644
 --- a/addon/services/maintenance-actions.js
 +++ b/addon/services/maintenance-actions.js
 @@ -5,7 +5,7 @@ export default class MaintenanceActionsService extends ResourceActionService {
@@ -347,7 +340,7 @@ index d7eb894..8875c6f 100644
  
      constructor() {
 diff --git a/addon/services/order-actions.js b/addon/services/order-actions.js
-index 32ad736..fed7fbb 100644
+index 32ad7365ba536062dca4e0349de5dcf536d20173..b49db1dc346cbcffea5042d279ff46f73e0b6f1c 100644
 --- a/addon/services/order-actions.js
 +++ b/addon/services/order-actions.js
 @@ -365,7 +365,7 @@ export default class OrderActionsService extends ResourceActionService {
@@ -360,7 +353,7 @@ index 32ad736..fed7fbb 100644
                  } catch (error) {
                      this.notifications.serverError(error);
 diff --git a/addon/services/part-actions.js b/addon/services/part-actions.js
-index d64c12c..739a48e 100644
+index d64c12c082355fe61f2ae5e7e658a48e777d1efe..8c04b00e86560f451bed98ff8ad6eb701b1f58e3 100644
 --- a/addon/services/part-actions.js
 +++ b/addon/services/part-actions.js
 @@ -5,7 +5,7 @@ export default class PartActionsService extends ResourceActionService {
@@ -373,7 +366,7 @@ index d64c12c..739a48e 100644
  
      constructor() {
 diff --git a/addon/services/service-rate-actions.js b/addon/services/service-rate-actions.js
-index 3007221..0d65afe 100644
+index 30072219e2f61f9636365cce8c2bfbc77f2cae71..2b8750964d092979074e1eeb2f6ed5199a77b67e 100644
 --- a/addon/services/service-rate-actions.js
 +++ b/addon/services/service-rate-actions.js
 @@ -7,7 +7,7 @@ export default class ServiceRateActionsService extends ResourceActionService {
@@ -385,8 +378,331 @@ index 3007221..0d65afe 100644
      }
  
      constructor() {
+diff --git a/addon/styles/fleetops-engine.css b/addon/styles/fleetops-engine.css
+index 36b53c4c96dd275df94cd8169cb3256a4360dadc..45f028527217cc5a54b768c29d3795ba3cb16b1f 100644
+--- a/addon/styles/fleetops-engine.css
++++ b/addon/styles/fleetops-engine.css
+@@ -2133,6 +2133,296 @@ body[data-theme='dark'] .next-sidebar-navigator-primary-action.fleet-ops-sidebar
+     }
+ }
+ 
++/* Transport Diary map workspace: white surfaces and blue primary states with enough space for the
++   map and the order list at laptop and phone widths. */
++.next-map-container-topbar.next-topbar-map {
++    min-height: 3.25rem;
++    height: auto;
++    padding-inline: 0.75rem;
++    border-color: #e2e8f0;
++    background: #f8fafc;
++    box-shadow: 0 2px 8px rgb(15 23 42 / 7%);
++}
++
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch {
++    gap: 0.35rem;
++}
++
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button {
++    min-height: 2.35rem;
++    margin: 0;
++    padding-inline: clamp(0.75rem, 1.8vw, 1.4rem);
++    border: 1px solid transparent;
++    border-radius: 0.65rem;
++    background: transparent;
++    color: #475569;
++    font-weight: 600;
++    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
++}
++
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button:hover,
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button:focus-visible {
++    border-color: #bfdbfe;
++    background: #eff6ff;
++    color: #1e40af;
++}
++
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button.active,
++body[data-theme='dark'] .next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button.active {
++    border-color: #2563eb;
++    background: #2563eb;
++    color: #fff;
++    box-shadow: 0 3px 8px rgb(15 23 42 / 16%);
++}
++
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button:focus-visible {
++    outline: 3px solid #2563eb;
++    outline-offset: 2px;
++}
++
++.next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button .info-status-badge > span {
++    min-width: 1.4rem;
++    height: 1.35rem;
++    border-color: #e2e8f0;
++    background: #fff;
++    color: #1e40af;
++    font-variant-numeric: tabular-nums;
++}
++
++body[data-theme='dark'] .next-map-container-topbar.next-topbar-map {
++    border-color: #334155;
++    background: #0f172a;
++}
++
++body[data-theme='dark'] .next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button {
++    color: #e4ebe2;
++}
++
++body[data-theme='dark'] .next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button:hover,
++body[data-theme='dark'] .next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button:focus-visible {
++    border-color: #334155;
++    background: #1e3a5f;
++    color: #f8fafc;
++}
++
++@media (width <= 767px) {
++    .next-map-container-topbar.next-topbar-map {
++        min-height: 3rem;
++        padding-inline: 0.4rem;
++    }
++
++    .next-map-container-topbar.next-topbar-map .next-map-container-view-switch > button {
++        min-height: 2.2rem;
++        padding-inline: 0.65rem;
++        font-size: 0.8rem;
++    }
++
++}
++
++/* Keep the company order overlay readable and task-focused when working from
++   the live map. Its filters, bulk actions, selection, and detail actions remain. */
++.orders-panel .order-list-overlay-panel-header {
++    height: 3.5rem;
++    max-height: 3.5rem;
++    padding-inline: 0.75rem;
++    border-bottom: 1px solid #e2e8f0;
++    background: #fff;
++}
++
++.orders-panel .order-list-overlay-search {
++    min-height: 2.5rem;
++    padding-inline: 0.5rem;
++    border: 0;
++    border-radius: 0.5rem;
++    background: #f8fafc;
++}
++
++.orders-panel .order-list-overlay-search:focus-visible {
++    outline: 2px solid #2563eb;
++    outline-offset: 1px;
++}
++
++.orders-panel .fleetops-order-list-overlay-list .next-content-panel-header {
++    min-height: 2.75rem;
++    padding-inline: 0.75rem;
++    border-bottom-color: #e2e8f0;
++    background: #f8fafc;
++}
++
++.orders-panel .fleetops-order-list-title-text {
++    color: #0f172a;
++    font-size: 0.86rem;
++    font-weight: 700;
++}
++
++.orders-panel .fleetops-order-list-overlay-list .resource-count {
++    border-color: #e2e8f0;
++    background: #fff;
++    color: #475569;
++    box-shadow: none;
++    font-variant-numeric: tabular-nums;
++}
++
++.orders-panel .order-listings-row-container {
++    border-bottom-color: #e2e8f0;
++    background: #fff;
++    transition: background-color 140ms ease, border-color 140ms ease;
++}
++
++.orders-panel .order-listings-row-container:not(.selected):hover {
++    background: #f8fafc;
++    opacity: 1;
++}
++
++.orders-panel .order-listings-row-container.selected,
++body[data-theme='dark'] .orders-panel .order-listings-row-container.selected {
++    border-bottom-color: #2563eb;
++    background: #2563eb;
++    color: #fff;
++}
++
++.orders-panel .order-listings-row-container .order-listing-action-button button,
++.orders-panel .order-listings-row-container .order-listing-action-button .btn {
++    border-color: #2563eb;
++    background: #2563eb;
++    color: #fff;
++}
++
++body[data-theme='dark'] .orders-panel .order-list-overlay-panel-header {
++    border-color: #334155;
++    background: #0f172a;
++}
++
++body[data-theme='dark'] .orders-panel .order-list-overlay-search {
++    background: #1e293b;
++    color: #f8fafc;
++}
++
++body[data-theme='dark'] .orders-panel .fleetops-order-list-overlay-list .next-content-panel-header {
++    border-color: #334155;
++    background: #1e293b;
++}
++
++body[data-theme='dark'] .orders-panel .fleetops-order-list-title-text {
++    color: #f8fafc;
++}
++
++body[data-theme='dark'] .orders-panel .order-listings-row-container {
++    border-bottom-color: #334155;
++    background: #0f172a;
++}
++
++body[data-theme='dark'] .orders-panel .order-listings-row-container:not(.selected):hover {
++    background: #1e293b;
++}
++
++/* Match the dispatch board to the same calm stage hierarchy as the live map. */
++main.console-fleet-ops-operations-orders-index-index .kanban-board {
++    background: #f8fafc;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-columns-container {
++    gap: 1rem;
++    padding: 1rem;
++    scroll-padding-inline: 1rem;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column {
++    border: 1px solid #e2e8f0;
++    border-radius: 0.8rem;
++    background: #eff6ff;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column-header {
++    min-height: 3.25rem;
++    border-color: #e2e8f0;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column-title {
++    color: #0f172a;
++    font-size: 0.88rem;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column-count {
++    border: 1px solid #e2e8f0;
++    background: #fff;
++    color: #475569;
++    font-variant-numeric: tabular-nums;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-card {
++    overflow: hidden;
++    border-color: #e2e8f0;
++    border-radius: 0.7rem;
++    box-shadow: 0 2px 8px rgb(15 23 42 / 5%);
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-card:hover {
++    border-color: #93c5fd;
++    box-shadow: 0 7px 18px rgb(15 23 42 / 10%);
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-card:focus-visible,
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-add-card-button:focus-visible {
++    outline: 3px solid #2563eb;
++    outline-offset: 2px;
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column.drag-over {
++    border: 2px dashed #1d4ed8;
++    background: #dbeafe;
++    box-shadow: 0 0 0 3px rgb(37 99 235 / 12%);
++}
++
++main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-drop-indicator {
++    background: #1d4ed8 !important;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board {
++    background: #0f172a;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column {
++    border-color: #334155;
++    background: #0f172a;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column-header {
++    border-color: #334155;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column-title {
++    color: #f8fafc;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column-count {
++    border-color: #334155;
++    background: #1e293b;
++    color: #bfdbfe;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-card {
++    border-color: #334155;
++    background: #1e293b;
++}
++
++body[data-theme='dark'] main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column.drag-over {
++    border-color: #60a5fa;
++    background: #1e293b;
++}
++
++@media (width <= 767px) {
++    main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-columns-container {
++        gap: 0.75rem;
++        padding: 0.75rem;
++    }
++
++    main.console-fleet-ops-operations-orders-index-index .kanban-board .kanban-column {
++        min-width: min(84vw, 20rem);
++        max-width: min(84vw, 20rem);
++    }
++}
++
+ .fleet-ops-operations-monitor-divider {
+     position: relative;
+     width: auto;
+@@ -4120,15 +4410,15 @@ body[data-theme='dark'] .availability-type-btn.is-unselected {
+ }
+ 
+ .availability-type-btn.is-selected-available {
+-    background-color: #f0fdf4;
+-    border-color: #22c55e;
+-    color: #15803d;
++    background-color: #eff6ff;
++    border-color: #3b82f6;
++    color: #1d4ed8;
+ }
+ 
+ body[data-theme='dark'] .availability-type-btn.is-selected-available {
+-    background-color: #14532d;
+-    border-color: #4ade80;
+-    color: #bbf7d0;
++    background-color: #1e3a5f;
++    border-color: #3b82f6;
++    color: #bfdbfe;
+ }
+ 
+ .availability-type-btn.is-selected-unavailable {
 diff --git a/addon/templates/settings/tracking-page.hbs b/addon/templates/settings/tracking-page.hbs
-index f38e4c0..11e6083 100644
+index f38e4c0b3198a20a0303ceff61eb4f7ef509a8a2..25eca96b877a7877fb4f67a35b722f07abd87c83 100644
 --- a/addon/templates/settings/tracking-page.hbs
 +++ b/addon/templates/settings/tracking-page.hbs
 @@ -251,25 +251,6 @@
@@ -425,7 +741,7 @@ index f38e4c0..11e6083 100644
                                      <div>
                                          <div class="text-sm font-semibold">{{t (concat "tracking-page.settings.visibility-" key)}}</div>
 diff --git a/server/src/Auth/Schemas/FleetOps.php b/server/src/Auth/Schemas/FleetOps.php
-index 247e1da..133b116 100644
+index 247e1da84e2dcfd6e1e3e2d9783d1fa13deb6177..e427a028e9b32c5418f904053a88b87060808a8f 100644
 --- a/server/src/Auth/Schemas/FleetOps.php
 +++ b/server/src/Auth/Schemas/FleetOps.php
 @@ -252,6 +252,9 @@ class FleetOps
@@ -450,7 +766,7 @@ index 247e1da..133b116 100644
                  'list driver',
                  'view driver',
 diff --git a/server/src/Casts/Point.php b/server/src/Casts/Point.php
-index 7415686..d1841ea 100644
+index 74156862d8043d482656f5eb6c74304c1ae52217..7e5ebce132417ebf51142976de6077438fc3a48e 100644
 --- a/server/src/Casts/Point.php
 +++ b/server/src/Casts/Point.php
 @@ -60,6 +60,17 @@ class Point implements CastsAttributes
@@ -472,7 +788,7 @@ index 7415686..d1841ea 100644
              $model->geometries[$key] = $value;
  
 diff --git a/server/src/Exports/VehicleExport.php b/server/src/Exports/VehicleExport.php
-index 002ffcb..52d19ba 100644
+index 002ffcb119dd093388a901f463ff8c44d3507210..915cb6592b72f97f3b0a75bcc0d9889755a4612c 100644
 --- a/server/src/Exports/VehicleExport.php
 +++ b/server/src/Exports/VehicleExport.php
 @@ -31,7 +31,7 @@ class VehicleExport implements FromCollection, WithHeadings, WithMapping, WithCo
@@ -501,7 +817,7 @@ index 002ffcb..52d19ba 100644
  
      protected function assignedOrdersCount(Vehicle $vehicle): int
 diff --git a/server/src/Flow/FlowResource.php b/server/src/Flow/FlowResource.php
-index 6a6f05a..19caea9 100644
+index 6a6f05a96a2cb4dbc9cdf4b09d724ca7b71dd685..7098349106f2c26d674a66778a2fdf47bd1b0f40 100644
 --- a/server/src/Flow/FlowResource.php
 +++ b/server/src/Flow/FlowResource.php
 @@ -44,7 +44,13 @@ class FlowResource implements \JsonSerializable
@@ -520,7 +836,7 @@ index 6a6f05a..19caea9 100644
  
      /**
 diff --git a/server/src/Http/Controllers/Internal/v1/OrderController.php b/server/src/Http/Controllers/Internal/v1/OrderController.php
-index 2bbe642..dfc8e9e 100644
+index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..1776d147292ed08ae9382f6afe769ba2f79a0277 100644
 --- a/server/src/Http/Controllers/Internal/v1/OrderController.php
 +++ b/server/src/Http/Controllers/Internal/v1/OrderController.php
 @@ -48,6 +48,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -637,7 +953,7 @@ index 2bbe642..dfc8e9e 100644
          $createOrderRequest  = CreateOrderRequest::createFrom($request);
          $rules               = $createOrderRequest->rules();
 diff --git a/server/src/Http/Controllers/Internal/v1/SettingController.php b/server/src/Http/Controllers/Internal/v1/SettingController.php
-index 6f06e0e..8206981 100644
+index 6f06e0e83bf116322147f0b4bc3d5eb3d224e128..f99f9a329ae888c6c8ef3b8f31acc7b1c12edb51 100644
 --- a/server/src/Http/Controllers/Internal/v1/SettingController.php
 +++ b/server/src/Http/Controllers/Internal/v1/SettingController.php
 @@ -1399,7 +1399,6 @@ class SettingController extends Controller
@@ -670,7 +986,7 @@ index 6f06e0e..8206981 100644
      {
          Queue::dispatch(new DispatchTelematicsRetentionJobs());
 diff --git a/server/src/Http/Controllers/Public/TrackingController.php b/server/src/Http/Controllers/Public/TrackingController.php
-index 758c343..92736ee 100644
+index 758c3436f34685e7cf48c5b371e4514c7284c39e..47030dee7383eaa793504297fa0b7f72ed8937e6 100644
 --- a/server/src/Http/Controllers/Public/TrackingController.php
 +++ b/server/src/Http/Controllers/Public/TrackingController.php
 @@ -2,10 +2,6 @@
@@ -904,7 +1220,7 @@ index 758c343..92736ee 100644
      {
          // @codeCoverageIgnoreStart
 diff --git a/server/src/Http/Requests/Internal/CreateOrderRequest.php b/server/src/Http/Requests/Internal/CreateOrderRequest.php
-index 7b54668..f3509ef 100644
+index 7b5466857a316df1b6400ad6efe8cff9379b1fd8..f39a6aa1c1be9e48480885be485c66a3278df139 100644
 --- a/server/src/Http/Requests/Internal/CreateOrderRequest.php
 +++ b/server/src/Http/Requests/Internal/CreateOrderRequest.php
 @@ -4,11 +4,25 @@ namespace Fleetbase\FleetOps\Http\Requests\Internal;
@@ -1087,21 +1403,8 @@ index 7b54668..f3509ef 100644
              }
          }
  
-diff --git a/server/src/Http/Requests/UpdateMaintenanceRequest.php b/server/src/Http/Requests/UpdateMaintenanceRequest.php
-new file mode 100644
-index 0000000..5153565
---- /dev/null
-+++ b/server/src/Http/Requests/UpdateMaintenanceRequest.php
-@@ -0,0 +1,7 @@
-+<?php
-+
-+namespace Fleetbase\FleetOps\Http\Requests;
-+
-+class UpdateMaintenanceRequest extends CreateMaintenanceRequest
-+{
-+}
 diff --git a/server/src/Http/Resources/v1/Customer.php b/server/src/Http/Resources/v1/Customer.php
-index a5d20b6..61a6d67 100644
+index a5d20b6ac0d32e9b325c92173830a4bc148672fc..99c849a31c13b23225e7f829cf5349eef803a51e 100644
 --- a/server/src/Http/Resources/v1/Customer.php
 +++ b/server/src/Http/Resources/v1/Customer.php
 @@ -59,7 +59,7 @@ class Customer extends FleetbaseResource
@@ -1114,7 +1417,7 @@ index a5d20b6..61a6d67 100644
      protected function buildCompanyPayload(): ?array
      {
 diff --git a/server/src/Models/Equipment.php b/server/src/Models/Equipment.php
-index ee53004..2d3f965 100644
+index ee53004fdd41f65e8bb1ce2cb3a464c87aa3dcf6..408e994d04e5516aaf6f887d6de2f97023f5d384 100644
 --- a/server/src/Models/Equipment.php
 +++ b/server/src/Models/Equipment.php
 @@ -564,7 +564,7 @@ class Equipment extends Model
@@ -1136,7 +1439,7 @@ index ee53004..2d3f965 100644
          ]);
  
 diff --git a/server/src/Models/Maintenance.php b/server/src/Models/Maintenance.php
-index 10457ef..4501f36 100644
+index 10457ef0f58eada181f5f897ed3ebcae9012a4a7..41c499f0acfcd8838aed7ba680456ebca3fc6826 100644
 --- a/server/src/Models/Maintenance.php
 +++ b/server/src/Models/Maintenance.php
 @@ -580,7 +580,7 @@ class Maintenance extends Model
@@ -1158,7 +1461,7 @@ index 10457ef..4501f36 100644
  
          // Attempt to resolve the maintainable (vehicle or equipment) by identifier
 diff --git a/server/src/Models/Part.php b/server/src/Models/Part.php
-index fcf52d2..e5e8d95 100644
+index fcf52d29e7944db363a661cf21a8d96b6e83c184..392e33776e79e5f772f65c3fc70a5f4b1609f803 100644
 --- a/server/src/Models/Part.php
 +++ b/server/src/Models/Part.php
 @@ -539,7 +539,7 @@ class Part extends Model
@@ -1180,7 +1483,7 @@ index fcf52d2..e5e8d95 100644
  
          // Attempt to resolve vendor by name
 diff --git a/server/src/Models/WorkOrder.php b/server/src/Models/WorkOrder.php
-index f668881..71380ab 100644
+index f6688816aea3d9cf8d3b023fcb3057d435486369..9a19fb87d72fca446b9d7bdb166b0fd72da22965 100644
 --- a/server/src/Models/WorkOrder.php
 +++ b/server/src/Models/WorkOrder.php
 @@ -588,7 +588,7 @@ class WorkOrder extends Model
@@ -1202,7 +1505,7 @@ index f668881..71380ab 100644
              'budget_code'     => $budgetCode,
          ]);
 diff --git a/server/src/Observers/VehicleObserver.php b/server/src/Observers/VehicleObserver.php
-index 1c9f504..7357843 100644
+index 1c9f504e8c96dde456ce00e61a33077b7991e80f..377a0c71bddc0e9c9d75bbe4f0bf783968886648 100644
 --- a/server/src/Observers/VehicleObserver.php
 +++ b/server/src/Observers/VehicleObserver.php
 @@ -19,7 +19,7 @@ class VehicleObserver
@@ -1250,7 +1553,7 @@ index 1c9f504..7357843 100644
              Driver::invalidateApiCacheManually($vehicle->company_uuid);
          }
 diff --git a/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php b/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php
-index 2316581..c7a6e50 100644
+index 2316581133fc088bb7b1885221418d4a42451504..4b1cbb18deb3c5e3d514d6a5d329a9f314dfbad7 100644
 --- a/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php
 +++ b/server/src/Support/Ai/Capabilities/OrderInsightsCapability.php
 @@ -113,7 +113,7 @@ class OrderInsightsCapability extends AbstractFleetOpsAICapability
@@ -1263,7 +1566,7 @@ index 2316581..c7a6e50 100644
  
      protected function dateWindow(string $prompt): ?array
 diff --git a/server/src/Support/Analytics/AbstractAnalytics.php b/server/src/Support/Analytics/AbstractAnalytics.php
-index cb9766b..4ff8b4e 100644
+index cb9766bac9c2b542db3f54935379a4d73a0147c6..e84c2a16f6b2f5f17040ebd76e027c1990b798c1 100644
 --- a/server/src/Support/Analytics/AbstractAnalytics.php
 +++ b/server/src/Support/Analytics/AbstractAnalytics.php
 @@ -72,6 +72,6 @@ abstract class AbstractAnalytics
@@ -1275,7 +1578,7 @@ index cb9766b..4ff8b4e 100644
      }
  }
 diff --git a/server/src/Support/Analytics/FuelProviderSummary.php b/server/src/Support/Analytics/FuelProviderSummary.php
-index b5f7650..b2fdd36 100644
+index b5f7650c3746a438508564b492b23bf6e555db4c..4ea53bf98e718063358fbcf0ecb29e536083a7e8 100644
 --- a/server/src/Support/Analytics/FuelProviderSummary.php
 +++ b/server/src/Support/Analytics/FuelProviderSummary.php
 @@ -23,15 +23,23 @@ class FuelProviderSummary extends AbstractAnalytics
@@ -1305,7 +1608,7 @@ index b5f7650..b2fdd36 100644
              'providers' => $byProvider,
          ];
 diff --git a/server/src/Support/Metrics/MoneyMetric.php b/server/src/Support/Metrics/MoneyMetric.php
-index 8419e41..c60b303 100644
+index 8419e4102ff91122d5fe89381024517181d8e22f..2a05cc9406f1ecdbd2aea6700b30db9dcb6f206d 100644
 --- a/server/src/Support/Metrics/MoneyMetric.php
 +++ b/server/src/Support/Metrics/MoneyMetric.php
 @@ -25,6 +25,6 @@ abstract class MoneyMetric extends AbstractMetric
@@ -1317,7 +1620,7 @@ index 8419e41..c60b303 100644
      }
  }
 diff --git a/server/src/Support/TrackingPage/TrackingPageConfig.php b/server/src/Support/TrackingPage/TrackingPageConfig.php
-index 646c79d..718845b 100644
+index 646c79de1b6f41c9efc3aa2bc845ace36d55d5c5..6ad2cdc8a362660b0601d0a5ac11ce2dd9d5dcab 100644
 --- a/server/src/Support/TrackingPage/TrackingPageConfig.php
 +++ b/server/src/Support/TrackingPage/TrackingPageConfig.php
 @@ -98,8 +98,9 @@ class TrackingPageConfig
@@ -1342,7 +1645,7 @@ index 646c79d..718845b 100644
              ],
          ];
 diff --git a/server/src/Support/TrackingPage/TrackingView.php b/server/src/Support/TrackingPage/TrackingView.php
-index 90ce61c..f58f7ae 100644
+index 90ce61c673c5ba7a8c08c03f3ec7e5bdac88a792..f9ab6e4d02e19f81470fe2f9173b202a643d2f80 100644
 --- a/server/src/Support/TrackingPage/TrackingView.php
 +++ b/server/src/Support/TrackingPage/TrackingView.php
 @@ -19,10 +19,10 @@ use Illuminate\Support\Collection;
@@ -1392,7 +1695,7 @@ index 90ce61c..f58f7ae 100644
              'actions'         => [
                  'report'         => (bool) data_get($config, 'visibility.report_problem', true),
 diff --git a/server/src/Support/Utils.php b/server/src/Support/Utils.php
-index e4747a3..8324589 100644
+index e4747a35378ff8f4de054e102339e1b0b3f365ee..56f167b18b31a542c783758e84b7be26d94536c7 100644
 --- a/server/src/Support/Utils.php
 +++ b/server/src/Support/Utils.php
 @@ -37,7 +37,7 @@ class Utils extends FleetbaseUtils
@@ -1414,7 +1717,7 @@ index e4747a3..8324589 100644
  
      /**
 diff --git a/server/src/routes.php b/server/src/routes.php
-index 3159aef..484277a 100644
+index 3159aef687c4e6cd4a9640af24e63e9852a15507..84d3cbaae30fdaf9caa48374b632bdb5b12865e5 100644
 --- a/server/src/routes.php
 +++ b/server/src/routes.php
 @@ -26,12 +26,10 @@ Route::prefix(config('fleetops.api.routing.prefix'))->namespace('Fleetbase\Fleet
@@ -1490,7 +1793,7 @@ index 3159aef..484277a 100644
                                          $router->post('entity-editing-settings', 'SettingController@saveEntityEditingSettings');
                                          $router->post('driver-onboard-settings', 'SettingController@savedDriverOnboardSettings');
 diff --git a/server/tests/AnalyticsWidgetContractsTest.php b/server/tests/AnalyticsWidgetContractsTest.php
-index 8a8ec96..0875a02 100644
+index 8a8ec966633339f1a3c0bbe1dc571d0d48ee6b97..f6cbd8db32db6ba85b4c6610b6e6a291daeaca0d 100644
 --- a/server/tests/AnalyticsWidgetContractsTest.php
 +++ b/server/tests/AnalyticsWidgetContractsTest.php
 @@ -1,6 +1,7 @@
@@ -1528,32 +1831,8 @@ index 8a8ec96..0875a02 100644
  class FleetOpsOrdersByStatusAnalyticsProbe extends OrdersByStatus
  {
      public array $periods = [];
-diff --git a/server/tests/AuthSchemaContractsTest.php b/server/tests/AuthSchemaContractsTest.php
-new file mode 100644
-index 0000000..4ede77e
---- /dev/null
-+++ b/server/tests/AuthSchemaContractsTest.php
-@@ -0,0 +1,18 @@
-+<?php
-+
-+use Fleetbase\FleetOps\Auth\Schemas\FleetOps;
-+
-+it('lets dispatchers read places and order coordinators add places without granting destructive edits', function () {
-+    $schema   = new FleetOps();
-+    $policies = [];
-+
-+    foreach ($schema->policies as $policy) {
-+        $policies[$policy['name']] = $policy['permissions'];
-+    }
-+
-+    expect($policies['DispatchManager'])->toContain('see place', 'list place', 'view place')
-+        ->not->toContain('create place', 'update place', 'delete place');
-+
-+    expect($policies['OrderCoordinator'])->toContain('see place', 'list place', 'view place', 'create place')
-+        ->not->toContain('update place', 'delete place');
-+});
 diff --git a/server/tests/Feature/Http/Api/OrderControllerCreateTest.php b/server/tests/Feature/Http/Api/OrderControllerCreateTest.php
-index 07f78f0..96dde1a 100644
+index 07f78f0f0eea9cc18931a02e105cb7f0adcadfc4..58aae0cde7a734c0d80d740bddb57a7950fb2c53 100644
 --- a/server/tests/Feature/Http/Api/OrderControllerCreateTest.php
 +++ b/server/tests/Feature/Http/Api/OrderControllerCreateTest.php
 @@ -276,4 +276,24 @@ test('create surfaces customer identity conflicts as api errors', function () {
@@ -1582,7 +1861,7 @@ index 07f78f0..96dde1a 100644
 +        ->and($rollbackConnection->table('orders')->count())->toBe(0);
  });
 diff --git a/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php b/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
-index 855ac2f..b7181a5 100644
+index 855ac2f52ac3d34f6953a260737283fec879628b..8ff8b9e772582da0504dc4c2dffca38cd787727f 100644
 --- a/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
 +++ b/server/tests/Feature/Http/Internal/OrderControllerCreateRecordTest.php
 @@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
@@ -1660,7 +1939,7 @@ index 855ac2f..b7181a5 100644
      $connection = fleetopsInternalOrderCreateBoot();
      $connection->table('places')->insert(['uuid' => '55555555-5555-4555-8555-555555555555', 'company_uuid' => 'company-1', 'name' => 'Depot']);
 diff --git a/server/tests/Feature/Http/Public/TrackingControllerTest.php b/server/tests/Feature/Http/Public/TrackingControllerTest.php
-index 623549f..0c1831b 100644
+index 623549f093413c318c6fed5f27fe4b6d9526782f..d703add8a6154a3ec9a080170f0abf1ddb0a15fb 100644
 --- a/server/tests/Feature/Http/Public/TrackingControllerTest.php
 +++ b/server/tests/Feature/Http/Public/TrackingControllerTest.php
 @@ -2,7 +2,6 @@
@@ -1787,10 +2066,11 @@ index 623549f..0c1831b 100644
      // Proofs
      expect($controller->proof(trackingControllerRequest(), 'NOR1', 'proof_1')->getStatusCode())->toBe(404);
      $controller->fakeView->proof = new Proof();
-@@ -471,25 +442,3 @@ test('delivery instructions, proofs, reports and socket tokens need a verified v
+@@ -470,26 +441,3 @@ test('delivery instructions, proofs, reports and socket tokens need a verified v
+     $controller->sockets = true;
      expect($controller->socketToken(trackingControllerRequest(), 'NOR1')->getData(true))->toBe(['token' => 'jwt', 'expires_in' => 1800, 'expires_at' => '2026-10-08T09:30:00Z']);
  });
- 
+-
 -test('a signed-in customer lists their orders with the number that opens their part', function () {
 -    $controller = trackingController();
 -    $db         = Illuminate\Database\Eloquent\Model::getConnectionResolver()->connection();
@@ -1814,7 +2094,7 @@ index 623549f..0c1831b 100644
 -    ]);
 -});
 diff --git a/server/tests/ObserverContractsTest.php b/server/tests/ObserverContractsTest.php
-index 015a004..7a5c2e6 100644
+index 015a004ac5cff65b6a4c08a6d6f79f498d66c43b..e1dc2a4c9999439f65a99dd2a405235e58a8cb37 100644
 --- a/server/tests/ObserverContractsTest.php
 +++ b/server/tests/ObserverContractsTest.php
 @@ -281,7 +281,7 @@ class FleetOpsVehicleObserverProbe extends VehicleObserver
@@ -1827,7 +2107,7 @@ index 015a004..7a5c2e6 100644
          return $this->driver && $identifier === $this->identifier ? $this->driver : null;
      }
 diff --git a/server/tests/RouteRegistrationExecutionTest.php b/server/tests/RouteRegistrationExecutionTest.php
-index 11b6eda..184ee6b 100644
+index 11b6eda9876a0afb347e95fed61245170a34a624..3ca8e8614369dde39abab59d0a80448b0304550d 100644
 --- a/server/tests/RouteRegistrationExecutionTest.php
 +++ b/server/tests/RouteRegistrationExecutionTest.php
 @@ -235,12 +235,10 @@ test('fleetops route file registers public internal analytics metrics and hub ro
@@ -1844,7 +2124,7 @@ index 11b6eda..184ee6b 100644
          'public/track/{number}/report'           => 'TrackingController@report',
          'public/track/{number}/socket-token'     => 'TrackingController@socketToken',
 diff --git a/server/tests/SupportValueObjectsTest.php b/server/tests/SupportValueObjectsTest.php
-index 32f816d..b4b9d24 100644
+index 32f816d9cfb5cb02cbcb6d4b5054d2f3dbf3533a..8d70e5e0780397f2a1658e5b159ebaf44647a3a0 100644
 --- a/server/tests/SupportValueObjectsTest.php
 +++ b/server/tests/SupportValueObjectsTest.php
 @@ -133,6 +133,14 @@ namespace {
@@ -1863,7 +2143,7 @@ index 32f816d..b4b9d24 100644
          $points  = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]];
          $encoded = Polyline::encode($points);
 diff --git a/server/tests/TrackingPageSettingsTest.php b/server/tests/TrackingPageSettingsTest.php
-index 9a027c7..8fa6270 100644
+index 9a027c73c68e1398ebde16993beb45e035e91335..79e0b86abb3a77d5fcfc1a97399237fed0cc4292 100644
 --- a/server/tests/TrackingPageSettingsTest.php
 +++ b/server/tests/TrackingPageSettingsTest.php
 @@ -11,7 +11,6 @@ class FleetOpsTrackingPageSettingProbe extends SettingController
@@ -1932,7 +2212,7 @@ index 9a027c7..8fa6270 100644
      $probe->smsProviders = ['twilio' => ['available' => true]];
      expect($probe->getTrackingPageSettings()->getData(true)['sms_available'])->toBeFalse();
 diff --git a/server/tests/Unit/Exports/VehicleExportTest.php b/server/tests/Unit/Exports/VehicleExportTest.php
-index c47985d..42cc7a8 100644
+index c47985d33239571a991c0280a1a33e9487555791..bc221520bb69d23a81d50b9bd1742442b24d985f 100644
 --- a/server/tests/Unit/Exports/VehicleExportTest.php
 +++ b/server/tests/Unit/Exports/VehicleExportTest.php
 @@ -278,7 +278,9 @@ test('vehicle export formats columns and helper fallbacks', function () {
@@ -1947,7 +2227,7 @@ index c47985d..42cc7a8 100644
      Carbon::setTestNow();
  });
 diff --git a/server/tests/Unit/Observers/ObserverListenerSeamsTest.php b/server/tests/Unit/Observers/ObserverListenerSeamsTest.php
-index 48e7277..7a0e8cd 100644
+index 48e7277ea97aae65d2fb95a7111951de09387b20..07765bde720c5e84e19f9d2de5197186267dfe89 100644
 --- a/server/tests/Unit/Observers/ObserverListenerSeamsTest.php
 +++ b/server/tests/Unit/Observers/ObserverListenerSeamsTest.php
 @@ -117,10 +117,12 @@ test('vehicle observer seams resolve drivers and release assignments', function
@@ -1986,7 +2266,7 @@ index 48e7277..7a0e8cd 100644
  
  test('fleet observer clears the parent reference from child fleets', function () {
 diff --git a/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php b/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php
-index 4614c85..a352b9c 100644
+index 4614c856d0683cd9d2c318407723c2fa24ed1810..a7eab5c68341e0b37ca98d6a5542b5153d4db36c 100644
 --- a/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php
 +++ b/server/tests/Unit/Support/TrackingPage/TrackingViewTest.php
 @@ -270,7 +270,7 @@ test('a verified customer sees only their own stop on an order with several cust
@@ -2011,7 +2291,7 @@ index 4614c85..a352b9c 100644
          ->and($data['driver'])->toBeNull()
          ->and($data['location'])->toBeNull()
 diff --git a/server/tests/Unit/Support/UtilsAdditionalTest.php b/server/tests/Unit/Support/UtilsAdditionalTest.php
-index f438b87..b179d83 100644
+index f438b8722aad661aa4627526ecb7729394936a33..4f65654881dfb0b66a986b8713156e2fc08d6c75 100644
 --- a/server/tests/Unit/Support/UtilsAdditionalTest.php
 +++ b/server/tests/Unit/Support/UtilsAdditionalTest.php
 @@ -79,7 +79,7 @@ test('stored file url signing passes through values that are not absolute urls',
@@ -2033,7 +2313,7 @@ index f438b87..b179d83 100644
  
  test('mixed point resolver reads location-bearing model instances', function () {
 diff --git a/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php b/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php
-index 999db82..8bcfd38 100644
+index 999db824b8846a544827864a252e86f5def4ae5f..28b4e59286a768d4ac26304410402f6d64e4ad48 100644
 --- a/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php
 +++ b/server/tests/Unit/Support/UtilsGeoMatrixAndVendorTest.php
 @@ -146,7 +146,7 @@ function fleetopsUtilsPointWkb(float $lat, float $lng): string

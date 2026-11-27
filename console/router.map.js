@@ -73,6 +73,8 @@ Router.map(function () {
             this.route('rate-limits');
             this.route('sms-guard');
             this.route('database-backups');
+            this.route('billing-plans');
+            this.route('walkthrough-requests');
             this.route('virtual', { path: '/:slug' });
             this.route('organizations', function () {
                 this.route('index', { path: '/' });

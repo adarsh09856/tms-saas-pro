@@ -1,6 +1,17 @@
-# Fleetbase Scripts
+# Transport Diary Developer Scripts
 
 This directory contains project-level utilities for local development and setup. Run all commands from the repository root unless a command says otherwise.
+
+## `apply-upstream-package-patches.mjs`
+
+This applies the TMS changes to the pinned Fleetbase package submodules without replacing their repositories or package metadata. Initialize submodules first, then run:
+
+```sh
+git submodule update --init --recursive
+node scripts/apply-upstream-package-patches.mjs packages patches/upstream
+```
+
+The script checks any available submodule `HEAD` against the recorded pin, applies only patches that match cleanly, skips patches already applied, and fails on unknown or partially patched source. The Docker API and console builds run the same script automatically.
 
 ## `package-linker.mjs`
 

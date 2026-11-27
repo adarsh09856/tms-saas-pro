@@ -1,3 +1,8 @@
 {
-    "API_HOST": "http://localhost:8000"
+  "API_HOST": "https://tms.touratbhutan.info",
+  "API_NAMESPACE": "int/v1",
+  "SOCKETCLUSTER_HOST": "tms.touratbhutan.info",
+  "SOCKETCLUSTER_PATH": "/socketcluster/",
+  "SOCKETCLUSTER_SECURE": true,
+  "SOCKETCLUSTER_PORT": 443
 }

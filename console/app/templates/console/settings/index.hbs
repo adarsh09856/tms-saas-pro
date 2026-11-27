@@ -11,7 +11,7 @@
                         <PhoneInput @value={{@model.phone}} @onInput={{fn (mut @model.phone)}} class="form-input w-full" />
                     </InputGroup>
                     <InputGroup @name={{t "console.settings.index.organization-currency"}}>
-                        <CurrencySelect @currency={{@model.currency}} @onCurrencyChange={{fn (mut @model.currency)}} @triggerClass="w-full form-select" />
+                        <div class="form-input w-full" aria-label="Currency">INR — Indian Rupee</div>
                     </InputGroup>
                     <InputGroup @name={{t "common.timezone"}} @helpText={{t "console.settings.index.organization-timezone"}}>
                         <div class="fleetbase-model-select fleetbase-power-select ember-model-select">

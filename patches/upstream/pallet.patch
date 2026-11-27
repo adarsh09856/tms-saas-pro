@@ -1,0 +1,216 @@
+diff --git a/addon/components/purchase-order-panel/items.hbs b/addon/components/purchase-order-panel/items.hbs
+index 0c76e03..ab9f7b9 100644
+--- a/addon/components/purchase-order-panel/items.hbs
++++ b/addon/components/purchase-order-panel/items.hbs
+@@ -110,7 +110,7 @@
+ 
+         {{! New item row }}
+         {{#if this.isAddingItem}}
+-            <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-3 bg-green-50 dark:bg-green-900/20">
++            <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-3 bg-blue-50 dark:bg-blue-900/20">
+                 <div class="grid grid-cols-6 gap-2 items-end">
+                     <div>
+                         <label class="block text-xs text-gray-500 mb-1">Product</label>
+diff --git a/addon/components/sales-order-panel/items.hbs b/addon/components/sales-order-panel/items.hbs
+index 1000cfc..35042ae 100644
+--- a/addon/components/sales-order-panel/items.hbs
++++ b/addon/components/sales-order-panel/items.hbs
+@@ -110,7 +110,7 @@
+ 
+         {{! New item row }}
+         {{#if this.isAddingItem}}
+-            <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-3 bg-green-50 dark:bg-green-900/20">
++            <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-3 bg-blue-50 dark:bg-blue-900/20">
+                 <div class="grid grid-cols-6 gap-2 items-end">
+                     <div>
+                         <label class="block text-xs text-gray-500 mb-1">Product</label>
+diff --git a/addon/components/widget/inventory-summary.hbs b/addon/components/widget/inventory-summary.hbs
+index 0737627..a25ce93 100644
+--- a/addon/components/widget/inventory-summary.hbs
++++ b/addon/components/widget/inventory-summary.hbs
+@@ -9,6 +9,16 @@
+ 
+     {{#if this.loadMetrics.isRunning}}
+         <div class="pallet-widget-empty"><Spinner /></div>
++    {{else if this.error}}
++        <div class="pallet-widget-empty">{{this.error}}</div>
++    {{else if (and (eq this.totalSkus 0) (eq this.totalUnits 0) (eq this.warehouseCount 0))}}
++        <div class="pallet-widget-empty">
++            <div>
++                <FaIcon @icon="boxes-stacked" class="mb-2 text-2xl text-blue-500" />
++                <div class="font-semibold text-gray-700 dark:text-gray-200">No inventory data yet</div>
++                <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">Add products or receive stock to see your warehouse summary.</div>
++            </div>
++        </div>
+     {{else}}
+         <div class="pallet-widget-body">
+             <div class="grid h-full min-h-0 grid-cols-2 gap-3 md:grid-cols-5">
+@@ -17,22 +27,22 @@
+                     <span class="text-xl font-bold text-gray-800 dark:text-gray-100">{{this.totalSkus}}</span>
+                     <span class="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">Total SKUs</span>
+                 </div>
+-                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-green-50 p-3 text-center dark:bg-green-900/20">
+-                    <FaIcon @icon="cubes" class="mb-2 text-xl text-green-500" />
++                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-slate-50 p-3 text-center dark:bg-slate-900/40">
++                    <FaIcon @icon="cubes" class="mb-2 text-xl text-blue-500" />
+                     <span class="text-xl font-bold text-gray-800 dark:text-gray-100">{{this.totalUnits}}</span>
+                     <span class="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">Total Units</span>
+                 </div>
+-                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-purple-50 p-3 text-center dark:bg-purple-900/20">
+-                    <FaIcon @icon="dollar-sign" class="mb-2 text-xl text-purple-500" />
++                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-blue-50 p-3 text-center dark:bg-blue-900/20">
++                    <FaIcon @icon="dollar-sign" class="mb-2 text-xl text-blue-500" />
+                     <span class="text-xl font-bold text-gray-800 dark:text-gray-100">{{this.totalValue}}</span>
+                     <span class="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">Stock Value</span>
+                 </div>
+-                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-yellow-50 p-3 text-center dark:bg-yellow-900/20">
+-                    <FaIcon @icon="warehouse" class="mb-2 text-xl text-yellow-500" />
++                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-slate-50 p-3 text-center dark:bg-slate-900/40">
++                    <FaIcon @icon="warehouse" class="mb-2 text-xl text-blue-500" />
+                     <span class="text-xl font-bold text-gray-800 dark:text-gray-100">{{this.warehouseCount}}</span>
+                     <span class="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">Warehouses</span>
+                 </div>
+-                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-red-50 p-3 text-center dark:bg-red-900/20">
++                <div class="flex min-w-0 flex-col items-center justify-center rounded-md bg-slate-50 p-3 text-center dark:bg-slate-900/40">
+                     <FaIcon @icon="triangle-exclamation" class="mb-2 text-xl text-red-500" />
+                     <span class="text-xl font-bold text-gray-800 dark:text-gray-100">{{this.lowStockCount}}</span>
+                     <span class="mt-1 truncate text-xs text-gray-500 dark:text-gray-400">Low Stock</span>
+diff --git a/addon/components/widget/inventory-summary.js b/addon/components/widget/inventory-summary.js
+index d8c8caf..c6172b0 100644
+--- a/addon/components/widget/inventory-summary.js
++++ b/addon/components/widget/inventory-summary.js
+@@ -12,6 +12,7 @@ export default class WidgetInventorySummaryComponent extends Component {
+     @tracked totalValue = 0;
+     @tracked warehouseCount = 0;
+     @tracked lowStockCount = 0;
++    @tracked error = null;
+ 
+     constructor() {
+         super(...arguments);
+@@ -27,7 +28,9 @@ export default class WidgetInventorySummaryComponent extends Component {
+             this.totalValue = data.total_value ?? 0;
+             this.warehouseCount = data.warehouse_count ?? 0;
+             this.lowStockCount = data.low_stock_count ?? 0;
++            this.error = null;
+         } catch (error) {
++            this.error = error?.message ?? 'Unable to load inventory summary';
+             this.notifications.serverError(error);
+         }
+     }
+diff --git a/addon/components/widget/kpi-available-units.hbs b/addon/components/widget/kpi-available-units.hbs
+index 780bc05..a5ac095 100644
+--- a/addon/components/widget/kpi-available-units.hbs
++++ b/addon/components/widget/kpi-available-units.hbs
+@@ -1 +1 @@
+-<Widget::PalletKpiTile @metric="available_units" @title="Available Units" @icon="box-open" @accent="green" ...attributes />
++<Widget::PalletKpiTile @metric="available_units" @title="Available Units" @icon="box-open" @accent="blue" ...attributes />
+diff --git a/addon/components/widget/kpi-stock-value.hbs b/addon/components/widget/kpi-stock-value.hbs
+index 7d9da1a..ab8fa7f 100644
+--- a/addon/components/widget/kpi-stock-value.hbs
++++ b/addon/components/widget/kpi-stock-value.hbs
+@@ -1 +1 @@
+-<Widget::PalletKpiTile @metric="stock_value" @title="Stock Value" @icon="sack-dollar" @accent="emerald" ...attributes />
++<Widget::PalletKpiTile @metric="stock_value" @title="Stock Value" @icon="sack-dollar" @accent="blue" ...attributes />
+diff --git a/addon/styles/pallet-engine.css b/addon/styles/pallet-engine.css
+index df8d3e4..b5a986f 100644
+--- a/addon/styles/pallet-engine.css
++++ b/addon/styles/pallet-engine.css
+@@ -308,25 +308,25 @@ body[data-theme='dark'] .pallet-kpi-footer {
+ }
+ 
+ .pallet-kpi-accent-blue {
+-    border-color: rgb(59 130 246 / 28%);
+-    background-image: linear-gradient(135deg, rgb(59 130 246 / 11%) 0%, rgb(59 130 246 / 0%) 64%);
++    border-color: color-mix(in srgb, var(--kodewaves-primary, #2563eb) 28%, transparent);
++    background-image: linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary, #2563eb) 11%, transparent) 0%, transparent 64%);
+ }
+ 
+ .pallet-kpi-accent-blue .pallet-kpi-icon {
+-    color: #2563eb;
+-    background-color: rgb(37 99 235 / 12%);
++    color: var(--kodewaves-primary, #2563eb);
++    background-color: color-mix(in srgb, var(--kodewaves-primary, #2563eb) 12%, transparent);
+ }
+ 
+ .pallet-kpi-accent-green,
+ .pallet-kpi-accent-emerald {
+-    border-color: rgb(16 185 129 / 28%);
+-    background-image: linear-gradient(135deg, rgb(16 185 129 / 11%) 0%, rgb(16 185 129 / 0%) 64%);
++    border-color: color-mix(in srgb, var(--kodewaves-primary, #2563eb) 28%, transparent);
++    background-image: linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary, #2563eb) 11%, transparent) 0%, transparent 64%);
+ }
+ 
+ .pallet-kpi-accent-green .pallet-kpi-icon,
+ .pallet-kpi-accent-emerald .pallet-kpi-icon {
+-    color: #059669;
+-    background-color: rgb(16 185 129 / 12%);
++    color: var(--kodewaves-primary, #2563eb);
++    background-color: color-mix(in srgb, var(--kodewaves-primary, #2563eb) 12%, transparent);
+ }
+ 
+ .pallet-kpi-accent-amber,
+diff --git a/addon/templates/operations/cycle-counts.hbs b/addon/templates/operations/cycle-counts.hbs
+index e9fcfda..5f959bd 100644
+--- a/addon/templates/operations/cycle-counts.hbs
++++ b/addon/templates/operations/cycle-counts.hbs
+@@ -135,7 +135,7 @@
+                         </tr>
+                     {{/if}}
+                 {{else}}
+-                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No cycle counts yet.</td></tr>
++                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No cycle counts yet. Schedule a count with the form above to begin reconciliation.</td></tr>
+                 {{/each}}
+             </tbody>
+         </table>
+diff --git a/addon/templates/operations/pick-lists.hbs b/addon/templates/operations/pick-lists.hbs
+index d842b59..7645079 100644
+--- a/addon/templates/operations/pick-lists.hbs
++++ b/addon/templates/operations/pick-lists.hbs
+@@ -220,7 +220,7 @@
+                         </tr>
+                     {{/if}}
+                 {{else}}
+-                    <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No pick lists yet.</td></tr>
++                    <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No pick lists yet. Create a pick list with the form above to start outbound work.</td></tr>
+                 {{/each}}
+             </tbody>
+         </table>
+diff --git a/addon/templates/operations/reservations.hbs b/addon/templates/operations/reservations.hbs
+index 6db12df..f941d3b 100644
+--- a/addon/templates/operations/reservations.hbs
++++ b/addon/templates/operations/reservations.hbs
+@@ -138,7 +138,7 @@
+                         </td>
+                     </tr>
+                 {{else}}
+-                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No reservations yet.</td></tr>
++                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No reservations yet. Reserve stock with the form above before fulfillment.</td></tr>
+                 {{/each}}
+             </tbody>
+         </table>
+diff --git a/addon/templates/operations/transfers.hbs b/addon/templates/operations/transfers.hbs
+index 83ac8af..5b111bf 100644
+--- a/addon/templates/operations/transfers.hbs
++++ b/addon/templates/operations/transfers.hbs
+@@ -125,7 +125,7 @@
+                         </td>
+                     </tr>
+                 {{else}}
+-                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No transfers yet.</td></tr>
++                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No transfers yet. Use the form above to move stock between warehouses.</td></tr>
+                 {{/each}}
+             </tbody>
+         </table>
+diff --git a/addon/templates/operations/waves.hbs b/addon/templates/operations/waves.hbs
+index 316c539..2659b4a 100644
+--- a/addon/templates/operations/waves.hbs
++++ b/addon/templates/operations/waves.hbs
+@@ -86,7 +86,7 @@
+                         </td>
+                     </tr>
+                 {{else}}
+-                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No waves yet.</td></tr>
++                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No waves yet. Create a wave with the form above to group outbound work.</td></tr>
+                 {{/each}}
+             </tbody>
+         </table>

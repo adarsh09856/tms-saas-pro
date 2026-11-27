@@ -6,7 +6,7 @@
             <PhoneInput @value={{@options.organization.phone}} @onInput={{fn (mut @options.organization.phone)}} class="form-input w-full" />
         </InputGroup>
         <InputGroup @name="Organization currency">
-            <CurrencySelect @value={{@options.organization.currency}} @onSelect={{fn (mut @options.organization.currency)}} @triggerClass="w-full form-select" />
+            <div class="form-input w-full" aria-label="Currency">INR — Indian Rupee</div>
         </InputGroup>
     </div>
 </Modal::Default>

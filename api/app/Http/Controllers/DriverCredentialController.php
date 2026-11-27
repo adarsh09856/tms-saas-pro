@@ -68,19 +68,23 @@ class DriverCredentialController extends FleetOpsController
             return $error;
         }
 
-        $user->changePassword($password);
         $sentVia = null;
         if ($request->boolean('send_credentials')) {
             try {
                 $sentVia = $this->sendResetCode($driver, $user);
             } catch (Throwable $exception) {
-                Log::warning('Driver setup code delivery failed after an admin password update.', ['driver_uuid' => $driver->uuid, 'exception' => get_class($exception)]);
+                Log::warning('Driver setup code delivery failed during an admin password reset.', ['driver_uuid' => $driver->uuid, 'exception' => get_class($exception)]);
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'The password was changed, but a one-time setup code could not be sent. Check the driver contact details and mail or SMS provider.',
+                    'message' => 'The password was not changed because a one-time setup code could not be sent. Check the driver contact details and mail or SMS provider.',
                 ], 422);
             }
         }
+
+        // Do not change the current password until the requested setup/reset
+        // code has been created and queued successfully; otherwise a provider
+        // failure can leave the driver locked out with no recovery code.
+        $user->changePassword($password);
 
         return response()->json([
             'status' => 'ok',
@@ -93,7 +97,7 @@ class DriverCredentialController extends FleetOpsController
     }
 
     /** @return array{0: Driver|null, 1: User|null, 2: JsonResponse|null} */
-    private function resolveDriverLogin(string $id): array
+    protected function resolveDriverLogin(string $id): array
     {
         $driver = Driver::query()
             ->where('company_uuid', session('company'))
@@ -120,7 +124,7 @@ class DriverCredentialController extends FleetOpsController
         return [$driver, $user, null];
     }
 
-    private function sendResetCode(Driver $driver, User $user): string
+    protected function sendResetCode(Driver $driver, User $user): string
     {
         $identity = $user->email ?: $user->phone;
         if (!$identity) {

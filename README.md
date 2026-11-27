@@ -1,6 +1,6 @@
-# Kodewaves Transport ERP
+# Transport Diary
 
-Kodewaves Transport ERP is a branded, multi-company transport operations platform built from the Fleetbase modular logistics codebase. It brings dispatch, fleet management, driver operations, finance, and optional warehouse workflows into one system.
+Transport Diary is a multi-company transport operations platform built from the Fleetbase modular logistics codebase and maintained by Kodewaves. It brings dispatch, fleet management, driver operations, finance, and optional warehouse workflows into one system.
 
 ## Product surfaces
 
@@ -18,7 +18,7 @@ Fleet-Ops supplies staff-managed transport orders, dispatch, routes, manifests, 
 
 ## SaaS billing and FASTag operations
 
-The platform includes versioned organization plans, Stripe subscription checkout and customer portal flows, signed and idempotent billing webhooks, subscription lifecycle state, configurable grace periods, module/seat/driver/storage/API entitlements, and usage reporting. Billing enforcement defaults to off so existing organizations are not locked out during rollout. Configure Stripe keys and the webhook secret, publish plans with verified recurring Stripe Price IDs, migrate the database, and enable `BILLING_ENFORCEMENT_ENABLED` only after reviewing tenant entitlements.
+The platform includes versioned organization plans, Stripe subscription checkout and Stripe-hosted billing management, signed and idempotent billing webhooks, subscription lifecycle state, configurable grace periods, module/seat/driver/storage/API entitlements, and usage reporting. Billing enforcement defaults to off so existing organizations are not locked out during rollout. Configure Stripe keys and the webhook secret, publish plans with verified recurring Stripe Price IDs, migrate the database, and enable `BILLING_ENFORCEMENT_ENABLED` only after reviewing tenant entitlements.
 
 FASTag supports tenant-scoped vehicle tag history, masked tag references, CSV statement imports, checksum and provider transaction deduplication, unmatched record quarantine and rematching, optional statement-control-total reconciliation, reversal/refund records, audited dispute and resolution records, suggested trip matching, approved double-entry ledger posting, and toll cost reports. CSV headers are `provider_transaction_id,tag_reference,passage_at,amount,currency`; optional columns include `provider_account_id,received_at,status,reversal_of,plaza_name,vehicle_registration`. The first release uses validated provider statement imports. Live issuer synchronization requires an approved provider integration and credentials; no direct FASTag issuer connection is included.
 
@@ -30,7 +30,7 @@ The code changes are prepared for deployment validation, not a verified producti
 2. Configure `APP_URL`, database, mail, storage, maps/routing, and Stripe environment values from `api/.env.example`. Keep `BILLING_ENFORCEMENT_ENABLED=false` during initial setup.
 3. In Stripe, create recurring Prices for paid plans and configure a webhook pointing to `/webhooks/stripe/billing` under the API host (include any configured `API_PREFIX`). Subscribe it to subscription lifecycle and invoice paid/failed events, and copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
 4. As a system administrator, open **Admin → Billing Plans** and publish plans. Prices are entered in major currency units; paid plans require a Stripe Price ID whose amount, currency, and interval match. Configure `seats`, `drivers`, `storage_bytes`, `api_requests`, and `modules` entitlements.
-5. Validate a tenant signup, checkout, webhook updates, portal access, usage reporting, and entitlement limits in staging. Then enable `BILLING_ENFORCEMENT_ENABLED=true` after checking each tenant has a suitable plan.
+5. Validate a tenant signup, checkout, webhook updates, billing management session, usage reporting, and entitlement limits in staging. Then enable `BILLING_ENFORCEMENT_ENABLED=true` after checking each tenant has a suitable plan.
 6. To use FASTag, upload a CSV in **Fleet Ops → FASTag & Tolls**. Enter the provider account ID and optional statement control total, map tags to vehicles with their effective dates, review import exceptions, and allocate or dispute transactions. Verify ledger accounts and currency before posting.
 
 Live FASTag sync, provider balance checks, and issuer-side dispute submission are not implemented without an issuer API agreement and integration. The current tool handles uploaded statements and internal finance review.

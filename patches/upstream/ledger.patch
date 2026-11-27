@@ -1,0 +1,231 @@
+diff --git a/addon/styles/ledger-engine.css b/addon/styles/ledger-engine.css
+index f8cff225cb0dad0dfd316939cfea7ad4e2290972..c625ee8f75f6a33e7a16fdafef937727acda37db 100644
+--- a/addon/styles/ledger-engine.css
++++ b/addon/styles/ledger-engine.css
+@@ -759,3 +759,126 @@ body[data-theme='dark'] .ledger-report-link:hover {
+         width: 100%;
+     }
+ }
++
++/* Transport Diary finance surfaces: clear grouping, readable totals, and compact screens. */
++body[data-theme] .ledger-dashboard-widget,
++body[data-theme] .ledger-kpi-tile,
++body[data-theme] .ledger-report-link {
++    border-color: var(--kodewaves-line, #e2e8f0);
++    border-radius: 0.8rem;
++    box-shadow: 0 4px 16px rgb(15 23 42 / 5%);
++}
++
++body[data-theme] .ledger-dashboard-title h1 {
++    color: var(--kodewaves-ink, #0f172a);
++    font-size: clamp(1.25rem, 2vw, 1.7rem);
++    font-weight: 750;
++    letter-spacing: -0.035em;
++}
++
++body[data-theme] .ledger-dashboard-period-control :is(.fleetbase-date-picker, .form-input, button.btn) {
++    min-height: 2.65rem;
++    border-color: var(--kodewaves-line, #e2e8f0);
++    border-radius: 0.55rem;
++}
++
++body[data-theme] .ledger-report-link:focus-visible,
++body[data-theme] .ledger-balance-row:focus-visible {
++    outline: 3px solid var(--kodewaves-warm, #a97926);
++    outline-offset: 2px;
++}
++
++body[data-theme] .ledger-dashboard-widget .table-wrapper,
++body[data-theme] .ledger-dashboard-widget .table-responsive {
++    max-width: 100%;
++    overflow-x: auto;
++    overscroll-behavior-x: contain;
++    -webkit-overflow-scrolling: touch;
++}
++
++body[data-theme] .ledger-reports-page {
++    display: grid;
++    align-content: start;
++    gap: 1rem;
++    min-width: 0;
++}
++
++body[data-theme] .ledger-report-controls {
++    display: flex;
++    flex-wrap: wrap;
++    align-items: center;
++    gap: 0.45rem;
++    padding: 0 0 0.8rem;
++    border-color: var(--kodewaves-line, #e2e8f0);
++}
++
++body[data-theme] .ledger-report-tab {
++    min-height: 2.55rem;
++    padding: 0.55rem 0.85rem;
++    border: 1px solid transparent;
++    border-radius: 0.55rem;
++    color: var(--kodewaves-muted, #64748b);
++}
++
++body[data-theme] .ledger-report-tab:hover {
++    background: var(--kodewaves-primary-soft, #eff6ff);
++    color: var(--kodewaves-primary-deep, #1e40af);
++}
++
++body[data-theme] .ledger-report-tab[aria-pressed='true'],
++body[data-theme] .ledger-report-tab.is-active,
++body[data-theme] .ledger-report-tab-active {
++    border-color: color-mix(in srgb, var(--kodewaves-primary, #2563eb) 24%, #fff);
++    background: var(--kodewaves-primary-soft, #eff6ff);
++    color: var(--kodewaves-primary-deep, #1e40af);
++}
++
++body[data-theme] .ledger-reports-page :is(table, .table) {
++    font-variant-numeric: tabular-nums;
++}
++
++body[data-theme='dark'] .ledger-report-tab { color: #bfdbfe; }
++body[data-theme='dark'] .ledger-report-tab:hover,
++body[data-theme='dark'] .ledger-report-tab[aria-pressed='true'],
++body[data-theme='dark'] .ledger-report-tab.is-active,
++body[data-theme='dark'] .ledger-report-tab-active {
++    border-color: #526d59;
++    background: #33493a;
++    color: #f8fafc;
++}
++
++body[data-theme] .ledger-reports-page :is(input, select, button) { max-width: 100%; }
++body[data-theme] .ledger-reports-page :is(.report-table, .table-wrapper, .table-responsive) {
++    max-width: 100%;
++    overflow-x: auto;
++    overscroll-behavior-x: contain;
++    -webkit-overflow-scrolling: touch;
++}
++
++body[data-theme='dark'] .ledger-dashboard-widget,
++body[data-theme='dark'] .ledger-kpi-tile,
++body[data-theme='dark'] .ledger-report-link {
++    border-color: #334155;
++    background-color: #0f172a;
++    color: #f8fafc;
++    box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
++}
++
++@media (width <= 767px) {
++    body[data-theme] .ledger-dashboard-page {
++        gap: 0.75rem;
++    }
++
++    body[data-theme] .ledger-report-grid {
++        grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
++        gap: 0.65rem;
++    }
++
++    body[data-theme] .ledger-kpi-tile {
++        min-width: 0;
++    }
++
++    body[data-theme] .ledger-reports-page { padding: 0.75rem; }
++    body[data-theme] .ledger-report-controls > .flex-1 { display: none; }
++    body[data-theme] .ledger-report-controls .btn { min-height: 2.6rem; }
++}
+diff --git a/addon/templates/reports/index.hbs b/addon/templates/reports/index.hbs
+index cada4ab4c6c573ae3ddcfcc8d6979d76b5126525..0da4e392d84d5904a778ce85a2bcc002faf738bd 100644
+--- a/addon/templates/reports/index.hbs
++++ b/addon/templates/reports/index.hbs
+@@ -1,47 +1,47 @@
+-<Layout::Section::Header @title="Reports" @hideActions={{true}} />
+-<Layout::Section::Body>
+-    <div class="p-4 space-y-4">
+-        {{! Report selector tabs }}
+-        <div class="flex items-center space-x-1 border-b border-gray-200 dark:border-gray-700 pb-3">
+-            {{#each this.reportTabs as |tab|}}
+-                <button
+-                    type="button"
+-                    class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+-                        {{if
+-                            (eq this.activeReport tab.id)
+-                            'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+-                            'text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+-                        }}"
+-                    {{on "click" (fn this.selectReport tab.id)}}
+-                >
+-                    {{tab.label}}
+-                </button>
+-            {{/each}}
+-            <div class="flex-1"></div>
+-            <Button @type="primary" @size="sm" {{on "click" this.runReport}}>
+-                <FaIcon @icon="play" class="mr-1" />
+-                Run Report
+-            </Button>
+-        </div>
+-
+-        {{! Report content }}
+-        {{#if this.isLoading}}
+-            <div class="flex items-center justify-center py-20"><Spinner /></div>
+-        {{else if this.reportData}}
+-            {{#if (eq this.activeReport "balance-sheet")}}
+-                <Report::BalanceSheet @data={{this.reportData}} />
+-            {{else if (eq this.activeReport "income-statement")}}
+-                <Report::IncomeStatement @data={{this.reportData}} />
+-            {{else if (eq this.activeReport "cash-flow")}}
+-                <Report::CashFlow @data={{this.reportData}} />
+-            {{else if (eq this.activeReport "ar-aging")}}
+-                <Report::ArAging @data={{this.reportData}} />
+-            {{/if}}
+-        {{else}}
+-            <div class="flex flex-col items-center justify-center py-16 text-gray-400">
+-                <FaIcon @icon="file-contract" class="w-12 h-12 mb-3 opacity-30" />
+-                <p class="text-sm">Select a report and click "Run Report" to generate it.</p>
+-            </div>
+-        {{/if}}
+-    </div>
+-</Layout::Section::Body>
+\ No newline at end of file
++<Layout::Section::Header @title="Reports" @hideActions={{true}} />
++<Layout::Section::Body>
++    <div class="ledger-reports-page p-4 space-y-4">
++        {{! Report selector tabs }}
++        <div class="ledger-report-controls flex items-center space-x-1 border-b border-gray-200 dark:border-gray-700 pb-3">
++            {{#each this.reportTabs as |tab|}}
++                <button
++                    type="button"
++                    class="ledger-report-tab px-3 py-1.5 text-sm font-medium rounded-md transition-colors
++                        {{if
++                            (eq this.activeReport tab.id)
++                            'ledger-report-tab-active bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
++                            'text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
++                        }}"
++                    {{on "click" (fn this.selectReport tab.id)}}
++                >
++                    {{tab.label}}
++                </button>
++            {{/each}}
++            <div class="flex-1"></div>
++            <Button @type="primary" @size="sm" {{on "click" this.runReport}}>
++                <FaIcon @icon="play" class="mr-1" />
++                Run Report
++            </Button>
++        </div>
++
++        {{! Report content }}
++        {{#if this.isLoading}}
++            <div class="flex items-center justify-center py-20"><Spinner /></div>
++        {{else if this.reportData}}
++            {{#if (eq this.activeReport "balance-sheet")}}
++                <Report::BalanceSheet @data={{this.reportData}} />
++            {{else if (eq this.activeReport "income-statement")}}
++                <Report::IncomeStatement @data={{this.reportData}} />
++            {{else if (eq this.activeReport "cash-flow")}}
++                <Report::CashFlow @data={{this.reportData}} />
++            {{else if (eq this.activeReport "ar-aging")}}
++                <Report::ArAging @data={{this.reportData}} />
++            {{/if}}
++        {{else}}
++            <div class="flex flex-col items-center justify-center py-16 text-gray-400">
++                <FaIcon @icon="file-contract" class="w-12 h-12 mb-3 opacity-30" />
++                <p class="text-sm">Select a report and click "Run Report" to generate it.</p>
++            </div>
++        {{/if}}
++    </div>
++</Layout::Section::Body>

@@ -1,16 +1,15 @@
 {{page-title "Activity"}}
 
-<div class="mx-auto flex w-full max-w-7xl flex-col gap-4 p-4 md:p-6">
-    <div class="flex flex-col gap-1">
-        <h2 class="text-base font-bold text-gray-900 dark:text-gray-100">Activity Stream</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-300">Review organization-wide activity captured for this company UUID.</p>
+<div class="tms-company-subpage mx-auto flex w-full max-w-7xl flex-col gap-4 p-4 md:p-6">
+    <div class="tms-company-subpage-heading">
+        <div><p class="tms-workspace-eyebrow">Company history</p><h2>Activity stream</h2><p>Review recorded changes and events for this company workspace.</p></div>
     </div>
 
     <RegistryYield @registry="console:admin:organization:activity" @context={{hash organization=@model}} as |RegistryComponent context|>
         <RegistryComponent @organization={{context.organization}} />
     </RegistryYield>
 
-    <section class="overflow-hidden rounded-md border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <section class="tms-admin-data-panel overflow-hidden rounded-md border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <ActivityLog
             @companyUuid={{@model.uuid}}
             @showBadges={{true}}

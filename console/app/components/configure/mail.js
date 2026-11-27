@@ -18,16 +18,22 @@ export default class ConfigureMailComponent extends Component {
     @tracked smtpEncryption = null;
     @tracked smtpUsername = null;
     @tracked smtpPassword = null;
+    @tracked smtpPasswordConfigured = false;
     @tracked smtpTimeout = null;
     @tracked smtpAuth_mode = null;
     @tracked mailgunDomain = null;
     @tracked mailgunEndpoint = 'api.mailgun.net';
     @tracked mailgunSecret = null;
+    @tracked mailgunSecretConfigured = false;
     @tracked postmarkToken = null;
+    @tracked postmarkTokenConfigured = false;
     @tracked sendgridApi_key = null;
+    @tracked sendgridApi_keyConfigured = false;
     @tracked resendKey = null;
+    @tracked resendKeyConfigured = false;
     @tracked microsoftGraphClient_id = null;
     @tracked microsoftGraphClient_secret = null;
+    @tracked microsoftGraphClient_secretConfigured = false;
     @tracked microsoftGraphTenant_id = null;
     @tracked microsoftGraphSave_to_sent_items = false;
 

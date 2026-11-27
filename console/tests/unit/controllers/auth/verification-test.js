@@ -200,7 +200,7 @@ module('Unit | Controller | auth/verification | resend and verify', function (ho
         assert.deepEqual(this.owner.lookup('service:session').authenticated, ['auth-token']);
         assert.deepEqual(this.transitions, ['console']);
         assert.deepEqual(this.notifications().successes, ['Email successfully verified!']);
-        assert.deepEqual(this.notifications().infos, ['Welcome to Kodewaves Transport ERP']);
+        assert.deepEqual(this.notifications().infos, ['Welcome to Transport Diary']);
     });
 
     test('verifyCode sends the user to login when no token comes back', async function (assert) {

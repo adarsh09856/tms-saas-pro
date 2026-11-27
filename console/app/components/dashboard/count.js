@@ -61,6 +61,7 @@ export default class DashboardCountComponent extends Component {
         // format: 'date' threw "RangeError: Invalid time value" and broke the render.
         switch (format) {
             case 'money':
+                // Transport Diary uses INR for every dashboard amount.
                 value = formatCurrency(value, 'INR');
                 break;
 

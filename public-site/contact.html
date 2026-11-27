@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#294b3a">
+  <meta name="theme-color" content="#1e40af">
   <meta name="description" content="Explore Transport Diary and start setting up a transport company workspace.">
   <title>Explore Transport Diary | Get started</title>
-  <link rel="stylesheet" href="/public-assets/styles.css?v=20261125-publicsite2">
+  <link rel="stylesheet" href="/public-assets/styles.css?v=20261127-nshine-blue2">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="topline"><div class="wrap"><span>Transport work, connected from booking to delivery</span><a href="/services">Explore the platform <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div></div>
   <header class="header">
     <nav class="wrap nav" aria-label="Main navigation">
-      <a class="brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261125-brand4" alt="Transport Diary" width="218" height="47"></a>
+      <a class="brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261127-nshine-blue2" alt="Transport Diary" width="218" height="47"></a>
       <div class="nav-links"><a href="/services">Platform</a><a href="/#workflow">How it works</a><a href="/services#plans">Plans</a><a href="/about">About</a><a href="/contact" aria-current="page">Get started</a></div>
       <div class="nav-actions"><a class="nav-login" href="/auth">Sign in</a><a class="button" href="/onboard">Create workspace</a></div>
     </nav>
@@ -21,14 +21,54 @@
   <main id="main-content">
     <section class="page-hero"><div class="wrap"><h1>Explore Transport Diary with your team in mind.</h1><p>Follow the booking-to-delivery workflow, review the company capabilities, then choose whether to begin workspace setup.</p></div></section>
     <section class="section"><div class="wrap content-grid">
-      <article class="prose"><h2>Request a walkthrough</h2><p>A walkthrough request form or contact destination is not configured on this public site yet. You can explore the workflow and capabilities now, or start company onboarding to begin setting up a workspace.</p><p><a class="button" href="/#workflow">Explore the workflow <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></p><p><a class="text-link" href="/services">Review platform capabilities</a></p></article>
-      <aside class="contact-box"><h3>Choose your next step</h3><p>Start setting up a company workspace, or sign in if your team already has access.</p><p><a class="button" href="/onboard">Start company onboarding</a></p><a class="button outline" href="/auth">Sign in to Transport Diary</a><div class="contact-row"><small>Review workspace setup information</small><a href="/services#plans">Plan your workspace</a></div></aside>
+      <article class="prose"><h2>Request a walkthrough</h2><p>Tell us a little about your transport operation. We’ll review your request and follow up about a guided product walkthrough.</p><p><a class="text-link" href="/services">Review platform capabilities</a></p></article>
+      <aside class="contact-box"><h3>Walkthrough request</h3>
+        <form id="walkthrough-form" class="walkthrough-form" action="/int/v1/public/walkthrough-requests" method="post" novalidate>
+          <label for="walkthrough-name">Your name</label><input id="walkthrough-name" name="name" autocomplete="name" maxlength="160" required>
+          <label for="walkthrough-company">Company</label><input id="walkthrough-company" name="company" autocomplete="organization" maxlength="180" required>
+          <label for="walkthrough-email">Business email</label><input id="walkthrough-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+          <label for="walkthrough-phone">Phone <span>(optional)</span></label><input id="walkthrough-phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
+          <label class="walkthrough-consent"><input name="consent" type="checkbox" value="1" required><span>I agree that Transport Diary may use these details to respond to my walkthrough request.</span></label>
+          <button class="button" type="submit">Request a walkthrough</button>
+          <p id="walkthrough-status" class="walkthrough-status" role="status" aria-live="polite"></p>
+        </form>
+      </aside>
     </div></section>
     <section class="band"><div class="wrap band-inner"><div><h2>Bookings, dispatch and delivery in one connected flow.</h2></div><a class="button" href="/services">Explore Transport Diary</a></div></section>
   </main>
   <footer class="footer"><div class="wrap footer-main">
-    <div><a class="brand footer-brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261125-brand4" alt="Transport Diary" width="186" height="40"></a><p>Transport operations, connected.</p><a class="footer-legal" href="/legal">Open-source notices and licenses</a></div>
+    <div><a class="brand footer-brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261127-nshine-blue2" alt="Transport Diary" width="186" height="40"></a><p>Transport operations, connected.</p></div>
     <div class="footer-links"><div><strong>Platform</strong><a href="/services">Capabilities</a><a href="/services#plans">Plans</a><a href="/onboard">Create workspace</a></div><div><strong>Company</strong><a href="/about">About Transport Diary</a><a href="/contact" aria-current="page">Get started</a><a href="/auth">Workspace sign in</a></div></div>
   </div><div class="wrap footer-bottom"><span>© 2026 Transport Diary</span><span>Transport management for transport teams and companies.</span></div></footer>
+  <script>
+    (() => {
+      const form = document.getElementById('walkthrough-form');
+      const status = document.getElementById('walkthrough-status');
+      const button = form.querySelector('button[type="submit"]');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        button.disabled = true;
+        status.textContent = 'Sending your request…';
+        status.removeAttribute('data-error');
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form)))
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || 'We could not send your request. Please try again.');
+          form.reset();
+          status.textContent = 'Thanks. Your request has been received, and our team will follow up.';
+        } catch (error) {
+          status.textContent = error.message || 'A connection issue stopped your request. Please try again.';
+          status.dataset.error = 'true';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

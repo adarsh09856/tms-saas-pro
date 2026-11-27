@@ -59,6 +59,10 @@ export default class ApplicationRoute extends Route {
      * @memberof ApplicationRoute
      */
     @action error(error) {
+        // A failed child route skips afterModel(), which is where the startup loader is normally
+        // removed. Always clear it before rendering the route error state or installation flow.
+        removeBootLoader();
+
         if (this.installation.handleError(error)) {
             return false;
         }

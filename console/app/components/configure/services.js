@@ -32,7 +32,7 @@ export default class ConfigureServicesComponent extends Component {
     @tracked sms = null;
     @tracked smsSelectedProvider = 'twilio';
     @tracked smsTestPhone = null;
-    @tracked smsTestMessage = 'This is a Kodewaves Transport ERP SMS test.';
+    @tracked smsTestMessage = 'This is a Transport Diary SMS test.';
     @tracked smsTestResponse;
     @tracked customHttpHeadersText = '{}';
     @tracked customHttpQueryParamsText = '{}';

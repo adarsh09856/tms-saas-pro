@@ -141,8 +141,8 @@ services:
       REDIS_URL: tcp://cache
       SESSION_DOMAIN: localhost
       BROADCAST_DRIVER: socketcluster
-      MAIL_FROM_NAME: Kodewaves Transport ERP
-      APP_NAME: Kodewaves Transport ERP
+      MAIL_FROM_NAME: Transport Diary
+      APP_NAME: Transport Diary
       LOG_CHANNEL: daily
       REGISTRY_HOST: https://registry.fleetbase.io
       REGISTRY_PREINSTALLED_EXTENSIONS: "true"

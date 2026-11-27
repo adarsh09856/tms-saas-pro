@@ -46,8 +46,15 @@
     {{/each}}
 </Layout::Section::Header>
 
-<Layout::Section::Body>
-    <Table
+<Layout::Section::Body class="tms-admin-organization-list">
+    <section class="tms-admin-data-panel" aria-label="Transport companies">
+        <div class="tms-admin-data-panel-intro">
+            <div>
+                <h2>Company workspaces</h2>
+                <p>Review tenant status and onboarding, then open a company to manage its access and activity.</p>
+            </div>
+        </div>
+        <Table
         @rows={{@model}}
         @columns={{this.columns}}
         @pagination={{true}}
@@ -74,7 +81,8 @@
             primaryIcon="filter-circle-xmark"
             primaryAction=this.clearFilters
         }}
-    />
+        />
+    </section>
 </Layout::Section::Body>
 
 {{outlet}}

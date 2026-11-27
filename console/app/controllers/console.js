@@ -54,7 +54,7 @@ export default class ConsoleController extends Controller {
      * @void
      */
     @action createOrJoinOrg() {
-        const currency = this.currentUser.company?.currency ?? this.currentUser.currency ?? 'INR';
+        const currency = 'INR';
         const country = this.currentUser.company?.country ?? this.currentUser.country;
         const timezone = this.currentUser.company?.timezone ?? this.currentUser.whois('timezone');
 

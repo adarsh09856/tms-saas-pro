@@ -74,7 +74,7 @@ module('Unit | Controller | oauth/authorize', function (hooks) {
 
         assert.deepEqual(
             controller.scopeLines.map((line) => line.text),
-            ['Sign you in with your Fleetbase account', "See Acme's name, logo, currency and country"]
+            ['Sign you in with your Transport Diary account', "See Acme's name, logo, currency and country"]
         );
         assert.true(controller.canApprove);
 

@@ -31,8 +31,26 @@ class RouteServiceProvider extends ServiceProvider
             function () {
                 $internalPrefix = trim((string) config('fleetbase.api.routing.internal_prefix', 'int'), '/');
 
-                // Ownership-claim APIs only; tenant context remains the existing authenticated
-                // company/session context until a separate hostname-routing integration is reviewed.
+                // Public marketing-site walkthrough requests are isolated from tenant APIs.
+                Route::prefix($internalPrefix . '/v1/public')
+                    ->middleware(['api', 'throttle:5,1'])
+                    ->group(function () {
+                        Route::post('/walkthrough-requests', [\App\Http\Controllers\PublicWalkthroughRequestController::class, 'store']);
+                    });
+
+                Route::prefix($internalPrefix . '/v1/platform/walkthrough-requests')
+                    ->middleware([
+                        'api',
+                        'fleetbase.protected',
+                        \Fleetbase\Http\Middleware\AdminGuard::class,
+                        'throttle:60,1',
+                    ])
+                    ->group(function () {
+                        Route::get('/', [\App\Http\Controllers\PlatformWalkthroughRequestController::class, 'index']);
+                        Route::patch('/{id}/status', [\App\Http\Controllers\PlatformWalkthroughRequestController::class, 'updateStatus'])->whereNumber('id');
+                    });
+
+                // Keep existing domain APIs intact; the Domains UI is deferred.
                 Route::prefix($internalPrefix . '/v1/platform/vendor-domains')
                     ->middleware([
                         'api',

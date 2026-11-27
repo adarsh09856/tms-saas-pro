@@ -40,7 +40,7 @@ module('Integration | Component | onboarding/form', function (hooks) {
     });
 
     test('it renders the brand logo when a brand is supplied', async function (assert) {
-        await render(hbs`<Onboarding::Form @brand={{hash logo_url="/images/kodewaves-logo.svg"}} />`);
+        await render(hbs`<Onboarding::Form @brand={{hash logo_url="/images/transport-diary-logo.svg"}} />`);
 
         assert.dom('img').exists('the brand logo renders');
     });
@@ -217,7 +217,7 @@ module('Integration | Component | onboarding/form | onboard', function (hooks) {
 
         assert.deepEqual(this.owner.lookup('service:session').authenticated, ['auth-token']);
         assert.deepEqual(this.transitions, ['console'], 'the user lands in the console');
-        assert.deepEqual(this.notifications().successes, ['Welcome to Kodewaves Transport ERP!']);
+        assert.deepEqual(this.notifications().successes, ['Welcome to Transport Diary!']);
         assert.deepEqual(this.orchestratorCalls, [], 'the onboarding flow is not advanced');
     });
 

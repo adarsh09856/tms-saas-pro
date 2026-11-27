@@ -16,6 +16,20 @@ class SecureMailSettings
 {
     public const SECRET_SETTING = 'mail.encrypted_secrets';
 
+    /**
+     * Mail transports that write messages to a local sink are useful in tests,
+     * but must not be selectable as the configured delivery transport.
+     *
+     * @var array<int, string>
+     */
+    private const SUPPORTED_MAILERS = [
+        'smtp',
+        'microsoft-graph',
+        'mailgun',
+        'postmark',
+        'sendgrid',
+    ];
+
     /** @var array<string, array{setting:string,field:string,config:string}> */
     public const SECRET_FIELDS = [
         'smtpPassword' => ['setting' => 'mail.mailers.smtp', 'field' => 'password', 'config' => 'mail.mailers.smtp.password'],
@@ -25,6 +39,15 @@ class SecureMailSettings
         'sendgridApi_key' => ['setting' => 'services.sendgrid', 'field' => 'api_key', 'config' => 'services.sendgrid.api_key'],
         'resendKey' => ['setting' => 'services.resend', 'field' => 'key', 'config' => 'services.resend.key'],
     ];
+
+    /** Return only transports with settings and encrypted credential handling in this service. */
+    public function availableMailers(): array
+    {
+        return array_values(array_filter(
+            self::SUPPORTED_MAILERS,
+            static fn (string $mailer): bool => isset(config('mail.mailers', [])[$mailer])
+        ));
+    }
 
     /** Migrate legacy plaintext credentials and make encrypted values available to mail transports. */
     public function hydrate(): void
@@ -64,6 +87,29 @@ class SecureMailSettings
             Setting::configureSystem(self::SECRET_SETTING, $secrets);
         }
 
+        $mailer = Setting::system('mail.mailer');
+        if (is_string($mailer) && in_array($mailer, $this->availableMailers(), true)) {
+            config(['mail.default' => $mailer]);
+        }
+
+        $from = Setting::system('mail.from');
+        if (is_array($from)) {
+            config(['mail.from' => array_merge((array) config('mail.from', []), $from)]);
+        }
+
+        foreach ([
+            'mail.mailers.smtp',
+            'mail.mailers.microsoft-graph',
+            'services.mailgun',
+            'services.postmark',
+            'services.sendgrid',
+        ] as $settingKey) {
+            $stored = Setting::system($settingKey);
+            if (is_array($stored)) {
+                config([$settingKey => array_merge((array) config($settingKey, []), $stored)]);
+            }
+        }
+
         foreach (self::SECRET_FIELDS as $definition) {
             $ciphertext = $secrets[$definition['config']] ?? null;
             if (!is_string($ciphertext) || $ciphertext === '') {
@@ -80,6 +126,7 @@ class SecureMailSettings
                 ]);
             }
         }
+
     }
 
     /**
@@ -132,7 +179,7 @@ class SecureMailSettings
     {
         $result = [
             'mailer' => config('mail.default'),
-            'mailers' => ['smtp'],
+            'mailers' => $this->availableMailers(),
             'fromAddress' => config('mail.from.address'),
             'fromName' => config('mail.from.name'),
         ];

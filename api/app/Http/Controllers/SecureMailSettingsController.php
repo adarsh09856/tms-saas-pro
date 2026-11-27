@@ -8,6 +8,7 @@ use Fleetbase\Http\Requests\AdminRequest;
 use Fleetbase\Mail\TestMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class SecureMailSettingsController extends Controller
@@ -24,7 +25,7 @@ class SecureMailSettingsController extends Controller
     public function update(AdminRequest $request)
     {
         $validated = $request->validate([
-            'mailer' => ['required', 'string', 'in:smtp'],
+            'mailer' => ['required', 'string', Rule::in($this->settings->availableMailers())],
             'from' => ['required', 'array'],
             'from.address' => ['required', 'email', 'max:254'],
             'from.name' => ['required', 'string', 'max:120'],
@@ -49,7 +50,7 @@ class SecureMailSettingsController extends Controller
     public function sendTestEmail(AdminRequest $request)
     {
         $validated = $request->validate([
-            'mailer' => ['required', 'string', 'in:smtp'],
+            'mailer' => ['required', 'string', Rule::in($this->settings->availableMailers())],
             'from' => ['required', 'array'],
             'from.address' => ['required', 'email', 'max:254'],
             'from.name' => ['required', 'string', 'max:120'],

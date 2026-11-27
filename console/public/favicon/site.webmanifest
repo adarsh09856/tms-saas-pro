@@ -1,10 +1,10 @@
 {
     "name": "Transport Diary",
     "short_name": "Transport Diary",
-    "theme_color": "#294b3a",
-    "background_color": "#f6f6ef",
+    "theme_color": "#1e40af",
+    "background_color": "#f8fafc",
     "icons": [
-        { "src": "/images/transport-diary-icon.svg?v=20261125-mark4", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+        { "src": "/images/transport-diary-icon.svg?v=20261127-nshine-blue2", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
     ],
     "display": "standalone"
 }

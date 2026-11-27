@@ -4,6 +4,22 @@
     <RegistryYield @registry="console:home:before-dashboard" as |RegistryComponent|>
         <RegistryComponent @controller={{this}} @position="before-dashboard" />
     </RegistryYield>
+    <section class="tms-workspace-overview" aria-labelledby="vendor-workflow-title">
+        <div class="tms-workspace-heading">
+            <div>
+                <p class="tms-workspace-eyebrow">Transport operations</p>
+                <h1 id="vendor-workflow-title">Operations overview</h1>
+                <p>Move each booking through planning, delivery, and finance in one workspace.</p>
+            </div>
+            <LinkTo @route="console.fleet-ops.operations.orders.index.new" class="tms-workspace-primary"><FaIcon @icon="plus" /> Create booking</LinkTo>
+        </div>
+    </section>
+    <section class="tms-workflow-shortcuts" aria-label="Transport workflow">
+        <LinkTo @route="console.fleet-ops.operations.orders.index" class="tms-workflow-step"><span class="tms-workflow-number">01</span><span><strong>Bookings</strong><small>Record and organize jobs</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+        <LinkTo @route="console.fleet-ops.operations.orchestrator" class="tms-workflow-step"><span class="tms-workflow-number">02</span><span><strong>Dispatch</strong><small>Plan routes and assignments</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+        <LinkTo @route="console.fleet-ops.management.vehicles.index" class="tms-workflow-step"><span class="tms-workflow-number">03</span><span><strong>Fleet</strong><small>Manage available resources</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+        <LinkTo @route="console.ledger.billing.invoices.index" class="tms-workflow-step"><span class="tms-workflow-number">04</span><span><strong>Finance</strong><small>Review invoices and payments</small></span><FaIcon @icon="arrow-right" /></LinkTo>
+    </section>
     <Dashboard
         @slot="console.home"
         @extension="core"
@@ -16,6 +32,5 @@
     <RegistryYield @registry="console:home:after-dashboard" as |RegistryComponent|>
         <RegistryComponent @controller={{this}} @position="after-dashboard" />
     </RegistryYield>
-    <Spacer @height="300px" />
 </Layout::Section::Body>
 <div id="console-home-wormhole" />

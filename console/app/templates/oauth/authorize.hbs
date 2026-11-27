@@ -37,7 +37,7 @@
             <div class="min-w-0 truncate text-gray-700 dark:text-gray-300">
                 {{t "oauth.authorize.signed-in-as" email=this.details.user.email}}
             </div>
-            <button type="button" class="ml-2 shrink-0 text-xs font-medium text-blue-600 hover:underline dark:text-blue-400" {{on "click" this.switchAccount}} data-test-oauth-switch-account>
+            <button type="button" class="ml-2 shrink-0 text-xs font-medium text-blue-700 hover:text-blue-800 hover:underline dark:text-blue-300" {{on "click" this.switchAccount}} data-test-oauth-switch-account>
                 {{t "oauth.authorize.not-you"}}
             </button>
         </div>

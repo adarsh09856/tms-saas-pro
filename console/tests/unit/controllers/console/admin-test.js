@@ -123,6 +123,17 @@ module('Unit | Controller | console/admin', function (hooks) {
         );
     });
 
+    test('it exposes billing plan management as an Admin destination', function (assert) {
+        const controller = this.owner.lookup('controller:console/admin');
+        const billingPlans = navItem(controller, 'Billing Plans');
+
+        assert.ok(billingPlans, 'the billing plans item is present');
+        assert.strictEqual(controller.navigationItems.filter((item) => item.label === 'Billing Plans').length, 1, 'billing plans appears once in Admin navigation');
+        assert.strictEqual(billingPlans.route, 'console.admin.billing-plans');
+        assert.strictEqual(billingPlans.icon, 'money-bill-wave');
+        assert.true(billingPlans.keywords.includes('subscriptions'), 'the item can be found by subscription-related search terms');
+    });
+
     test('it converts loose registry admin menu items into root navigator items', function (assert) {
         const controller = this.owner.lookup('controller:console/admin');
         const registryItem = navItem(controller, 'Registry Config');
@@ -224,7 +235,7 @@ module('Unit | Controller | console/admin', function (hooks) {
         assert.deepEqual(
             authConfig.children.map((item) => item.label),
             ['OAuth Sign-in', 'OAuth Apps', 'Two-Factor Auth'],
-            'sign-in first, then the apps that sign in with Kodewaves, then the second factor'
+            'sign-in first, then the apps that sign in with Transport Diary, then the second factor'
         );
         // Grouping is sidebar-only: 2FA keeps its route, so existing links still work.
         assert.deepEqual(

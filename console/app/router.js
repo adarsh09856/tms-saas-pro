@@ -91,6 +91,8 @@ Router.map(function () {
             this.route('rate-limits');
             this.route('sms-guard');
             this.route('database-backups');
+            this.route('billing-plans');
+            this.route('walkthrough-requests');
             this.route('virtual', { path: '/:slug' });
             this.route('organizations', function () {
                 this.route('index', { path: '/' });
@@ -108,19 +110,14 @@ Router.map(function () {
             });
         });
 
-        this.mount('@fleetbase/ai-engine', {
-            as: 'ai',
-            path: 'ai'
-        });
-
         this.mount('@fleetbase/dev-engine', {
             as: 'developers',
             path: 'developers'
         });
 
-        this.mount('@fleetbase/fleetops-engine', {
-            as: 'fleet-ops',
-            path: 'fleet-ops'
+        this.mount('@fleetbase/ai-engine', {
+            as: 'ai',
+            path: 'ai'
         });
 
         this.mount('@fleetbase/iam-engine', {
@@ -128,9 +125,19 @@ Router.map(function () {
             path: 'iam'
         });
 
+        this.mount('@fleetbase/fleetops-engine', {
+            as: 'fleet-ops',
+            path: 'fleet-ops'
+        });
+
         this.mount('@fleetbase/ledger-engine', {
             as: 'ledger',
             path: 'ledger'
+        });
+
+        this.mount('@fleetbase/pallet-engine', {
+            as: 'pallet',
+            path: 'pallet'
         });
 
         this.mount('@fleetbase/registry-bridge-engine', {

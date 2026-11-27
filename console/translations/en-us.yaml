@@ -1,5 +1,5 @@
 app:
-  name: Kodewaves Transport ERP
+  name: Transport Diary
 
 common:
   search-input: Search
@@ -534,6 +534,10 @@ component:
 
   dashboard:
     select-dashboard: Select Dashboard
+    loading: Loading dashboard…
+    load-error: Saved dashboards could not be loaded. The default dashboard is shown.
+    unavailable: No dashboard is available yet.
+    retry-loading: Retry
     create-new-dashboard: Create new Dashboard
     create-a-new-dashboard: Create a new Dashboard
     confirm-create-dashboard: Create Dashboard!
@@ -631,7 +635,7 @@ auth:
       divider: 'Or continue with'
       continue-with: 'Continue with {provider}'
       signing-in: 'Signing you in...'
-      finish-signup: 'Finish setting up your Kodewaves account to continue.'
+      finish-signup: 'Finish setting up your Transport Diary account to continue.'
       connected-accounts: 'Connected accounts'
       connected-accounts-help: 'Sign in with a provider instead of a password. You can link more than one.'
       linked-heading: 'Linked'
@@ -659,7 +663,7 @@ auth:
         not-verified: 'Your account needs to be verified to proceed.'
         rate-limited: 'Too many attempts. Please try again shortly.'
         already-linked: 'That provider is already linked to your account.'
-        identity-already-linked: 'That account is already linked to another Kodewaves user.'
+        identity-already-linked: 'That account is already linked to another Transport Diary user.'
         last-credential: 'Set a password or link another provider first, or you would not be able to sign in.'
         link-failed: 'We could not link that provider. Please try again.'
     slow-connection-message: Experiencing connectivity issues.
@@ -685,7 +689,7 @@ auth:
     success-message: Your email address has been updated.
     invalid-verification-code: This email change link is invalid or expired.
     title: Confirm email change
-    message-text: Confirm this change to update the login email for your Kodewaves account.
+    message-text: Confirm this change to update the login email for your Transport Diary account.
     form:
       code:
         label: Confirmation code
@@ -869,10 +873,10 @@ invite:
 
 oauth:
   authorize:
-    title: 'Continue with Kodewaves'
+    title: 'Continue with Transport Diary'
     loading: 'Checking the request...'
-    heading: '{app} wants to access your Kodewaves account'
-    official: 'Made by Kodewaves'
+    heading: '{app} wants to access your Transport Diary account'
+    official: 'Official Transport Diary app'
     signed-in-as: 'Signed in as {email}'
     not-you: 'Not you?'
     organization-label: 'Organization to share'
@@ -883,20 +887,20 @@ oauth:
     will-be-able-to: '{app} will be able to:'
     allow: 'Allow'
     cancel: 'Cancel'
-    footnote: 'You are sharing this with {app}, not with Kodewaves.'
+    footnote: 'You are sharing this with {app}, not with Transport Diary.'
     privacy: 'Privacy policy'
     terms: 'Terms'
     reauthenticate: 'Sign in again to continue...'
     errors:
       generic: 'This request could not be completed.'
-      invalid-client: "This app isn't registered with Kodewaves, or it has been turned off."
+      invalid-client: "This app isn't registered with Transport Diary, or it has been turned off."
       invalid-request: "The link from the app isn't valid. Go back to the app and try again."
       invalid-scope: 'The app asked for access it is not allowed to have.'
       no-organization: 'Choose an organization you administer to share with this app.'
       go-back: 'You can close this page and go back to the app.'
   connected-apps:
     title: 'Connected apps'
-    help: 'Apps you signed in to with your Kodewaves account, and what each can do. Removing an app signs you out of it and stops its access straight away.'
+    help: 'Apps you signed in to with your Transport Diary account, and what each can do. Removing an app signs you out of it and stops its access straight away.'
     organization: 'Has access to {organization}'
     sign-in-only: 'Sign-in only'
     last-used: 'last used {date}'
@@ -942,8 +946,8 @@ onboard:
       send-by-sms: Send by SMS
 
 install:
-  not-configured-title: Kodewaves Transport ERP is not installed or configured
-  not-configured-message: Complete setup from the Kodewaves CLI or application container, then reload this page once the database, migrations, and seed data are ready.
+  not-configured-title: Transport Diary is not installed or configured
+  not-configured-message: Complete setup from the Transport Diary CLI or application container, then reload this page once the database, migrations, and seed data are ready.
   refreshing: Installation complete, refreshing...
 
 layout:

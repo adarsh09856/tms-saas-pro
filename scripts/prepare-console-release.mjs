@@ -37,7 +37,7 @@ const newFile = path.resolve(dist, `.${newSrc}`);
 const integrity = ['sha256','sha512'].map(name=>`${name}-${crypto.createHash(name).update(content).digest('base64')}`).join(' ');
 fs.writeFileSync(newFile, content);
 html = html.replace(script[0], `<script src="${newSrc}" integrity="${integrity}"></script>`);
-html = html.replace('initial-scale=1, maximum-scale=1','initial-scale=1').replace('<title>Kodewaves Transport ERP</title>','<title>Transport Diary</title>').replace('<title>Kodewaves TMS</title>','<title>Transport Diary</title>').replace('content="#0b1220"','content="#294b3a"').replace('color="#16b8a6"','color="#426b57"');
+html = html.replace('initial-scale=1, maximum-scale=1','initial-scale=1').replace('<title>Kodewaves Transport ERP</title>','<title>Transport Diary</title>').replace('<title>Kodewaves TMS</title>','<title>Transport Diary</title>').replace('content="#0b1220"','content="#1e40af"').replace('color="#16b8a6"','color="#2563eb"');
 const themeName = `kodewaves-theme-${releaseId}.css`;
 fs.copyFileSync('console/app/styles/kodewaves-theme.css', path.join(dist,themeName));
 html = html.replace(/<link[^>]*id="kodewaves-theme-link"[^>]*>/g,'');
@@ -46,6 +46,31 @@ fs.writeFileSync(indexFile,html);
 const runtimeConfig = { API_HOST:host.origin, API_NAMESPACE:'int/v1', SOCKETCLUSTER_HOST:host.hostname, SOCKETCLUSTER_PATH:'/socketcluster/', SOCKETCLUSTER_SECURE:true, SOCKETCLUSTER_PORT:443 };
 fs.writeFileSync(path.join(dist,'fleetbase.config.json'),JSON.stringify(runtimeConfig,null,2));
 const extensions = JSON.parse(fs.readFileSync(path.join(dist,'extensions.json'),'utf8'));
+const assetManifestPath = path.join(dist, 'asset-manifest.json');
+assert(fs.existsSync(assetManifestPath), 'Console asset-manifest.json is required for release validation');
+const assetManifest = JSON.parse(fs.readFileSync(assetManifestPath, 'utf8'));
+const localAssetPath = (uri) => {
+    const pathname = decodeURIComponent(new URL(uri, host.origin).pathname);
+    const file = path.resolve(dist, `.${pathname}`);
+    assert(file.startsWith(dist + path.sep), `Asset path escapes the release directory: ${uri}`);
+    return file;
+};
+
+for (const extension of extensions) {
+    const bundle = assetManifest.bundles?.[extension.name];
+    assert(bundle, `Asset manifest is missing extension bundle: ${extension.name}`);
+    for (const asset of bundle.assets ?? []) {
+        const file = localAssetPath(asset.uri);
+        assert(fs.existsSync(file) && fs.statSync(file).isFile(), `Missing ${extension.name} ${asset.type} asset: ${asset.uri}`);
+    }
+}
+
+for (const [, uri] of html.matchAll(/(?:src|href)="(\/[^\"]+)"/g)) {
+    if (uri.startsWith('//')) continue;
+    const file = localAssetPath(uri);
+    assert(fs.existsSync(file) && fs.statSync(file).isFile(), `Missing Console entry asset: ${uri}`);
+}
+
 const report = { release:releaseId, preparedAt:new Date().toISOString(), script:newSrc, scriptSha256:crypto.createHash('sha256').update(content).digest('hex'), theme:themeName, extensions };
 fs.writeFileSync(path.join(dist,'release.json'),JSON.stringify(report,null,2));
 console.log(JSON.stringify({release:report.release,script:report.script,theme:report.theme}));

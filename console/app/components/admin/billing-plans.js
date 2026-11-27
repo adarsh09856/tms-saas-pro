@@ -4,9 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 
-const ZERO_DECIMAL_CURRENCIES = new Set(['BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF']);
-const THREE_DECIMAL_CURRENCIES = new Set(['BHD', 'IQD', 'JOD', 'KWD', 'LYD', 'OMR', 'TND']);
-const currencyDivisor = (currency) => 10 ** (ZERO_DECIMAL_CURRENCIES.has(String(currency).toUpperCase()) ? 0 : THREE_DECIMAL_CURRENCIES.has(String(currency).toUpperCase()) ? 3 : 2);
+const CURRENCY_DIVISOR = 100;
 const EMPTY_PLAN = () => ({
     id: null,
     name: '',
@@ -34,27 +32,34 @@ export default class AdminBillingPlansComponent extends Component {
 
     @task *load() {
         const result = yield this.fetch.get('billing/admin/plans');
-        this.plans = (result?.plans || []).map((plan) => ({
-            ...plan,
-            displayAmount: new Intl.NumberFormat('en-IN', { style: 'currency', currency: String(plan.currency || 'INR').toUpperCase() }).format(
-                Number(plan.amount || 0) / currencyDivisor(plan.currency)
-            ),
-            entitlementSummary: Object.entries(plan.entitlements || {})
-                .map(([key, value]) => `${key.replaceAll('_', ' ')}=${Array.isArray(value) ? value.join(',') : value}`)
-                .join(' · '),
-        }));
+        this.plans = (result?.plans || []).map((plan) => {
+            const requiresInrSetup = String(plan.currency || 'INR').toUpperCase() !== 'INR';
+
+            return {
+                ...plan,
+                requiresInrSetup,
+                displayAmount: requiresInrSetup ? null : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(plan.amount || 0) / CURRENCY_DIVISOR),
+                entitlementSummary: Object.entries(plan.entitlements || {})
+                    .map(([key, value]) => `${key.replaceAll('_', ' ')}=${Array.isArray(value) ? value.join(',') : value}`)
+                    .join(' · '),
+            };
+        });
     }
 
     @action edit(plan) {
+        const currency = String(plan.currency || 'INR').toUpperCase();
+        if (currency !== 'INR') {
+            this.notifications.error(`This plan uses ${currency} and is read-only. Create a new INR plan to replace it.`);
+            return;
+        }
+
         this.form = {
             id: plan.uuid,
             name: plan.name || '',
             slug: plan.slug || '',
             description: plan.description || '',
-            amount: (Number(plan.amount || 0) / currencyDivisor(plan.currency)).toFixed(
-                THREE_DECIMAL_CURRENCIES.has(String(plan.currency || '').toUpperCase()) ? 3 : ZERO_DECIMAL_CURRENCIES.has(String(plan.currency || '').toUpperCase()) ? 0 : 2
-            ),
-            currency: String(plan.currency || 'INR').toUpperCase(),
+            amount: (Number(plan.amount || 0) / CURRENCY_DIVISOR).toFixed(2),
+            currency: 'INR',
             interval: plan.interval || 'month',
             trial_days: String(plan.trial_days || 0),
             stripe_price_id: plan.stripe_price_id || '',
@@ -82,8 +87,8 @@ export default class AdminBillingPlansComponent extends Component {
             name: this.form.name,
             slug: this.form.slug,
             description: this.form.description,
-            amount: Math.round(Number(this.form.amount || 0) * currencyDivisor(this.form.currency)),
-            currency: this.form.currency.toLowerCase(),
+            amount: Math.round(Number(this.form.amount || 0) * CURRENCY_DIVISOR),
+            currency: 'INR',
             interval: this.form.interval,
             trial_days: Number(this.form.trial_days || 0),
             stripe_price_id: this.form.stripe_price_id || null,

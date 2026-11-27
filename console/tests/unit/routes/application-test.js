@@ -67,6 +67,7 @@ module('Unit | Route | application', function (hooks) {
 
     test('it handles unconfigured Fleetbase route errors', function (assert) {
         let handledError;
+        addBootLoader();
 
         class InstallationStub extends Service {
             handleError(error) {
@@ -83,9 +84,12 @@ module('Unit | Route | application', function (hooks) {
 
         assert.false(result);
         assert.strictEqual(handledError, error);
+        assert.notOk(document.getElementById('boot-loader'), 'the loader is removed before entering the installation flow');
     });
 
     test('it bubbles route errors that are not configuration errors', function (assert) {
+        addBootLoader();
+
         class InstallationStub extends Service {
             handleError() {
                 return false;
@@ -98,6 +102,7 @@ module('Unit | Route | application', function (hooks) {
         const result = route.error(new Error('server_error'));
 
         assert.true(result);
+        assert.notOk(document.getElementById('boot-loader'), 'the loader cannot cover the bubbled error state');
     });
 
     test('willTransition hands the transition to the application:will-transition hook', function (assert) {

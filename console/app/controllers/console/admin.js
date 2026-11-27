@@ -56,11 +56,25 @@ export default class ConsoleAdminController extends Controller {
                 route: 'console.admin.schedule-monitor',
                 keywords: ['scheduler', 'cron', 'tasks', 'logs'],
             },
+            {
+                label: 'Billing Plans',
+                description: 'Create and publish the plans available to transport-company workspaces.',
+                icon: 'money-bill-wave',
+                route: 'console.admin.billing-plans',
+                keywords: ['billing', 'plans', 'pricing', 'subscriptions', 'entitlements', 'limits'],
+            },
+            {
+                label: 'Walkthrough Requests',
+                description: 'Review product walkthrough requests and follow up with interested transport teams.',
+                icon: 'calendar-check',
+                route: 'console.admin.walkthrough-requests',
+                keywords: ['walkthrough', 'demo', 'leads', 'requests', 'sales'],
+            },
         ];
     }
 
     get registryNavigationItems() {
-        return (this.menuService.adminMenuItems ?? []).map((menuItem) => this.buildRegistryItem(menuItem));
+        return (this.menuService.adminMenuItems ?? []).filter((menuItem) => menuItem.slug !== 'billing-plans').map((menuItem) => this.buildRegistryItem(menuItem));
     }
 
     get registryPanelItems() {
@@ -133,7 +147,7 @@ export default class ConsoleAdminController extends Controller {
     get authConfigNavigationItem() {
         return {
             label: 'Auth Config',
-            description: 'Configure how people sign in: OAuth providers, apps that sign in with Kodewaves, and two-factor authentication.',
+            description: 'Configure how people sign in: OAuth providers, apps that sign in with Transport Diary, and two-factor authentication.',
             icon: 'user-shield',
             keywords: ['auth', 'authentication', 'sign in', 'login', 'security'],
             children: [
@@ -146,10 +160,10 @@ export default class ConsoleAdminController extends Controller {
                 },
                 {
                     label: this.intl.t('console.admin.menu.oauth-apps'),
-                    description: 'Register apps that offer “Continue with Kodewaves”, rotate their secrets and see who authorized them.',
+                    description: 'Register apps that offer “Continue with Transport Diary”, rotate their secrets and see who authorized them.',
                     icon: 'plug',
                     route: 'console.admin.oauth-apps',
-                    keywords: ['oauth', 'openid', 'oidc', 'apps', 'clients', 'continue with kodewaves', 'apphelm', 'consent'],
+                    keywords: ['oauth', 'openid', 'oidc', 'apps', 'clients', 'continue with transport diary', 'apphelm', 'consent'],
                 },
                 {
                     label: this.intl.t('console.admin.menu.2fa-config'),

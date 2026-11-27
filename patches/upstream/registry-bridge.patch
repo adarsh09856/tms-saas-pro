@@ -1,0 +1,13 @@
+diff --git a/addon/components/modals/select-extension-bundle.hbs b/addon/components/modals/select-extension-bundle.hbs
+--- a/addon/components/modals/select-extension-bundle.hbs
++++ b/addon/components/modals/select-extension-bundle.hbs
+@@ -26,7 +26,7 @@
+                                 {{#if (eq this.extension.next_bundle_uuid bundle.id)}}
+                                     <div class="flex flex-row items-center text-xs">
+-                                        <FaIcon @icon="check" class="text-green-500" @size="md" />
+-                                        <span class="ml-2 text-green-400">Selected</span>
++                                        <FaIcon @icon="check" class="text-blue-600" @size="md" />
++                                        <span class="ml-2 text-blue-700">Selected</span>
+                                     </div>
+                                 {{else}}
+                                     <Button @text="Select" @size="xs" @type="primary" @onClick={{fn this.selectBundle bundle}} />

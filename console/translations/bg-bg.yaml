@@ -1,5 +1,5 @@
 app:
-  name: Kodewaves Transport ERP
+  name: Transport Diary
 common:
   new: Нов
   create: Създай
@@ -580,7 +580,7 @@ auth:
       divider: 'Или продължете с'
       continue-with: 'Продължете с {provider}'
       signing-in: 'Влизане...'
-      finish-signup: 'Завършете настройката на профила си във Kodewaves, за да продължите.'
+      finish-signup: 'Завършете настройката на профила си във Transport Diary, за да продължите.'
       connected-accounts: 'Свързани акаунти'
       connected-accounts-help: 'Влизайте чрез доставчик вместо с парола. Можете да свържете повече от един.'
       linked-heading: 'Свързани'
@@ -608,7 +608,7 @@ auth:
         not-verified: 'Профилът ви трябва да бъде потвърден, за да продължите.'
         rate-limited: 'Твърде много опити. Опитайте отново скоро.'
         already-linked: 'Този доставчик вече е свързан с профила ви.'
-        identity-already-linked: 'Този акаунт вече е свързан с друг потребител на Kodewaves.'
+        identity-already-linked: 'Този акаунт вече е свързан с друг потребител на Transport Diary.'
         last-credential: 'Първо задайте парола или свържете друг доставчик, иначе няма да можете да влизате.'
         link-failed: 'Доставчикът не можа да бъде свързан. Опитайте отново.'
     slow-connection-message: Имате проблеми с връзката.
@@ -632,7 +632,7 @@ auth:
     success-message: Your email address has been updated.
     invalid-verification-code: This email change link is invalid or expired.
     title: Confirm email change
-    message-text: Confirm this change to update the login email for your Kodewaves account.
+    message-text: Confirm this change to update the login email for your Transport Diary account.
     form:
       code:
         label: Confirmation code
@@ -765,9 +765,9 @@ invite:
     accept-invitation-text: Приеми поканата
 oauth:
   authorize:
-    title: "Продължи с Kodewaves"
+    title: "Продължи с Transport Diary"
     loading: "Проверяваме заявката..."
-    heading: "{app} иска достъп до вашия акаунт във Kodewaves"
+    heading: "{app} иска достъп до вашия акаунт във Transport Diary"
     official: "Създадено от Kodewaves"
     signed-in-as: "Влезли сте като {email}"
     not-you: "Не сте вие?"
@@ -779,20 +779,20 @@ oauth:
     will-be-able-to: "{app} ще може да:"
     allow: "Разреши"
     cancel: "Отказ"
-    footnote: "Споделяте това с {app}, а не с Kodewaves."
+    footnote: "Споделяте това с {app}, а не с Transport Diary."
     privacy: "Политика за поверителност"
     terms: "Условия"
     reauthenticate: "Влезте отново, за да продължите..."
     errors:
       generic: "Заявката не можа да бъде изпълнена."
-      invalid-client: "Това приложение не е регистрирано във Kodewaves или е изключено."
+      invalid-client: "Това приложение не е регистрирано във Transport Diary или е изключено."
       invalid-request: "Връзката от приложението не е валидна. Върнете се в приложението и опитайте отново."
       invalid-scope: "Приложението поиска достъп, който не му е разрешен."
       no-organization: "Изберете организация, която администрирате, за да я споделите с това приложение."
       go-back: "Можете да затворите страницата и да се върнете в приложението."
   connected-apps:
     title: "Свързани приложения"
-    help: "Приложения, в които сте влезли с акаунта си във Kodewaves, и какво може всяко от тях. Премахването на приложение ви отписва от него и спира достъпа му веднага."
+    help: "Приложения, в които сте влезли с акаунта си във Transport Diary, и какво може всяко от тях. Премахването на приложение ви отписва от него и спира достъпа му веднага."
     organization: "Има достъп до {organization}"
     sign-in-only: "Само вход"
     last-used: "последно използвано {date}"
@@ -840,8 +840,8 @@ onboard:
       resend-email: Изпрати имейл отново
       send-by-sms: Изпрати чрез SMS
 install:
-  not-configured-title: Kodewaves Transport ERP is not installed or configured
-  not-configured-message: Complete setup from the Kodewaves CLI or application container, then reload this page once the database, migrations, and seed data are ready.
+  not-configured-title: Transport Diary is not installed or configured
+  not-configured-message: Complete setup from the Transport Diary CLI or application container, then reload this page once the database, migrations, and seed data are ready.
   running-locally-docs: See running locally docs
   cloud-docs: See cloud deployment docs
   refreshing: Installation complete, refreshing...

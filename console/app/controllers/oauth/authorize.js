@@ -48,7 +48,9 @@ export default class OauthAuthorizeController extends Controller {
 
         return (this.details?.scopes ?? []).map((scope) => ({
             ...scope,
-            text: String(scope.description ?? scope.scope).replace('{organization}', name),
+            text: String(scope.description ?? scope.scope)
+                .replace('{organization}', name)
+                .replace(/\byour Fleetbase account\b/gi, 'your Transport Diary account'),
         }));
     }
 

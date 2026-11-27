@@ -134,6 +134,7 @@ export default class ConsoleAccountOrganizationsController extends Controller {
     }
 
     @action editOrganization(organization) {
+        organization.currency = 'INR';
         this.modalsManager.show('modals/edit-organization', {
             title: 'Edit Organization',
             acceptButtonText: 'Save Changes',
@@ -154,7 +155,7 @@ export default class ConsoleAccountOrganizationsController extends Controller {
     }
 
     @action createOrganization() {
-        const currency = this.currentUser.currency;
+        const currency = 'INR';
         const country = this.currentUser.country;
 
         this.modalsManager.show('modals/edit-organization', {

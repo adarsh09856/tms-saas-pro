@@ -2,7 +2,11 @@
 <Layout::Section::Header @title={{t "console.admin.schedule-monitor.schedule-monitor"}} />
 
 <Layout::Section::Body class="overflow-y-scroll h-full">
-    <div class="next-table-wrapper">
+    <div class="tms-admin-schedule-view">
+        <div class="tms-company-subpage-heading">
+            <div><p class="tms-workspace-eyebrow">Platform operations</p><h2>Scheduled work</h2><p>Review the latest run times and failures for registered background tasks.</p></div>
+        </div>
+        <div class="tms-admin-data-panel next-table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -29,6 +33,7 @@
                 {{/each}}
             </tbody>
         </table>
+        </div>
     </div>
 </Layout::Section::Body>
 {{outlet}}

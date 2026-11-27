@@ -50,6 +50,22 @@ module('Unit | Router', function (hooks) {
         });
     });
 
+    test('the billing plans page is mapped at the Admin URL', function (assert) {
+        // eslint-disable-next-line ember/no-private-routing-service
+        const router = this.owner.lookup('router:main');
+        router.setupRouter();
+        // eslint-disable-next-line ember/no-private-routing-service
+        const recognize = (url) => router._routerMicrolib.recognizer.recognize(url);
+        const match = recognize('/admin/billing-plans');
+
+        assert.true(hasRoute(this.owner, 'console.admin.billing-plans'), 'the route named by Admin navigation exists');
+        assert.strictEqual(match[match.length - 1].handler, 'console.admin.billing-plans', 'the new Admin page URL resolves to its route');
+    });
+
+    test('vendor domain settings are mapped under company settings', function (assert) {
+        assert.true(hasRoute(this.owner, 'console.settings.domains'), 'the vendor settings page is registered');
+    });
+
     test('a public page can carry more of its own path', function (assert) {
         // eslint-disable-next-line ember/no-private-routing-service
         const router = this.owner.lookup('router:main');

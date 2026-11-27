@@ -1,5 +1,5 @@
 x-runtime-environment: &runtime-environment
-  APP_NAME: Kodewaves Transport ERP
+  APP_NAME: Transport Diary
   APP_ENV: production
   APP_KEY: ${APP_KEY:?APP_KEY must be set in deployment .env}
   APP_DEBUG: "false"
@@ -68,7 +68,7 @@ services:
       SOCKETCLUSTER_PORT: "443"
     ports: !override ["127.0.0.1:14200:4200"]
     volumes: !override
-      - ./releases/ui-20261106-theme3/console-stage:/usr/share/nginx/html:ro
+      - ./releases/ui-20261127-nshine-blue2/console-stage:/usr/share/nginx/html:ro
   application:
     image: kodewaves/transport-erp-api:api-scope-candidate-20261107-v3
     build:

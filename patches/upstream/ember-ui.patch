@@ -256,7 +256,7 @@ index 93f3f06..771b8d0 100644
 -        <button type="button" class="fleetbase-attribution-legal-link" {{on "click" this.openLegalNotice}}>
 -            Legal
 -        </button>
-+        <a class="fleetbase-attribution-legal-link" href="/legal">Open-source notices</a>
++        <a class="fleetbase-attribution-legal-link" href="/source-code/tms-source.tar.gz">Source code</a>
      </div>
  {{/unless}}
 diff --git a/addon/components/fleetbase-attribution.js b/addon/components/fleetbase-attribution.js
@@ -955,14 +955,14 @@ index 9fb2bd8..13c0319 100644
      setupRenderingTest(hooks);
  
 -    test('it renders the product brand and a legal button', async function (assert) {
-+    test('it renders the product brand and a link to open-source notices', async function (assert) {
++    test('it renders the product brand and a link to corresponding source code', async function (assert) {
          await render(hbs`<FleetbaseAttribution />`);
  
          assert.dom(NOTICE).exists();
          assert.dom('.fleetbase-attribution-link').hasText('Kodewaves');
 -        assert.dom('.fleetbase-attribution-legal-link').hasText('Legal');
-+        assert.dom('.fleetbase-attribution-legal-link').hasText('Open-source notices');
-+        assert.dom('.fleetbase-attribution-legal-link').hasAttribute('href', '/legal');
++        assert.dom('.fleetbase-attribution-legal-link').hasText('Source code');
++        assert.dom('.fleetbase-attribution-legal-link').hasAttribute('href', '/source-code/tms-source.tar.gz');
      });
  
      test('it is styled standalone unless a placement is given', async function (assert) {
@@ -971,7 +971,7 @@ index 9fb2bd8..13c0319 100644
      });
  
 -    test('the legal button opens the legal-notice modal', async function (assert) {
-+    test('the legal control links to the dedicated notices page', async function (assert) {
++    test('the legal control links to the corresponding source archive', async function (assert) {
          await render(hbs`<FleetbaseAttribution />`);
 -        await click('.fleetbase-attribution-legal-link');
 -
@@ -982,7 +982,7 @@ index 9fb2bd8..13c0319 100644
 -        assert.strictEqual(modal.options.title, 'Open-source Legal Notices');
 -        assert.strictEqual(modal.options.acceptButtonText, 'Done');
 -        assert.true(modal.options.hideDeclineButton, 'there is nothing to decline');
-+        assert.dom('.fleetbase-attribution-legal-link').hasAttribute('href', '/legal');
++        assert.dom('.fleetbase-attribution-legal-link').hasAttribute('href', '/source-code/tms-source.tar.gz');
      });
  });
 diff --git a/tests/integration/components/layout/header-test.js b/tests/integration/components/layout/header-test.js

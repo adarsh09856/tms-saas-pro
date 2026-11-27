@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#294b3a">
+  <meta name="theme-color" content="#1e40af">
   <meta name="description" content="Transport Diary helps transport companies manage bookings, dispatch, drivers, fleet, proof of delivery and finance in one workspace.">
   <title>Transport Diary | From booking to delivery</title>
-  <link rel="stylesheet" href="/public-assets/styles.css?v=20261126-ux2">
+  <link rel="stylesheet" href="/public-assets/styles.css?v=20261127-nshine-blue2">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -20,7 +20,7 @@
   </div>
   <header class="header">
     <nav class="wrap nav" aria-label="Main navigation">
-      <a class="brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261125-brand4" alt="Transport Diary" width="218" height="47"></a>
+      <a class="brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261127-nshine-blue2" alt="Transport Diary" width="218" height="47"></a>
       <div class="nav-links">
         <a href="/services">Platform</a>
         <a href="/#workflow">How it works</a>
@@ -52,7 +52,7 @@
         <div class="hero-art" role="img" aria-label="Illustrative Transport Diary operations workspace showing booking, dispatch and delivery stages">
           <div class="dashboard-frame">
             <div class="dash-top">
-              <div class="dash-brand"><img src="/public-assets/images/transport-diary-icon.svg?v=20261125-brand4" alt="" width="26" height="26"><span>Operations overview</span></div>
+              <div class="dash-brand"><img src="/public-assets/images/transport-diary-icon.svg?v=20261127-nshine-blue2" alt="" width="26" height="26"><span>Operations overview</span></div>
               <span class="dash-period">Illustrative workspace</span>
             </div>
             <div class="dash-greeting"><div><strong>Today's transport work</strong></div><span class="dash-avatar">TD</span></div>
@@ -100,6 +100,37 @@
         </ol>
       </div>
     </section>
+    <section class="section capability-section" id="capabilities" aria-labelledby="capabilities-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="capabilities-title">One platform for your transport business.</h2>
+          <p>Bookings, fleet work and finance stay connected to the same day-to-day operation.</p>
+        </div>
+        <div class="capability-grid">
+          <article class="capability-group">
+            <div class="capability-group-meta"><span>FINANCE</span><span>Billing and visibility</span></div>
+            <h3>Transport accounting and billing</h3>
+            <p>Carry completed transport work into invoices, receipts, reconciliation and business reports.</p>
+            <div class="capability-tags" aria-label="Finance capabilities"><span>Invoices</span><span>Receipts</span><span>Reconciliation</span><span>Reports</span></div>
+            <a href="/services#finance">Explore finance <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+          </article>
+          <article class="capability-group">
+            <div class="capability-group-meta"><span>OPERATIONS</span><span>Fleet readiness</span></div>
+            <h3>Fleet and vehicle management</h3>
+            <p>Coordinate drivers, vehicles, fuel records, inspections and maintenance follow-up in one workspace.</p>
+            <div class="capability-tags" aria-label="Fleet capabilities"><span>Vehicles</span><span>Drivers</span><span>Maintenance</span><span>Fuel records</span></div>
+            <a href="/services#fleet">Explore fleet operations <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+          </article>
+          <article class="capability-group">
+            <div class="capability-group-meta"><span>LOGISTICS</span><span>Booking to delivery</span></div>
+            <h3>Transport and trip management</h3>
+            <p>Record a booking, plan the route, assign resources, follow delivery progress and review proof of delivery.</p>
+            <div class="capability-tags" aria-label="Transport capabilities"><span>Bookings</span><span>Dispatch</span><span>Delivery proof</span><span>Job history</span></div>
+            <a href="/services#bookings">Explore transport workflows <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+          </article>
+        </div>
+      </div>
+    </section>
     <section class="section roles" id="teams">
       <div class="wrap">
         <div class="section-head"><h2>Useful to the people moving the work.</h2><p>Each role sees the decisions and follow-up it needs for the transport day.</p></div>
@@ -115,6 +146,38 @@
         <div><h2>More of the operation, in one view.</h2><p>Use the areas your transport company needs, with each workflow connected to its day-to-day records.</p></div>
         <div class="module-list" aria-label="Transport Diary capabilities">
           <span class="module">Company workspace and team setup</span><span class="module">Bookings and dispatch</span><span class="module">Fleet and maintenance</span><span class="module">Driver mobile app</span><span class="module">Finance and reporting</span><span class="module">Warehouse and stock</span>
+        </div>
+      </div>
+    </section>
+    <section class="section workbench-section" id="workspace-preview" aria-labelledby="workbench-title">
+      <div class="wrap">
+        <div class="section-head"><h2 id="workbench-title">See how one job moves through the workspace.</h2><p>Each team works from the same transport record. This preview shows the handoffs and information available at each stage.</p></div>
+        <div class="workbench-preview">
+          <div class="workbench-tabs" role="tablist" aria-label="Transport job stages">
+            <button type="button" role="tab" id="stage-booking" aria-controls="panel-booking" aria-selected="true" tabindex="0">Booking</button>
+            <button type="button" role="tab" id="stage-dispatch" aria-controls="panel-dispatch" aria-selected="false" tabindex="-1">Dispatch</button>
+            <button type="button" role="tab" id="stage-delivery" aria-controls="panel-delivery" aria-selected="false" tabindex="-1">Delivery</button>
+            <button type="button" role="tab" id="stage-finance" aria-controls="panel-finance" aria-selected="false" tabindex="-1">Finance</button>
+          </div>
+          <div class="workbench-screen">
+            <div class="workbench-screen-bar"><span><span class="workbench-mark" aria-hidden="true">TD</span> Transport job</span><span class="workbench-sample">Illustrative workflow</span></div>
+            <div class="workbench-panel" role="tabpanel" id="panel-booking" aria-labelledby="stage-booking" tabindex="0">
+              <div><span class="workbench-label">Booking</span><h3>Capture the work before assigning it.</h3><p>Keep the customer, shipment, pickup, delivery, service and agreed charges together for the operations team.</p></div>
+              <div class="workbench-record"><div><span>Customer and shipment</span><strong>One job record</strong></div><div><span>Pickup → delivery</span><strong>Stops in order</strong></div><div><span>Service and charges</span><strong>Ready for review</strong></div></div>
+            </div>
+            <div class="workbench-panel" role="tabpanel" id="panel-dispatch" aria-labelledby="stage-dispatch" tabindex="0" hidden>
+              <div><span class="workbench-label">Dispatch</span><h3>Turn a booking into a workable trip.</h3><p>Plan the route, check availability, and assign the driver and vehicle while keeping the booking details in view.</p></div>
+              <div class="workbench-record"><div><span>Route plan</span><strong>Stops and timing</strong></div><div><span>Driver</span><strong>Assignment reviewed</strong></div><div><span>Vehicle</span><strong>Availability checked</strong></div></div>
+            </div>
+            <div class="workbench-panel" role="tabpanel" id="panel-delivery" aria-labelledby="stage-delivery" tabindex="0" hidden>
+              <div><span class="workbench-label">Delivery</span><h3>Follow progress and resolve exceptions.</h3><p>Operations can review status updates, delivery outcome and proof on the same job before closeout.</p></div>
+              <div class="workbench-record"><div><span>Job progress</span><strong>Updates in sequence</strong></div><div><span>Delivery outcome</span><strong>Staff review</strong></div><div><span>Proof of delivery</span><strong>Attached to the job</strong></div></div>
+            </div>
+            <div class="workbench-panel" role="tabpanel" id="panel-finance" aria-labelledby="stage-finance" tabindex="0" hidden>
+              <div><span class="workbench-label">Finance</span><h3>Carry completed work into billing.</h3><p>Use the delivery record to review agreed charges, prepare invoices, record receipts and follow balances in INR.</p></div>
+              <div class="workbench-record"><div><span>Agreed charges</span><strong>From the job</strong></div><div><span>Invoice</span><strong>Ready for finance</strong></div><div><span>Payment follow-up</span><strong>INR balances</strong></div></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -150,7 +213,7 @@
   </main>
   <footer class="footer">
     <div class="wrap footer-main">
-      <div><a class="brand footer-brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261125-brand4" alt="Transport Diary" width="186" height="40"></a><p>Transport operations, connected.</p><a class="footer-legal" href="/legal">Open-source notices and licenses</a></div>
+      <div><a class="brand footer-brand" href="/" aria-label="Transport Diary home"><img src="/public-assets/images/transport-diary-logo.svg?v=20261127-nshine-blue2" alt="Transport Diary" width="186" height="40"></a><p>Transport operations, connected.</p></div>
       <div class="footer-links">
         <div><strong>Platform</strong><a href="/services">Capabilities</a><a href="/services#plans">Plans</a><a href="/onboard">Create workspace</a></div>
         <div><strong>Company</strong><a href="/about">About Transport Diary</a><a href="/contact">Get started</a><a href="/auth">Workspace sign in</a></div>
@@ -158,5 +221,28 @@
     </div>
     <div class="wrap footer-bottom"><span>© 2026 Transport Diary</span><span>Transport management for transport teams and companies.</span></div>
   </footer>
+  <script>
+    (() => {
+      const tabs = [...document.querySelectorAll('.workbench-tabs [role="tab"]')];
+      const activate = (tab, focus = false) => {
+        for (const item of tabs) {
+          const selected = item === tab;
+          item.setAttribute('aria-selected', String(selected));
+          item.tabIndex = selected ? 0 : -1;
+          document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
+        }
+        if (focus) tab.focus();
+      };
+      for (const [index, tab] of tabs.entries()) {
+        tab.addEventListener('click', () => activate(tab));
+        tab.addEventListener('keydown', (event) => {
+          const offset = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+          if (!offset) return;
+          event.preventDefault();
+          activate(tabs[(index + offset + tabs.length) % tabs.length], true);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

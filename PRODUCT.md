@@ -8,14 +8,14 @@ web
 
 ## Users
 
-- The Kodewaves Platform Admin manages transport-company tenants, staff access, plans, entitlements, domains, integrations, and platform operations.
+- The Transport Diary Platform Admin manages transport-company tenants, staff access, plans, entitlements, domains, integrations, and platform operations.
 - Transport-company owners and staff manage their company contacts, bookings, dispatch, drivers, vehicles, delivery progress, finance, and enabled warehouse operations.
 - Drivers receive assigned work and report activity and delivery outcomes from supported driver tools.
 - Customers are company-scoped contacts. Company staff create and manage bookings for them; customers do not sign into a portal.
 
 ## Product Purpose
 
-Kodewaves TMS gives the platform owner central control of a multi-tenant transport management service while each transport company operates inside its own workspace. It connects booking, dispatch, delivery, fleet, driver, finance, and optional warehouse work.
+Transport Diary gives the platform owner central control of a multi-tenant transport management service while each transport company operates inside its own workspace. It connects booking, dispatch, delivery, fleet, driver, finance, and optional warehouse work.
 
 ## Positioning
 
@@ -39,9 +39,9 @@ Company staff create orders and coordinate their lifecycle through dispatch, dri
 
 ## Brand Commitments
 
-- Product name: Kodewaves TMS.
+- Product name: Transport Diary.
+- Kodewaves remains the software author and copyright attribution where applicable; preserve all third-party copyright, open-source license, and source-access notices.
 - The visual system should be distinctive to transport operations and should not duplicate another Kodewaves product one-to-one.
-- Transport Diary is a separate brand-name and logo exploration request, not the name of this TMS.
 - Preserve accurate product language and the required open-source notices and corresponding-source access.
 
 ## Evidence on Hand
