@@ -76,7 +76,7 @@ export default class ConsoleAdminBrandingController extends Controller {
      */
     @action unsetIcon() {
         this.unset(['icon_uuid', 'icon_url']);
-        this.model.set('icon_url', '/images/transport-diary-icon.svg?v=20261127-nshine-blue2');
+        this.model.set('icon_url', '/images/transport-diary-icon.svg?v=20261127-diary');
     }
 
     /**
@@ -88,7 +88,7 @@ export default class ConsoleAdminBrandingController extends Controller {
      */
     @action unsetLogo() {
         this.unset(['logo_uuid', 'logo_url']);
-        this.model.set('logo_url', '/images/transport-diary-logo.svg?v=20261127-nshine-blue2');
+        this.model.set('logo_url', '/images/transport-diary-logo.svg?v=20261127-diary');
     }
 
     /**
@@ -107,12 +107,12 @@ export default class ConsoleAdminBrandingController extends Controller {
 
                 // if logo url is null
                 if (this.model.logo_url === null) {
-                    this.model.set('logo_url', '/images/transport-diary-logo.svg?v=20261127-nshine-blue2');
+                    this.model.set('logo_url', '/images/transport-diary-logo.svg?v=20261127-diary');
                 }
 
                 // if icon url is null
                 if (this.model.icon_url === null) {
-                    this.model.set('icon_url', '/images/transport-diary-icon.svg?v=20261127-nshine-blue2');
+                    this.model.set('icon_url', '/images/transport-diary-icon.svg?v=20261127-diary');
                 }
             })
             .finally(() => {

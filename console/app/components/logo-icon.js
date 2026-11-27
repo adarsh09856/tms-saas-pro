@@ -1,6 +1,6 @@
 import LogoIconComponent from '@fleetbase/ember-ui/components/logo-icon';
 
-const DEFAULT_DIARY_ICON = '/images/transport-diary-icon.svg?v=20261127-nshine-blue2';
+const DEFAULT_DIARY_ICON = '/images/transport-diary-icon.svg?v=20261127-diary';
 
 function isSavedProductIcon(url) {
     if (!url) {

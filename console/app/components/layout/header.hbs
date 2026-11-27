@@ -1,7 +1,7 @@
 <header class="next-view-header" ...attributes>
     <div class="next-view-header-left">
         <LinkToExternal @route="console.home" class="logo navbar-logo kodewaves-console-brand mr-4" aria-label="Transport Diary home">
-            <img src="/images/transport-diary-icon.svg?v=20261127-nshine-blue2" alt="" width="40" height="40" class="kodewaves-console-mark" />
+            <img src="/images/transport-diary-icon.svg?v=20261127-diary" alt="" width="40" height="40" class="kodewaves-console-mark" />
         </LinkToExternal>
         {{#if (and @showSidebarToggle (not (media "isMobile")))}}
             <Layout::Header::SidebarToggle class="mr-2" @onToggle={{@onSidebarToggle}} @disabled={{eq @sidebarToggleEnabled false}} />
@@ -41,7 +41,7 @@
                             height="20"
                             width="20"
                             src={{this.currentUser.avatarUrl}}
-                            @fallbackSrc="/images/kodewaves-avatar.svg?v=20261127-nshine-blue2"
+                            @fallbackSrc="/images/kodewaves-avatar.svg?v=20261127-diary"
                             alt={{this.currentUser.name}}
                         />
                     </div>
