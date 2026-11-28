@@ -7,6 +7,11 @@ import { task } from 'ember-concurrency';
 export default class ConsoleSettingsAuthController extends Controller {
     @service fetch;
     @service notifications;
+    @service currentUser;
+
+    get canManageAuthentication() {
+        return this.currentUser.isAdmin || this.currentUser.roleName === 'Administrator';
+    }
 
     /**
      * Whether users in the organization may change their own password. When off, only
@@ -27,6 +32,9 @@ export default class ConsoleSettingsAuthController extends Controller {
     }
 
     @action onAllowUsersChangePasswordToggled(allowed) {
+        if (!this.canManageAuthentication) {
+            return;
+        }
         this.allowUsersChangePassword = allowed;
     }
 
@@ -42,6 +50,10 @@ export default class ConsoleSettingsAuthController extends Controller {
     }
 
     @task *saveAuthSettings() {
+        if (!this.canManageAuthentication) {
+            this.notifications.error('Only administrators can change authentication settings.');
+            return;
+        }
         try {
             yield this.fetch.post('companies/auth-settings', {
                 allow_users_change_password: this.allowUsersChangePassword,

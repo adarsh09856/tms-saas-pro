@@ -12,7 +12,7 @@
                 {{#if this.loadAuthSettings.isIdle}}
                     <div class="flex items-center space-x-4">
                         <label class="text-base font-medium">Allow users to change their own password</label>
-                        <Toggle @isToggled={{this.allowUsersChangePassword}} @onToggle={{this.onAllowUsersChangePasswordToggled}} />
+                        <Toggle @isToggled={{this.allowUsersChangePassword}} @onToggle={{this.onAllowUsersChangePasswordToggled}} @disabled={{not this.canManageAuthentication}} />
                     </div>
                 {{else}}
                     <div class="flex items-center justify-center p-4">
@@ -27,10 +27,13 @@
                         @icon="save"
                         @onClick={{perform this.saveAuthSettings}}
                         @isLoading={{this.saveAuthSettings.isRunning}}
-                        @disabled={{not this.loadAuthSettings.isIdle}}
+                        @disabled={{or (not this.loadAuthSettings.isIdle) (not this.canManageAuthentication)}}
                     />
                 </div>
             </ContentPanel>
+            {{#unless this.canManageAuthentication}}
+                <p class="text-sm text-slate-600 dark:text-slate-300">Ask a company administrator to update the sign-in policy.</p>
+            {{/unless}}
         </div>
     </div>
 
