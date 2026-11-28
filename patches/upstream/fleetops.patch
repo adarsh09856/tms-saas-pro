@@ -816,6 +816,55 @@ index 002ffcb119dd093388a901f463ff8c44d3507210..915cb6592b72f97f3b0a75bcc0d98897
      }
  
      protected function assignedOrdersCount(Vehicle $vehicle): int
+diff --git a/server/src/Casts/Polygon.php b/server/src/Casts/Polygon.php
+index 181fd6107c85c0cc838e69ab201f8de30e9a7fdd..1009331eacf9bb1c71df9bc6017d1d7237a6db56 100644
+--- a/server/src/Casts/Polygon.php
++++ b/server/src/Casts/Polygon.php
+@@ -5,7 +5,6 @@ namespace Fleetbase\FleetOps\Casts;
+ use Fleetbase\FleetOps\Support\Utils;
+ use Fleetbase\LaravelMysqlSpatial\Eloquent\SpatialExpression;
+ use Fleetbase\LaravelMysqlSpatial\Types\GeometryInterface;
+-use Fleetbase\LaravelMysqlSpatial\Types\Polygon as SpatialPolygon;
+ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+ 
+ class Polygon implements CastsAttributes
+@@ -31,32 +30,18 @@ class Polygon implements CastsAttributes
+      */
+     public function set($model, $key, $value, $attributes)
+     {
+-        // Checked before the broader GeometryInterface guard below, which a
+-        // SpatialPolygon also satisfies — otherwise this arm never fires. Both
+-        // arms behave identically, so ordering does not change what is stored.
+-        if ($value instanceof SpatialPolygon) {
+-            $model->geometries[$key] = $value;
+-
+-            return $value;
+-        }
+-
+-        if ($value instanceof GeometryInterface) {
+-            $model->geometries[$key] = $value;
+-
++        if ($value instanceof SpatialExpression) {
+             return $value;
+         }
+ 
+         if (Utils::isGeoJson($value)) {
+-            $value                   = Utils::createGeometryObjectFromGeoJson($value);
+-            $model->geometries[$key] = $value;
+-
+-            return $value;
++            $value = Utils::createGeometryObjectFromGeoJson($value);
+         }
+ 
+-        if ($value instanceof SpatialExpression) {
++        if ($value instanceof GeometryInterface) {
+             $model->geometries[$key] = $value;
+ 
+-            return $value;
++            return new SpatialExpression($value);
+         }
+ 
+         throw new \Exception('Invalid Polygon provided for ' . $key);
 diff --git a/server/src/Flow/FlowResource.php b/server/src/Flow/FlowResource.php
 index 6a6f05a96a2cb4dbc9cdf4b09d724ca7b71dd685..7098349106f2c26d674a66778a2fdf47bd1b0f40 100644
 --- a/server/src/Flow/FlowResource.php
