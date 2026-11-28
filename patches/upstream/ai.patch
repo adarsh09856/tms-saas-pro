@@ -1,3 +1,99 @@
+diff --git a/addon/components/admin/ai-knowledge.hbs b/addon/components/admin/ai-knowledge.hbs
+index 0637edfada4ecbaf52801338c26137dfc68bb5d7..8751ae35a22ce3f370e6aae35838db505068c0cb 100644
+--- a/addon/components/admin/ai-knowledge.hbs
++++ b/addon/components/admin/ai-knowledge.hbs
+@@ -1,7 +1,7 @@
+ <ContentPanel @title="AI Knowledge Base" @open={{true}} @wrapperClass="bordered-classic">
+     <div class="fleetbase-ai-admin-panel">
+         <p class="fleetbase-ai-admin-help">
+-            Fleetbase AI answers how-to and navigation questions from the official Fleetbase documentation. Pages meant for system administrators or developers are only used when the person asking has that access.
++            Transport Diary AI answers how-to and navigation questions from the official Fleetbase documentation. Pages meant for system administrators or developers are only used when the person asking has that access.
+         </p>
+ 
+         {{#if this.knowledge}}
+diff --git a/addon/components/admin/ai-logs/session-list.hbs b/addon/components/admin/ai-logs/session-list.hbs
+index 8a3619418154270eea7364ec2b83b451a5180ccb..75d8eb840b048c051a3fb86d7cdec56fd8042197 100644
+--- a/addon/components/admin/ai-logs/session-list.hbs
++++ b/addon/components/admin/ai-logs/session-list.hbs
+@@ -44,7 +44,7 @@
+         <div class="fleetbase-ai-logs-empty">
+             <FaIcon @icon="comments" @size="2x" />
+             <strong>No conversations found</strong>
+-            <span>{{if @isFiltered "Try removing a filter." "AI chats appear here once people start using Fleetbase AI."}}</span>
++            <span>{{if @isFiltered "Try removing a filter." "AI chats appear here once people start using Transport Diary AI."}}</span>
+         </div>
+     {{/if}}
+ </div>
+diff --git a/addon/components/admin/ai-logs/turn.hbs b/addon/components/admin/ai-logs/turn.hbs
+index 04e1bddb6749825dda6cce9fbfe76a3f0e356e77..55e17c8ca660c2672b0bc91c3b1898d1ae3b17bd 100644
+--- a/addon/components/admin/ai-logs/turn.hbs
++++ b/addon/components/admin/ai-logs/turn.hbs
+@@ -11,7 +11,7 @@
+ 
+     <div class="fleetbase-ai-logs-turn-answer">
+         <div class="fleetbase-ai-logs-turn-label">
+-            <span>Fleetbase AI</span>
++            <span>Transport Diary AI</span>
+             <Badge @status={{this.statusType}} @text={{@task.status}} />
+             {{#if this.model}}<span class="fleetbase-ai-logs-chip">{{this.model}}</span>{{/if}}
+             <span class="fleetbase-ai-logs-chip" title={{this.tokensTitle}}>{{this.tokens}}</span>
+diff --git a/addon/components/admin/ai-settings.hbs b/addon/components/admin/ai-settings.hbs
+index 7a078cc6cf5b6e9cf4fb1b09e9926c7cf3b52492..e87fa4cdefc15e9701ba5e022fd688d641881442 100644
+--- a/addon/components/admin/ai-settings.hbs
++++ b/addon/components/admin/ai-settings.hbs
+@@ -1,6 +1,6 @@
+-<ContentPanel @title="Fleetbase AI" @open={{true}} @wrapperClass="bordered-classic">
++<ContentPanel @title="Transport Diary AI" @open={{true}} @wrapperClass="bordered-classic">
+     <InputGroup class="mb-2">
+-        <Toggle @isToggled={{this.config.enabled}} @onToggle={{fn this.setValue "enabled"}} @label="Enable Fleetbase AI" />
++        <Toggle @isToggled={{this.config.enabled}} @onToggle={{fn this.setValue "enabled"}} @label="Enable Transport Diary AI" />
+     </InputGroup>
+ 
+     {{#if this.isEnabled}}
+diff --git a/addon/components/ai-header-tray-button.hbs b/addon/components/ai-header-tray-button.hbs
+index 2d6a8fd52a66069a1483d50ae3878dddabeb8c49..004dba4926ea33a232d92815964f4477aaa68383 100644
+--- a/addon/components/ai-header-tray-button.hbs
++++ b/addon/components/ai-header-tray-button.hbs
+@@ -3,7 +3,7 @@
+         <button
+             type="button"
+             class="fleetbase-ai-header-tray-button-trigger {{if (media 'isMobile') 'is-mobile'}}"
+-            aria-label="Open Fleetbase AI"
++            aria-label="Open Transport Diary AI"
+             {{on "click" this.togglePrompt}}
+         >
+             <span class="next-org-button-trigger fleetbase-ai-header-tray-button-icon flex-shrink-0">
+@@ -11,7 +11,7 @@
+             </span>
+         </button>
+         <Attach::Tooltip @class="clean" @animation="scale" @placement="bottom">
+-            <InputInfo @text="Open Fleetbase AI" />
++            <InputInfo @text="Open Transport Diary AI" />
+         </Attach::Tooltip>
+     </div>
+ {{/if}}
+diff --git a/addon/components/ai-prompt.hbs b/addon/components/ai-prompt.hbs
+index 65a5374b76e984d5afe3bc2c9c693e27b9b6c472..89b1bdf1ce0abfb99f6b882b1d7e3622d73d27e6 100644
+--- a/addon/components/ai-prompt.hbs
++++ b/addon/components/ai-prompt.hbs
+@@ -1,6 +1,6 @@
+ {{#if this.ai.isOpen}}
+-    <div class="fleetbase-ai-backdrop" role="button" aria-label="Close Fleetbase AI" {{on "click" this.close}}></div>
+-    <div class="fleetbase-ai-overlay" role="dialog" aria-label="Fleetbase AI" {{on "click" this.close}}>
++    <div class="fleetbase-ai-backdrop" role="button" aria-label="Close Transport Diary AI" {{on "click" this.close}}></div>
++    <div class="fleetbase-ai-overlay" role="dialog" aria-label="Transport Diary AI" {{on "click" this.close}}>
+         <div class="fleetbase-ai-shell">
+             {{#if this.showHistory}}
+                 <div class="fleetbase-ai-history-overlay" {{on "click" this.stopPropagation}}>
+@@ -203,7 +203,7 @@
+                         <Textarea
+                             @value={{this.prompt}}
+                             rows="1"
+-                            placeholder="Ask Fleetbase AI..."
++                            placeholder="Ask Transport Diary AI..."
+                             class="fleetbase-ai-input"
+                             {{on "keydown" this.handlePromptKeydown}}
+                             {{on "input" this.resizePromptTextarea}}
 diff --git a/addon/templates/home.hbs b/addon/templates/home.hbs
 index 31b36035efa9986522d3d74108ae9c226cddd26e..521741cc21851794e47719c14bddc882301760ad 100644
 --- a/addon/templates/home.hbs

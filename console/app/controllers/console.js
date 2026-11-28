@@ -8,6 +8,13 @@ import { dasherize } from '@ember/string';
 import first from '@fleetbase/ember-core/utils/first';
 import window from 'ember-window-mock';
 
+const workspaceModuleTitles = {
+    'fleet-ops': 'Transport operations',
+    ledger: 'Finance',
+    pallet: 'Warehouse',
+    iam: 'Team and access',
+};
+
 export default class ConsoleController extends Controller {
     @service currentUser;
     @service modalsManager;
@@ -64,10 +71,14 @@ export default class ConsoleController extends Controller {
             // Navigation ordering remains at the registered extension priority.
         }
 
-        const byId = new Map(visibleItems.map((item) => [item.id, item]));
+        const namedItems = visibleItems.map((item) => {
+            const title = workspaceModuleTitles[item.id];
+            return title ? { ...item, title, label: title, text: title } : item;
+        });
+        const byId = new Map(namedItems.map((item) => [item.id, item]));
         const pinned = pinnedIds.map((id) => byId.get(id)).filter(Boolean);
         const pinnedSet = new Set(pinnedIds);
-        const ordered = [...pinned, ...visibleItems.filter((item) => !pinnedSet.has(item.id))];
+        const ordered = [...pinned, ...namedItems.filter((item) => !pinnedSet.has(item.id))];
         const shortcuts = new Map();
 
         for (const item of ordered) {
@@ -89,7 +100,7 @@ export default class ConsoleController extends Controller {
                 return {
                     ...item,
                     route: undefined,
-                    children: [{ ...item, id: `${item.id}-overview`, title: `${item.title} overview` }, ...children],
+                    children: [{ ...item, id: `${item.id}-overview`, label: 'Overview', title: 'Overview' }, ...children],
                 };
             });
     }
