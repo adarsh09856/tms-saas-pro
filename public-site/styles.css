@@ -757,3 +757,10 @@ body { background: #fbfbf7; }
   box-shadow: 0 4px 9px #183b8029, inset 0 2px 3px #ffffff42, inset 0 -3px 6px #10295538;
 }
 :is(.button, .workbench-tabs button):active { transform: translateY(1px); }
+
+/* Plan and role content shares the same surface treatment as the workflow preview. */
+:is(.plan-panel, .role-card) {
+  background: var(--td-clay-surface);
+  border-radius: 22px;
+  box-shadow: var(--td-clay-lift);
+}

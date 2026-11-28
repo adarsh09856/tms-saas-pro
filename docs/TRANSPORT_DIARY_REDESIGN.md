@@ -2,7 +2,7 @@
 
 The Codex release owner carries the redesign through implementation, review, fixes and deployment. Batch public pages and signed-in panels into one release review and give one consolidated report. Recheck individual failures when necessary, then rerun the affected release checks together.
 
-Complete the redesign before releasing workflow additions. Use the supplied NShine reference for product hierarchy and workflow presentation. Keep the Transport Diary mark and build the interface around white surfaces, slate text, thin neutral borders and a blue accent for primary actions and selected navigation. Reserve green, amber and red for operational statuses. Use opaque menus and panels, simple dividers and real screenshots from fictional staging records. Avoid translucent surfaces, decorative gradients and filler badges.
+Complete the redesign before releasing workflow additions. Use the supplied NShine reference for product hierarchy and workflow presentation and the [Claymorphism design skill](https://github.com/bergside/awesome-design-skills/tree/main/skills/claymorphism) for visual styling across the public site and every console panel. Keep the Transport Diary mark, slate text, blue primary actions, and clear operational status colors. Use opaque pastel surfaces, rounded panels and soft inset and outer shadows. Keep tables, maps and nested content flat where staff scan dense information. Use real screenshots from fictional staging records.
 
 | Surface | Design work | Screenshot and acceptance |
 | --- | --- | --- |

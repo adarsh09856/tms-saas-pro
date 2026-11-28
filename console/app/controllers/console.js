@@ -110,6 +110,33 @@ export default class ConsoleController extends Controller {
             });
     }
 
+    get workspaceDirectory() {
+        return this.mainNavigationItems.map((item) => {
+            const sections = new Map();
+            for (const child of item.children ?? []) {
+                const route = child.route ?? '';
+                let section = '';
+                if (item.id === 'fleet-ops' && !child.id.endsWith('-overview')) {
+                    section = route.endsWith('management.index')
+                        ? 'Bookings and dispatch'
+                        : {
+                              management: 'Fleet and places',
+                              operations: 'Bookings and dispatch',
+                              connectivity: 'Tracking and devices',
+                              analytics: 'Reports',
+                          }[route.split('.')[2]] ?? 'Tools';
+                } else if (item.id === 'ledger' && !child.id.endsWith('-overview')) {
+                    section = { billing: 'Billing', payments: 'Payments', accounting: 'Accounting', reports: 'Reports' }[route.split('.')[2]] ?? '';
+                }
+                if (!sections.has(section)) {
+                    sections.set(section, []);
+                }
+                sections.get(section).push(child);
+            }
+            return { ...item, sections: Array.from(sections, ([title, links]) => ({ title, links })) };
+        });
+    }
+
     /**
      * Action handler.
      *

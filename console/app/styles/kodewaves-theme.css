@@ -2214,3 +2214,30 @@ body[data-theme] .console-navigation-directory .console-navigation-group > a.nex
         visibility: hidden;
     }
 }
+
+/* Use the same surface depth in operational, settings and administration screens. */
+body[data-theme] :is(
+    .tms-workspace-heading,
+    .tms-company-detail-card,
+    .tms-admin-data-panel,
+    .tms-admin-page .content-panel,
+    .tms-plan-management .content-panel,
+    .fleet-ops-control-hub-panel,
+    .next-content-overlay-panel,
+    .ember-basic-dropdown-content
+) {
+    border-radius: 1rem;
+    box-shadow: var(--td-clay-raised);
+}
+
+body[data-theme] :is(.console-navigation-directory summary, .console-navigation-directory a.next-nav-item):focus-visible {
+    outline: 2px solid var(--kodewaves-primary);
+    outline-offset: -2px;
+}
+
+body[data-theme] .console-navigation-section-label {
+    padding: 0.75rem 0.625rem 0.25rem 1.75rem;
+    color: var(--kodewaves-muted);
+    font-size: 0.72rem;
+    font-weight: 650;
+}
