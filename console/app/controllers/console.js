@@ -27,6 +27,73 @@ export default class ConsoleController extends Controller {
         return dasherize(this.router.currentRouteName.replace(/\./g, ' '));
     }
 
+    get mainNavigationItems() {
+        const visibleItems = [];
+
+        for (const item of this.universe.headerMenuItems ?? []) {
+            const abilityId = item._isShortcut && item._parentId ? item._parentId : item.id;
+
+            if (item.permission) {
+                try {
+                    if (this.abilities.cannot(item.permission)) {
+                        continue;
+                    }
+                } catch (_) {
+                    // Match SmartNavMenu: an unregistered item permission does not hide it.
+                }
+            }
+
+            try {
+                if (this.abilities.can(`${abilityId} see extension`)) {
+                    // Sidebar::Navigator also applies `permission`, but its unknown-ability
+                    // fallback is stricter than SmartNavMenu's. We already applied the
+                    // console's established permission semantics above.
+                    visibleItems.push({ ...item, permission: undefined });
+                }
+            } catch (_) {
+                // Keep extensions visible when their ability has not been registered.
+                visibleItems.push({ ...item, permission: undefined });
+            }
+        }
+
+        let pinnedIds = [];
+        try {
+            const preferences = this.currentUser.getOption('smart-nav-menu-prefs');
+            pinnedIds = Array.isArray(preferences?.pinnedIds) ? preferences.pinnedIds : [];
+        } catch (_) {
+            // Navigation ordering remains at the registered extension priority.
+        }
+
+        const byId = new Map(visibleItems.map((item) => [item.id, item]));
+        const pinned = pinnedIds.map((id) => byId.get(id)).filter(Boolean);
+        const pinnedSet = new Set(pinnedIds);
+        const ordered = [...pinned, ...visibleItems.filter((item) => !pinnedSet.has(item.id))];
+        const shortcuts = new Map();
+
+        for (const item of ordered) {
+            if (item._isShortcut && byId.has(item._parentId)) {
+                const children = shortcuts.get(item._parentId) ?? [];
+                children.push(item);
+                shortcuts.set(item._parentId, children);
+            }
+        }
+
+        return ordered
+            .filter((item) => !item._isShortcut || !byId.has(item._parentId))
+            .map((item) => {
+                const children = shortcuts.get(item.id);
+                if (!children?.length) {
+                    return item;
+                }
+
+                return {
+                    ...item,
+                    route: undefined,
+                    children: [{ ...item, id: `${item.id}-overview`, title: `${item.title} overview` }, ...children],
+                };
+            });
+    }
+
     /**
      * Action handler.
      *

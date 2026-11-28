@@ -8,14 +8,30 @@ export default class ConsoleAdminController extends Controller {
     @service intl;
 
     get navigationItems() {
+        const [overview, organizations, branding, apiToken, schedule, billingPlans, walkthroughs] = this.coreNavigationItems;
+
         return [
-            ...this.coreNavigationItems,
+            overview,
+            {
+                id: 'admin-companies',
+                label: 'Companies and plans',
+                icon: 'building',
+                children: [organizations, billingPlans, walkthroughs],
+            },
+            {
+                id: 'admin-platform',
+                label: 'Platform settings',
+                icon: 'gear',
+                children: [branding, apiToken, this.authConfigNavigationItem, this.systemConfigNavigationItem],
+            },
+            {
+                id: 'admin-monitoring',
+                label: 'Monitoring and recovery',
+                icon: 'gauge-high',
+                children: [schedule, this.apiTrafficNavigationItem, this.databaseBackupsNavigationItem],
+            },
             ...this.registryNavigationItems,
             ...this.registryPanelItems,
-            this.apiTrafficNavigationItem,
-            this.databaseBackupsNavigationItem,
-            this.authConfigNavigationItem,
-            this.systemConfigNavigationItem,
         ];
     }
 

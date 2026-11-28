@@ -6,9 +6,6 @@
         {{#if (and @showSidebarToggle (not (media "isMobile")))}}
             <Layout::Header::SidebarToggle class="mr-2" @onToggle={{@onSidebarToggle}} @disabled={{eq @sidebarToggleEnabled false}} />
         {{/if}}
-        {{#unless (media "isMobile")}}
-            <Layout::Header::SmartNavMenu class="next-catalog-menu-items mr-3" @maxVisible={{or @maxVisibleNavItems 3}} @mutateMenuItems={{@mutateMenuItems}} />
-        {{/unless}}
         <div id="view-header-left-content-a"></div>
         {{yield}}
         <div id="view-header-left-content-b"></div>

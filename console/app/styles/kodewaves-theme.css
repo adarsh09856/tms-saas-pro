@@ -1,10 +1,10 @@
 /* stylelint-disable no-descending-specificity -- Theme and interaction states intentionally override upstream console selectors. */
 :root {
-    --kodewaves-primary: #426b57;
-    --kodewaves-primary-deep: #294b3a;
-    --kodewaves-primary-soft: #e8efe8;
-    --kodewaves-warm: #426b57;
-    --kodewaves-warm-soft: #dce9dd;
+    --kodewaves-primary: #2458d3;
+    --kodewaves-primary-deep: #1843a8;
+    --kodewaves-primary-soft: #edf3ff;
+    --kodewaves-warm: #2458d3;
+    --kodewaves-warm-soft: #e4edff;
     --kodewaves-paper: #f8fafc;
     --kodewaves-ink: #0f172a;
     --kodewaves-muted: #64748b;
@@ -53,7 +53,7 @@ body[data-theme='light'] {
     width: 0.42rem;
     height: 0.42rem;
     border-radius: 50%;
-    background: var(--kodewaves-primary, #426b57);
+    background: var(--kodewaves-primary, #2458d3);
     animation: kodewaves-route-dot 1.15s ease-in-out infinite;
 }
 
@@ -148,18 +148,18 @@ body[data-theme='light'] {
     justify-content: center;
     padding: 0.65rem 1rem;
     border-radius: 0.625rem;
-    background: var(--kodewaves-primary, #426b57);
+    background: var(--kodewaves-primary, #2458d3);
     color: #fff;
     font-weight: 650;
     text-decoration: none;
 }
 
 .kodewaves-route-error-card a:hover {
-    background: var(--kodewaves-primary-deep, #294b3a);
+    background: var(--kodewaves-primary-deep, #1843a8);
 }
 
 .kodewaves-route-error-card a:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--kodewaves-primary, #426b57) 32%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--kodewaves-primary, #2458d3) 32%, transparent);
     outline-offset: 3px;
 }
 
@@ -224,7 +224,7 @@ html:has(.auth-shell) body {
     display: flex;
     flex-direction: column;
     padding: clamp(30px, 4vw, 54px);
-    background: linear-gradient(150deg, #f8fafc 0%, #e8efe8 100%);
+    background: #f8fafc;
 }
 
 .auth-workspace-brand {
@@ -466,8 +466,8 @@ body[data-theme='light'] .next-view-container {
 }
 
 body[data-theme='light'] .next-view-header {
-    background-color: #294b3a;
-    border-bottom-color: #294b3a;
+    background-color: #1843a8;
+    border-bottom-color: #1843a8;
     color: #f8fafc;
 }
 
@@ -817,7 +817,7 @@ body[data-theme] .tms-workspace-overview {
     padding: clamp(1.25rem, 2.5vw, 2rem);
     border: 1px solid #dbe4f0;
     border-radius: 1rem;
-    background: linear-gradient(112deg, #f8fafc 0%, #fff 56%, #e8efe8 100%);
+    background: linear-gradient(112deg, #f8fafc 0%, #fff 56%, #edf3ff 100%);
     color: var(--kodewaves-ink);
 }
 
@@ -902,14 +902,14 @@ body[data-theme] .tms-platform-task-icon {
     flex: 0 0 auto;
     place-items: center;
     border-radius: 0.6rem;
-    background: #e8efe8;
+    background: #edf3ff;
     color: var(--kodewaves-primary-deep);
     font-size: 0.7rem;
     font-weight: 800;
 }
 body[data-theme] .tms-workflow-step > svg:last-child,
 body[data-theme] .tms-platform-task > svg:last-child { margin-left: auto; flex: 0 0 auto; color: #64748b; font-size: 0.75rem; }
-body[data-theme] .tms-platform-task-primary { border-color: #c9dccd; background: #e8efe8; }
+body[data-theme] .tms-platform-task-primary { border-color: #c9dccd; background: #edf3ff; }
 body[data-theme] .tms-company-admin-shell { background: var(--kodewaves-paper); color: var(--kodewaves-ink); }
 body[data-theme] .tms-company-admin-header {
     border-bottom: 1px solid var(--kodewaves-line);
@@ -1388,7 +1388,7 @@ body[data-theme] header.next-view-header .next-view-header-item.is-open {
 }
 
 body[data-theme] header.next-view-header .next-view-header-item:focus-visible {
-    outline: 2px solid #426b57 !important;
+    outline: 2px solid #2458d3 !important;
     outline-offset: 2px;
 }
 
@@ -1404,7 +1404,7 @@ body[data-theme] header.next-view-header .next-user-button-trigger {
 
 body[data-theme] header.next-view-header .next-org-button-trigger .org-badge {
     border: 1px solid rgb(247 250 246 / 30%);
-    background-color: #426b57 !important;
+    background-color: #2458d3 !important;
     color: #fff !important;
 }
 
@@ -1491,7 +1491,7 @@ body[data-theme] header.next-view-header {
     max-width: 100%;
     box-sizing: border-box;
     background-color: var(--kodewaves-primary-deep) !important;
-    border-bottom-color: #294b3a !important;
+    border-bottom-color: #1843a8 !important;
     color: #f8fafc !important;
 }
 
@@ -1646,11 +1646,11 @@ body[data-theme] .modal {
 /* Keep global navigation below full-screen panels, menus, and modal overlays. */
 @media (width <= 767px) {
     body[data-theme] .next-view-container > nav.next-sidebar {
-        z-index: 20 !important;
+        z-index: 1100 !important;
     }
 
     body[data-theme] .next-mobile-navbar {
-        z-index: 30 !important;
+        z-index: 1101 !important;
     }
 }
 
@@ -1670,46 +1670,55 @@ body[data-theme] .snm-customizer-panel {
     z-index: 10001 !important;
 }
 
-/* Keep navigation customization reachable when the desktop header menu is hidden on phones. */
-@media (width <= 767px) {
-    body[data-theme] .console-mobile-nav-customizer {
-        position: fixed;
-        right: 5rem;
-        bottom: 0;
-        z-index: 31;
-        display: flex;
-        width: 5rem;
-        height: 4rem;
-        align-items: stretch;
-        justify-content: center;
-        border-right: 1px solid var(--kodewaves-line);
-        background: var(--kodewaves-paper);
-    }
+/* Customization stays beside the shared workspace menu, never in the top bar. */
+body[data-theme] .console-primary-navigation-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
 
-    body[data-theme] .console-mobile-nav-customizer > :not(.snm-customise-btn) {
+body[data-theme] .console-primary-navigation .console-sidebar-nav-customizer {
+    flex: 0 0 auto;
+}
+
+body[data-theme] .console-primary-navigation .console-sidebar-nav-customizer > :not(.snm-customise-btn) {
+    display: none !important;
+}
+
+body[data-theme] .console-primary-navigation .console-sidebar-nav-customizer > .snm-customise-btn {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    border: 1px solid var(--kodewaves-line);
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--kodewaves-ink);
+}
+
+body[data-theme] .console-primary-navigation .console-sidebar-nav-customizer > .snm-customise-btn:hover,
+body[data-theme] .console-primary-navigation .console-sidebar-nav-customizer > .snm-customise-btn:focus-visible {
+    background: var(--kodewaves-primary-soft);
+    color: var(--kodewaves-primary-deep);
+}
+
+/* Mobile keeps the bottom drawer toggle and puts every extension link in that drawer. */
+@media (width <= 767px) {
+    body[data-theme] .next-mobile-navbar .scrollable-nav-items {
         display: none !important;
     }
 
-    body[data-theme] .console-mobile-nav-customizer > .snm-customise-btn {
-        display: flex;
-        width: 100%;
-        min-width: 100%;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 0.25rem;
-        margin: 0 !important;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-        color: var(--kodewaves-ink);
+    body[data-theme] .next-mobile-navbar .next-mobile-navbar-tabs {
+        justify-content: flex-end;
     }
 
-    body[data-theme] .console-mobile-nav-customizer > .snm-customise-btn::after {
-        content: 'Customize';
-        font-size: 0.625rem;
-        line-height: 1;
+    body[data-theme] .next-mobile-navbar .menu-toggle {
+        width: 5rem;
+        flex: 0 0 5rem;
+        border-left: 1px solid var(--kodewaves-line);
     }
 }
 
@@ -1952,6 +1961,39 @@ body[data-theme='dark']
 
 body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item {
     color: #cbd5e1;
+}
+
+/* Keep the extension catalog in the shared workspace sidebar on desktop. */
+body[data-theme] .console-primary-navigation {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.25rem 0.35rem 0.75rem;
+}
+
+body[data-theme] .console-primary-navigation-heading {
+    padding: 0.5rem 0.65rem 0.15rem;
+    color: var(--kodewaves-muted);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+body[data-theme] .console-primary-navigation .next-sidebar-navigator {
+    min-height: 0;
+}
+
+body[data-theme='light'] .console-primary-navigation .next-sidebar-navigator-search {
+    border-color: var(--kodewaves-line);
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+}
+
+body[data-theme='dark'] .console-primary-navigation-heading {
+    color: #94a3b8;
 }
 
 body[data-theme='dark'] :is(.ember-basic-dropdown-content a, .dropdown-menu a, .next-dd-menu a, .dropdown-item) {

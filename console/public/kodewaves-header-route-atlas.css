@@ -17,8 +17,8 @@ body[class*='console-'] header.next-view-header .next-view-header-item:not(.acti
 body[class*='console-'] header.next-view-header .next-view-header-item:hover,
 body[class*='console-'] header.next-view-header .next-view-header-item.active,
 body[class*='console-'] header.next-view-header .next-view-header-item.is-open {
-    background-color: #426b57 !important;
-    border-color: #426b57 !important;
+    background-color: #2458d3 !important;
+    border-color: #2458d3 !important;
     color: #fff !important;
 }
 
@@ -65,7 +65,7 @@ body[class*='console-'] header.next-view-header .next-user-button-trigger {
 
 body[class*='console-'] header.next-view-header .next-org-button-trigger .org-badge {
     border: 1px solid rgb(247 250 246 / 30%);
-    background-color: #426b57 !important;
+    background-color: #2458d3 !important;
     color: #fff !important;
 }
 
@@ -76,8 +76,8 @@ body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-la
 
 body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer .next-dd-menu .next-dd-item:hover,
 body[class*='console-'] .ember-basic-dropdown-content.console-header-dropdown-layer .next-dd-menu .next-dd-item:focus-visible {
-    background-color: #426b57 !important;
-    border-color: #426b57 !important;
+    background-color: #2458d3 !important;
+    border-color: #2458d3 !important;
     color: #fff !important;
 }
 
@@ -101,8 +101,8 @@ body[class*='console-'] .snm-customizer-panel {
 /* This stylesheet loads after the compiled engine CSS, so active states win in both themes. */
 body[class*='console-'] .next-map-container-view-switch > button.active,
 body[class*='console-'][data-theme='dark'] .next-map-container-view-switch > button.active {
-    background-color: var(--kodewaves-primary, #426b57) !important;
-    border-color: var(--kodewaves-primary, #426b57) !important;
+    background-color: var(--kodewaves-primary, #2458d3) !important;
+    border-color: var(--kodewaves-primary, #2458d3) !important;
     color: #fff !important;
 }
 
@@ -112,8 +112,8 @@ body[data-theme='dark'][class*='console-'] .next-map-container-view-switch > but
 
 body[class*='console-'] .next-map-container-view-switch > button:not(.active):hover,
 body[class*='console-'] .next-map-container-view-switch > button:not(.active):focus-visible {
-    background-color: var(--kodewaves-primary-soft, #e8efe8) !important;
-    color: var(--kodewaves-primary-deep, #294b3a) !important;
+    background-color: var(--kodewaves-primary-soft, #edf3ff) !important;
+    color: var(--kodewaves-primary-deep, #1843a8) !important;
 }
 
 body[class*='console-'] .ui-tabs > ul .nav-item.active,
@@ -121,10 +121,10 @@ body[class*='console-'] .ui-tabs > nav .nav-item.active,
 body[class*='console-'] .ui-tabs > ul .ui-tab.active,
 body[class*='console-'] .ui-tabs > nav .ui-tab.active,
 body[class*='console-'] .nav-tabs .nav-link.active {
-    background-color: var(--kodewaves-primary-soft, #e8efe8) !important;
+    background-color: var(--kodewaves-primary-soft, #edf3ff) !important;
     border-color: var(--kodewaves-line, #e2e8f0) !important;
     border-bottom-color: transparent !important;
-    color: var(--kodewaves-primary-deep, #294b3a) !important;
+    color: var(--kodewaves-primary-deep, #1843a8) !important;
 }
 
 body[class*='console-'] .ui-tabs > ul .nav-item:not(.active):hover,
@@ -132,7 +132,7 @@ body[class*='console-'] .ui-tabs > nav .nav-item:not(.active):hover,
 body[class*='console-'] .ui-tabs > ul .ui-tab:not(.active):hover,
 body[class*='console-'] .ui-tabs > nav .ui-tab:not(.active):hover,
 body[class*='console-'] .nav-tabs .nav-link:not(.active):hover {
-    color: var(--kodewaves-primary, #426b57) !important;
+    color: var(--kodewaves-primary, #2458d3) !important;
 }
 
 body[data-theme='dark'][class*='console-'] .ui-tabs > ul .nav-item.active,
@@ -149,21 +149,21 @@ body[data-theme='dark'][class*='console-'] .nav-tabs .nav-link.active {
 /* Informational FleetOps surfaces use blue; status tones keep their meaning. */
 body[class*='console-'] .fleet-ops-control-hub-tone-blue {
     background:
-        linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary, #426b57) 12%, transparent), color-mix(in srgb, var(--kodewaves-primary, #426b57) 3%, transparent) 52%, #fff 100%),
+        linear-gradient(135deg, color-mix(in srgb, var(--kodewaves-primary, #2458d3) 12%, transparent), color-mix(in srgb, var(--kodewaves-primary, #2458d3) 3%, transparent) 52%, #fff 100%),
         #fff !important;
-    border-color: color-mix(in srgb, var(--kodewaves-primary, #426b57) 28%, #fff) !important;
+    border-color: color-mix(in srgb, var(--kodewaves-primary, #2458d3) 28%, #fff) !important;
 }
 
 body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
 body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon,
 body[class*='console-'] .fleet-ops-control-hub-action.fleet-ops-control-hub-tone-blue svg,
 body[class*='console-'] .fleet-ops-control-hub-action.fleet-ops-control-hub-tone-info svg {
-    color: var(--kodewaves-primary, #426b57) !important;
+    color: var(--kodewaves-primary, #2458d3) !important;
 }
 
 body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-kpi-icon,
 body[class*='console-'] .fleet-ops-control-hub-tone-blue .fleet-ops-control-hub-link-icon {
-    background-color: var(--kodewaves-primary-soft, #e8efe8) !important;
+    background-color: var(--kodewaves-primary-soft, #edf3ff) !important;
 }
 
 body[data-theme='dark'][class*='console-'] .fleet-ops-control-hub-tone-blue {
@@ -206,16 +206,6 @@ body[class*='console-'] header.next-view-header .next-view-header-right {
     }
 }
 
-@media (width <= 767px) {
-    body[class*='console-'] .next-view-container > nav.next-sidebar {
-        z-index: 20 !important;
-    }
-
-    body[class*='console-'] .next-mobile-navbar {
-        z-index: 30 !important;
-    }
-}
-
 /* Keep the full header useful on tablets: preserve icon actions and move labels
    into SmartNavMenu's accessible overflow list instead of clipping the logo. */
 @media (width >= 768px) and (width <= 1100px) {
@@ -254,9 +244,9 @@ body[class*='console-'] .chat-compose-overlay {
 
 /* Route Atlas control tokens apply after dynamically loaded engine styles. */
 body[class*='console-'] {
-    --route-atlas-primary: #426b57;
-    --route-atlas-primary-hover: #294b3a;
-    --route-atlas-primary-soft: #e8efe8;
+    --route-atlas-primary: #2458d3;
+    --route-atlas-primary-hover: #1843a8;
+    --route-atlas-primary-soft: #edf3ff;
     --route-atlas-primary-border: #315641;
     --route-atlas-focus: rgb(66 107 87 / 38%);
 }
@@ -345,8 +335,8 @@ body[data-theme='dark'][class*='console-'] header.next-view-header .next-user-bu
 body[data-theme='dark'][class*='console-'] header.next-view-header .next-view-header-item:hover,
 body[data-theme='dark'][class*='console-'] header.next-view-header .next-view-header-item.active,
 body[data-theme='dark'][class*='console-'] header.next-view-header .next-view-header-item.is-open {
-    background-color: #426b57 !important;
-    border-color: #426b57 !important;
+    background-color: #2458d3 !important;
+    border-color: #2458d3 !important;
     color: #fff !important;
 }
 
@@ -386,7 +376,7 @@ body[class*='console-'] .fleetbase-pagination .direction-button.active,
 body[class*='console-'] .fleetbase-pagination .page-item-arrow.active {
     background-color: var(--route-atlas-primary-soft) !important;
     border-color: var(--route-atlas-primary) !important;
-    color: var(--kodewaves-primary-deep, #294b3a) !important;
+    color: var(--kodewaves-primary-deep, #1843a8) !important;
 }
 
 body[data-theme='dark'][class*='console-'] .fleetbase-pagination .page-item.active,
@@ -399,7 +389,7 @@ body[class*='console-'] .order-filter-chip.active,
 body[class*='console-'] .filter-row.filter-is-active .filter-row-header {
     background-color: var(--route-atlas-primary-soft) !important;
     border-color: var(--route-atlas-primary) !important;
-    color: var(--kodewaves-primary-deep, #294b3a) !important;
+    color: var(--kodewaves-primary-deep, #1843a8) !important;
 }
 
 body[data-theme='dark'][class*='console-'] .order-filter-chip.active,

@@ -31,7 +31,7 @@
     display: flex;
     flex-direction: column;
     padding: clamp(30px, 4vw, 54px);
-    background: linear-gradient(150deg, #f8fafc 0%, #e8efe8 100%);
+    background: #f8fafc;
 }
 
 .auth-workspace-brand {
@@ -287,7 +287,7 @@ img.kodewaves-console-mark {
 
 .auth-license-link:focus-visible {
     border-radius: 0.25rem;
-    outline: 2px solid #426b57;
+    outline: 2px solid #2458d3;
     outline-offset: 3px;
 }
 
