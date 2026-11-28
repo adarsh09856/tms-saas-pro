@@ -2178,7 +2178,7 @@ body[data-theme] .console-navigation-search .next-sidebar-navigator-viewport,
     transform: rotate(45deg);
 }
 
-body[data-theme] .console-navigation-directory .console-navigation-group > a.next-nav-item {
+body[data-theme] .console-navigation-directory .console-navigation-group a.next-nav-item {
     padding-inline-start: 1.75rem;
 }
 

@@ -2,6 +2,15 @@
 
 The Codex release owner carries the redesign through implementation, review, fixes and deployment. Batch public pages and signed-in panels into one release review and give one consolidated report. Recheck individual failures when necessary, then rerun the affected release checks together.
 
+## Current delivery sequence
+
+1. Build one searchable workspace sidebar with expandable groups for transport operations, finance, warehouse, team, AI and platform administration when each module and role permits access. Include the existing screens inside those groups and retain the mobile drawer.
+2. Apply the Claymorphism visual language across the public site, authentication, dashboard, module lists, forms, detail panels, settings and administration. Keep dense operational tables readable and preserve existing actions and data.
+3. Trace booking, dispatch, fleet, delivery proof, invoicing, payments, warehouse stock and available AI workflows through their existing routes. Repair broken screens and permission handling found during that review.
+4. Review public and signed-in experiences together at desktop and phone sizes, including role access, navigation, overlays, forms and core workflows. Build the reviewed commit on the VPS, push it to GitHub and deploy it with a rollback path.
+
+The driver app and custom vendor domain work remain deferred while the web panels are completed.
+
 Complete the redesign before releasing workflow additions. Use the supplied NShine reference for product hierarchy and workflow presentation and the [Claymorphism design skill](https://github.com/bergside/awesome-design-skills/tree/main/skills/claymorphism) for visual styling across the public site and every console panel. Keep the Transport Diary mark, slate text, blue primary actions, and clear operational status colors. Use opaque pastel surfaces, rounded panels and soft inset and outer shadows. Keep tables, maps and nested content flat where staff scan dense information. Use real screenshots from fictional staging records.
 
 Use the [marketing demo](https://claymorphism-typeui-0258c8ea.vercel.app/marketing) for the shape and spacing of calls to action and feature cards. Use the [application demo](https://claymorphism-typeui-0258c8ea.vercel.app/application) for rounded controls, restrained color accents, and clear content grouping.

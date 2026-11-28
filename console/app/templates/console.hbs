@@ -36,13 +36,21 @@
                                 </summary>
                                 {{#each item.sections as |section|}}
                                     {{#if section.title}}
-                                        <div class="console-navigation-section-label">{{section.title}}</div>
+                                        <details open class="console-navigation-subgroup">
+                                            <summary class="console-navigation-section-label">{{section.title}}</summary>
+                                            {{#each section.links as |child|}}
+                                                {{#if child.route}}
+                                                    <LinkTo @route={{child.route}} @models={{child.routeParams}} @query={{child.queryParams}} class="next-nav-item" {{on "click" this.closeMobileWorkspaceNavigation}}>{{or child.label child.title}}</LinkTo>
+                                                {{/if}}
+                                            {{/each}}
+                                        </details>
+                                    {{else}}
+                                        {{#each section.links as |child|}}
+                                            {{#if child.route}}
+                                                <LinkTo @route={{child.route}} @models={{child.routeParams}} @query={{child.queryParams}} class="next-nav-item" {{on "click" this.closeMobileWorkspaceNavigation}}>{{or child.label child.title}}</LinkTo>
+                                            {{/if}}
+                                        {{/each}}
                                     {{/if}}
-                                    {{#each section.links as |child|}}
-                                        {{#if child.route}}
-                                            <LinkTo @route={{child.route}} @models={{child.routeParams}} @query={{child.queryParams}} class="next-nav-item" {{on "click" this.closeMobileWorkspaceNavigation}}>{{or child.label child.title}}</LinkTo>
-                                        {{/if}}
-                                    {{/each}}
                                 {{/each}}
                             </details>
                         {{else if item.route}}
@@ -52,6 +60,12 @@
                             </LinkTo>
                         {{/if}}
                     {{/each}}
+                    {{#if this.currentUser.isAdmin}}
+                        <LinkTo @route="console.admin" class="next-nav-item" {{on "click" this.closeMobileWorkspaceNavigation}}>
+                            <FaIcon @icon="shield-halved" @size="xs" />
+                            <span>Platform administration</span>
+                        </LinkTo>
+                    {{/if}}
                     <LinkTo @route="console.settings" class="next-nav-item" {{on "click" this.closeMobileWorkspaceNavigation}}>
                         <FaIcon @icon="gear" @size="xs" />
                         <span>Settings</span>
