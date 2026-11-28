@@ -231,3 +231,69 @@ index 187fb12765ce755a5859a1277f58490013172036..189e93c77fc12f2ee8cccae10dd5760a
          @extension="pallet"
          @leftHeaderWrapperClass="pallet-dashboard-title"
          @rightHeaderWrapperClass="pallet-dashboard-actions"
+diff --git a/server/src/Http/Controllers/WarehouseController.php b/server/src/Http/Controllers/WarehouseController.php
+--- a/server/src/Http/Controllers/WarehouseController.php
++++ b/server/src/Http/Controllers/WarehouseController.php
+@@ -3,7 +3,7 @@
+ namespace Fleetbase\Pallet\Http\Controllers;
+ 
+ use Fleetbase\Exceptions\FleetbaseRequestValidationException;
+-use Fleetbase\Models\Place;
++use Fleetbase\FleetOps\Models\Place;
+ use Fleetbase\Pallet\Models\WarehouseAisle;
+ use Fleetbase\Pallet\Models\WarehouseBin;
+ use Fleetbase\Pallet\Models\WarehouseDock;
+diff --git a/server/src/Models/Warehouse.php b/server/src/Models/Warehouse.php
+--- a/server/src/Models/Warehouse.php
++++ b/server/src/Models/Warehouse.php
+@@ -3,9 +3,9 @@
+ namespace Fleetbase\Pallet\Models;
+ 
+ use Fleetbase\Casts\Json;
++use Fleetbase\FleetOps\Models\Place;
+ use Fleetbase\Models\Company;
+ use Fleetbase\Models\Model;
+-use Fleetbase\Models\Place;
+ use Fleetbase\Models\User;
+ use Fleetbase\Traits\HasApiModelBehavior;
+ use Fleetbase\Traits\HasPublicId;
+diff --git a/server/src/Models/Inventory.php b/server/src/Models/Inventory.php
+--- a/server/src/Models/Inventory.php
++++ b/server/src/Models/Inventory.php
+@@ -439,7 +439,6 @@
+             'batch_uuid'              => $this->batch_uuid,
+             'transaction_type'        => $type,
+             'quantity'                => $quantity,
+-            'transaction_date_at'     => now(),
+             'transaction_created_at'  => now(),
+             'source_uuid'             => $this->uuid,
+             'source_type'             => static::class,
+diff --git a/server/src/Models/StockTransaction.php b/server/src/Models/StockTransaction.php
+--- a/server/src/Models/StockTransaction.php
++++ b/server/src/Models/StockTransaction.php
+@@ -32,7 +32,7 @@
+      *
+      * @var array
+      */
+-    protected $searchableColumns = ['uuid', 'product_uuid', 'variant_uuid', 'transaction_type', 'quantity', 'transaction_date_at'];
++    protected $searchableColumns = ['uuid', 'product_uuid', 'variant_uuid', 'transaction_type', 'quantity', 'transaction_created_at'];
+ 
+     /**
+      * The attributes that are mass assignable.
+@@ -49,7 +49,6 @@
+         'batch_uuid',
+         'transaction_type',
+         'quantity',
+-        'transaction_date_at',
+         'source_uuid',
+         'source_type',
+         'destination_uuid',
+@@ -65,7 +64,7 @@
+      *
+      * @var array
+      */
+-    protected $casts = [];
++    protected $casts = ['meta' => 'array'];
+ 
+     /**
+      * Dynamic attributes that are appended to object.
