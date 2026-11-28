@@ -17,6 +17,7 @@ const packages = [
     { name: 'ember-ui', base: '82ccf2634f372405a4ac363b6b9e7bb562cbcc1b' },
     { name: 'fleetops', base: '69a6e03bf9af947cf8c84456002f54ce9f595273' },
     { name: 'registry-bridge', base: 'a61c40f55fcad2113914aa0e0aa8a605c18951d2' },
+    { name: 'ai', base: '9f873040f012569a488ae2a04bcc8efd4ddf1235' },
     { name: 'ledger', base: 'cc7638f8987316cfd19dbeb609f2eb230ff55f1e' },
     { name: 'pallet', base: 'edc62296091511c51d0091244c444cb3eab3c774' },
 ];

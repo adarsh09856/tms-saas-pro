@@ -214,3 +214,20 @@ index 316c539..2659b4a 100644
                  {{/each}}
              </tbody>
          </table>
+diff --git a/addon/templates/home.hbs b/addon/templates/home.hbs
+index 187fb12765ce755a5859a1277f58490013172036..189e93c77fc12f2ee8cccae10dd5760acc0a0f32 100644
+--- a/addon/templates/home.hbs
++++ b/addon/templates/home.hbs
+@@ -1,7 +1,11 @@
+ <Layout::Section::Body class="overflow-y-scroll h-full">
++    <section class="tms-module-intro" aria-label="Warehouse overview">
++        <h2>Warehouse</h2>
++        <p>Review stock availability, reservations and picking work across your facilities.</p>
++    </section>
+     <Dashboard
+         @defaultDashboardId="pallet"
+-        @defaultDashboardName="Pallet Dashboard"
++        @defaultDashboardName="Warehouse dashboard"
+         @extension="pallet"
+         @leftHeaderWrapperClass="pallet-dashboard-title"
+         @rightHeaderWrapperClass="pallet-dashboard-actions"

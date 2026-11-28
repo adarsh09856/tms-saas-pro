@@ -1,0 +1,20 @@
+diff --git a/addon/templates/home.hbs b/addon/templates/home.hbs
+index 31b36035efa9986522d3d74108ae9c226cddd26e..521741cc21851794e47719c14bddc882301760ad 100644
+--- a/addon/templates/home.hbs
++++ b/addon/templates/home.hbs
+@@ -1,7 +1,8 @@
+-<div class="p-4">
+-    <Layout::Section::Header @title="Fleetbase AI" />
+-    <Layout::Section::Body>
+-        <p class="text-sm text-gray-600 dark:text-gray-300">Fleetbase AI runs globally from the header button or keyboard shortcut.</p>
+-    </Layout::Section::Body>
+-</div>
+-{{outlet}}
++<Layout::Section::Header @title="Transport Diary AI" />
++<Layout::Section::Body>
++    <section class="tms-module-intro" aria-label="Using the assistant">
++        <h2>Work with the assistant</h2>
++        <p>When enabled for your workspace, open the assistant from the header. Ask about a workflow or review a proposed action before applying it.</p>
++    </section>
++    {{outlet}}
++</Layout::Section::Body>

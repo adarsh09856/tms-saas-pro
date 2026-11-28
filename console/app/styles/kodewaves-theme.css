@@ -12,6 +12,24 @@
     --brand-primary-color: var(--kodewaves-primary);
 }
 
+.tms-module-intro {
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border-bottom: 1px solid var(--kodewaves-line);
+}
+
+.tms-module-intro h2 {
+    color: inherit;
+    font-size: 1.35rem;
+    font-weight: 650;
+    line-height: 1.25;
+}
+
+.tms-module-intro p {
+    max-width: 56ch;
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+}
+
 .tms-settings-page {
     width: 100%;
     padding: 2rem clamp(1rem, 3vw, 2.5rem);

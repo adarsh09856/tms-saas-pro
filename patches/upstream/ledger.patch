@@ -229,3 +229,20 @@ index cada4ab4c6c573ae3ddcfcc8d6979d76b5126525..0da4e392d84d5904a778ce85a2bcc002
 +        {{/if}}
 +    </div>
 +</Layout::Section::Body>
+diff --git a/addon/templates/home.hbs b/addon/templates/home.hbs
+index 2c8c8e45079309237628b40b5508e5cc569b64dd..f779e48cdbda811641c9b31d111f04b87f524943 100644
+--- a/addon/templates/home.hbs
++++ b/addon/templates/home.hbs
+@@ -1,7 +1,11 @@
+ <Layout::Section::Body class="overflow-y-scroll h-full">
++    <section class="tms-module-intro" aria-label="Finance overview">
++        <h2>Finance</h2>
++        <p>Review invoices from delivered bookings, track receipts and check outstanding balances.</p>
++    </section>
+     <Dashboard
+         @defaultDashboardId="ledger"
+-        @defaultDashboardName="Ledger Dashboard"
++        @defaultDashboardName="Finance dashboard"
+         @extension="ledger"
+         @leftHeaderWrapperClass="ledger-dashboard-title"
+         @rightHeaderWrapperClass="ledger-dashboard-actions"
