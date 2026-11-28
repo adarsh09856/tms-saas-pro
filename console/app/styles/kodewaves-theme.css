@@ -1803,6 +1803,14 @@ body[data-theme] :is(.next-view-container > nav.next-sidebar, .next-view-contain
     background-color: #fff;
 }
 
+body[data-theme='light'] .next-content-overlay-panel {
+    background-color: #fff;
+}
+
+body[data-theme='dark'] .next-content-overlay-panel {
+    background-color: #0f172a;
+}
+
 body[data-theme] .next-view-container > nav.next-sidebar a.next-nav-item {
     border-radius: 0.5rem;
     color: var(--kodewaves-ink);
@@ -1966,10 +1974,14 @@ body[data-theme='dark'] .next-view-container > nav.next-sidebar a.next-nav-item 
 /* Keep the extension catalog in the shared workspace sidebar on desktop. */
 body[data-theme] .console-primary-navigation {
     display: flex;
-    min-height: 100%;
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.25rem 0.35rem 0.75rem;
+}
+
+body[data-theme] .console-primary-navigation + .console-primary-navigation {
+    border-top: 1px solid var(--kodewaves-line);
+    padding-top: 0.75rem;
 }
 
 body[data-theme] .console-primary-navigation-heading {

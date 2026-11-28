@@ -1,7 +1,10 @@
 {{page-title "Admin"}}
 
 <EmberWormhole @to="sidebar-menu-items">
-    <Layout::Sidebar::Navigator @items={{this.navigationItems}} @searchPlaceholder="Search Admin..." />
+    <div class="console-primary-navigation">
+        <div class="console-primary-navigation-heading">Platform administration</div>
+        <Layout::Sidebar::Navigator @items={{this.navigationItems}} @searchPlaceholder="Search Admin..." @searchShortcutEnabled={{false}} />
+    </div>
 </EmberWormhole>
 
 <Layout::Section::Container>

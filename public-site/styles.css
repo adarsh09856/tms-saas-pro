@@ -469,6 +469,28 @@ body { background: #fbfbf7; }
 .page-hero .wrap { max-width: 900px; }
 .page-hero h1 { max-width: 850px; font-size: clamp(2.4rem, 5.5vw, 4.4rem); }
 .page-hero p { max-width: 720px; font-size: 1.08rem; }
+.page-hero .button { margin-top: 0.75rem; }
+
+.product-preview {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.product-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+}
+
+.product-preview figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
 .feature-grid { border-top-color: #d6dfd4; }
 .feature { transition: background-color .18s ease; }
 .feature:hover { background: #f7f9f5; }
