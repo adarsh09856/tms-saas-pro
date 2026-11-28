@@ -2217,7 +2217,6 @@ body[data-theme] .console-navigation-directory .console-navigation-group > a.nex
 
 /* Use the same surface depth in operational, settings and administration screens. */
 body[data-theme] :is(
-    .tms-workspace-heading,
     .tms-company-detail-card,
     .tms-admin-data-panel,
     .tms-admin-page .content-panel,
@@ -2240,4 +2239,48 @@ body[data-theme] .console-navigation-section-label {
     color: var(--kodewaves-muted);
     font-size: 0.72rem;
     font-weight: 650;
+}
+
+/* Rounded controls and small color accents carry the application reference across modules. */
+body[data-theme] :is(.btn-primary, .tms-workspace-primary, .next-sidebar-navigator-primary-action) {
+    border-radius: 999px;
+}
+
+body[data-theme] .console-navigation-directory a.next-nav-item.active {
+    background: var(--kodewaves-primary-soft);
+    color: var(--kodewaves-primary);
+    border-radius: 999px;
+}
+
+body[data-theme] .console-navigation-directory summary {
+    border-radius: 999px;
+}
+
+body[data-theme='light'] .console-navigation-directory summary:hover {
+    background: #edf3ff;
+}
+
+body[data-theme] .tms-workspace-heading {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+body[data-theme] :is(.tms-workspace-overview, .tms-workflow-step, .tms-platform-task) {
+    box-shadow: var(--td-clay-raised);
+}
+
+body[data-theme='light'] .tms-workspace-overview {
+    background: #eef3ff;
+}
+
+body[data-theme='light'] .admin-dashboard-widget:nth-child(3n + 2) {
+    background: #eef8f5;
+}
+
+body[data-theme='light'] .admin-dashboard-widget:nth-child(3n + 3) {
+    background: #f4effc;
 }

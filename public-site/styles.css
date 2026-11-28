@@ -764,3 +764,13 @@ body { background: #fbfbf7; }
   border-radius: 22px;
   box-shadow: var(--td-clay-lift);
 }
+
+/* The marketing reference uses pill actions, with larger radii for feature surfaces. */
+:is(.button, .workbench-tabs button) { border-radius: 999px; }
+:is(.route-card, .workbench-preview, .contact-box, .feature, .plan-panel, .role-card) {
+  border-radius: clamp(18px, 3vw, 30px);
+}
+.workbench-tabs {
+  background: #e8effc;
+  border-bottom-color: #d4e0f6;
+}

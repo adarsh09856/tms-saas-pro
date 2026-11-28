@@ -4,6 +4,8 @@ The Codex release owner carries the redesign through implementation, review, fix
 
 Complete the redesign before releasing workflow additions. Use the supplied NShine reference for product hierarchy and workflow presentation and the [Claymorphism design skill](https://github.com/bergside/awesome-design-skills/tree/main/skills/claymorphism) for visual styling across the public site and every console panel. Keep the Transport Diary mark, slate text, blue primary actions, and clear operational status colors. Use opaque pastel surfaces, rounded panels and soft inset and outer shadows. Keep tables, maps and nested content flat where staff scan dense information. Use real screenshots from fictional staging records.
 
+Use the [marketing demo](https://claymorphism-typeui-0258c8ea.vercel.app/marketing) for the shape and spacing of calls to action and feature cards. Use the [application demo](https://claymorphism-typeui-0258c8ea.vercel.app/application) for rounded controls, restrained color accents, and clear content grouping.
+
 | Surface | Design work | Screenshot and acceptance |
 | --- | --- | --- |
 | Public site | Rework Home, Services, plans, About and Contact around the offered service. Use a real workspace preview and clear signup and walkthrough links. | Desktop and phone overview, readable navigation, working links and contact flow. |

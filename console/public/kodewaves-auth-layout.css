@@ -308,3 +308,5 @@ img.kodewaves-console-mark {
     border-radius: 14px;
     box-shadow: 0 4px 9px rgb(24 59 128 / 22%), inset 0 2px 3px rgb(255 255 255 / 24%), inset 0 -3px 6px rgb(17 37 77 / 22%);
 }
+
+.auth-login-form button.btn-primary { border-radius: 999px; }
