@@ -4,8 +4,11 @@
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full">
-    <div class="container mx-auto h-screen">
-        <div class="max-w-3xl my-10 mx-auto space-y-4">
+    <div class="tms-settings-page">
+        <div class="tms-settings-content space-y-4">
+            <p class="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
+                Choose who receives company notifications and configure organization-wide SMS sender details.
+            </p>
             {{#each-in this.groupedNotifications as |groupName notifications|}}
                 <ContentPanel @title={{concat (smart-humanize groupName) " " (t "console.admin.notifications.notification-settings") }} @open={{true}} @wrapperClass="bordered-classic">
                     {{#each notifications as |notification|}}
@@ -44,5 +47,5 @@
             </ContentPanel>
         </div>
     </div>
-    <Spacer @height="300px" />
+
 </Layout::Section::Body>

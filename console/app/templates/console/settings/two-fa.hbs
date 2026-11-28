@@ -2,8 +2,12 @@
 <Layout::Section::Header @title="2FA" />
 
 <Layout::Section::Body class="overflow-y-scroll h-full">
-    <div class="container mx-auto h-screen">
-        <div class="max-w-3xl my-10 mx-auto space-y-6">
+    <div class="tms-settings-page">
+        <div class="tms-settings-content space-y-6">
+            <div class="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-slate-700 dark:border-blue-900 dark:bg-slate-900 dark:text-slate-200" role="note">
+                <p class="font-semibold text-slate-900 dark:text-white">Organization security policy</p>
+                <p class="mt-1">Enable two-factor authentication for this workspace, then optionally require every member to set it up. Members manage their personal 2FA enrollment from their account settings.</p>
+            </div>
             <ContentPanel @title="2FA Settings" @open={{true}} @wrapperClass="bordered-classic">
                 <div class="mb-3">
                     {{#if this.loadCompanyTwoFaSettings.isIdle}}
@@ -33,5 +37,5 @@
             </ContentPanel>
         </div>
     </div>
-    <Spacer @height="300px" />
+
 </Layout::Section::Body>

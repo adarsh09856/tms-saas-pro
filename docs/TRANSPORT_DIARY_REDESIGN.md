@@ -16,4 +16,24 @@ Complete the redesign before releasing workflow additions. Use the supplied NShi
 
 Capture desktop and phone widths in one browser pass on the isolated VPS candidate. Save before and after screenshots per surface, using fictional data throughout. Check overflow, keyboard navigation, focus, loading, empty and error states as part of the same pass. The driver app and custom company domains are deferred.
 
+## Role coverage for the redesign
+
+| Role | Controls to organize and verify |
+| --- | --- |
+| Platform Admin | Company management, plans, provisioning, support, monitoring and platform settings. Verify that company roles cannot open these routes or call their APIs. |
+| Company owner and administrator | Company settings, team membership, permissions and enabled modules. Verify that administration applies only to the current company. |
+| Dispatcher and operations staff | Bookings, assignments, dispatch, tracking and delivery proof. Show allowed actions beside the records they act on. |
+| Fleet staff | Vehicles, drivers, maintenance, documents and fuel, subject to assigned permissions. |
+| Finance staff | INR invoices, receipts, payments and reports, with separate permissions for review and changes where supported. |
+| Warehouse staff | Inventory, receiving, transfers, picking and loading, subject to the company's enabled modules and assigned permissions. |
+| Staff with AI or automation access | Review suggestions, approve permitted actions, and inspect run history or failures. Configuration and approvals follow the existing role permissions. |
+
+Use the existing ability checks and server authorization as the source of truth. Apply role visibility consistently to sidebar items, page actions, dialogs and direct links. Include allowed and denied paths and two separate fictional companies in the same release review.
+
 After review, verify the built source matches the intended Git changes, push the release, preserve the existing source archive and rollback files, and verify the deployed screenshots and core flows at https://tms.kodewaves.in.
+
+## Candidate evidence
+
+Commit `82df3d7` is staged on the VPS. The combined browser run opened Home, Services, About and Contact without horizontal overflow at 1440px and 390px. A fictional account signed in, opened the dashboard and Create booking, and expanded Companies and plans to reveal Billing Plans at both widths. The homepage preview uses a screenshot from that isolated account.
+
+The remaining review covers signup and recovery, employee and platform role boundaries, drawer and popup interaction, dispatch through delivery proof, finance, inventory, and enabled AI and automation. The candidate has not been published.

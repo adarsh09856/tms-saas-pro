@@ -12,6 +12,34 @@
     --brand-primary-color: var(--kodewaves-primary);
 }
 
+.tms-settings-page {
+    width: 100%;
+    padding: 2rem clamp(1rem, 3vw, 2.5rem);
+}
+
+.tms-settings-content {
+    width: 100%;
+    max-width: 64rem;
+    margin-inline: auto;
+}
+
+.tms-settings-content .next-content-panel {
+    border: 1px solid var(--kodewaves-line);
+    border-radius: 0.75rem;
+    box-shadow: none;
+}
+
+@media (width <= 767px) {
+    .tms-settings-page {
+        padding: 1rem 0.75rem 5rem;
+    }
+
+    .tms-settings-content :is(.flex.items-center.space-x-4) {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+}
+
 body[data-theme='light'] {
     background-color: var(--kodewaves-paper);
     color: var(--kodewaves-ink);

@@ -1,8 +1,11 @@
 <Layout::Section::Header @title={{t "console.settings.index.title"}} />
 
 <Layout::Section::Body class="overflow-y-scroll h-full">
-    <div class="container mx-auto h-screen">
-        <div class="max-w-3xl my-10 mx-auto space-y-6">
+    <div class="tms-settings-page">
+        <div class="tms-settings-content space-y-6">
+            <p class="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
+                Manage the details and visual identity shared across this company workspace.
+            </p>
             <ContentPanel @title={{t "console.settings.index.title"}} @open={{true}} @wrapperClass="bordered-classic">
                 <form {{on "submit" (perform this.saveSettings)}}>
                     <InputGroup @name={{t "console.settings.index.organization-name"}} @value={{@model.name}} />
