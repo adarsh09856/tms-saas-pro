@@ -9,14 +9,49 @@
         @showSidebarToggle={{true}}
     />
     <Layout::Main class={{this.currentRouteClass}}>
-        <Layout::Sidebar />
+        <Layout::Sidebar class="console-workspace-sidebar" />
         <EmberWormhole @to="sidebar-menu-items">
             <div class="console-primary-navigation">
+                <div class="console-sidebar-rail">
+                    <button type="button" aria-label="Expand workspace navigation" disabled={{this.sidebar.isDisabled}} {{on "click" this.expandWorkspaceNavigation}}>
+                        <FaIcon @icon="bars" />
+                    </button>
+                </div>
                 <div class="console-primary-navigation-heading-row">
                     <div class="console-primary-navigation-heading">Workspace</div>
                     <Layout::Header::SmartNavMenu class="console-sidebar-nav-customizer" @maxVisible={{100}} />
                 </div>
-                <Layout::Sidebar::Navigator @items={{this.mainNavigationItems}} @searchPlaceholder="Search workspace..." />
+                <Layout::Sidebar::Navigator class="console-navigation-search" @items={{this.mainNavigationItems}} @searchPlaceholder="Search workspace..." />
+                <div class="console-navigation-directory" aria-label="Workspace navigation">
+                    <LinkTo @route="console.home" class="next-nav-item">
+                        <FaIcon @icon="house" @size="xs" />
+                        <span>Dashboard</span>
+                    </LinkTo>
+                    {{#each this.mainNavigationItems as |item|}}
+                        {{#if item.children.length}}
+                            <details open class="console-navigation-group">
+                                <summary>
+                                    {{#if item.icon}}<FaIcon @icon={{item.icon}} @prefix={{item.iconPrefix}} @size="xs" />{{/if}}
+                                    <span>{{or item.label item.title}}</span>
+                                </summary>
+                                {{#each item.children as |child|}}
+                                    {{#if child.route}}
+                                        <LinkTo @route={{child.route}} class="next-nav-item">{{or child.label child.title}}</LinkTo>
+                                    {{/if}}
+                                {{/each}}
+                            </details>
+                        {{else if item.route}}
+                            <LinkTo @route={{item.route}} class="next-nav-item">
+                                {{#if item.icon}}<FaIcon @icon={{item.icon}} @prefix={{item.iconPrefix}} @size="xs" />{{/if}}
+                                <span>{{or item.label item.title}}</span>
+                            </LinkTo>
+                        {{/if}}
+                    {{/each}}
+                    <LinkTo @route="console.settings" class="next-nav-item">
+                        <FaIcon @icon="gear" @size="xs" />
+                        <span>Settings</span>
+                    </LinkTo>
+                </div>
             </div>
         </EmberWormhole>
         <Layout::Section>

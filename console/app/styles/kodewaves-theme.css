@@ -2137,3 +2137,80 @@ body[data-theme] :is(.btn-primary, .next-sidebar-navigator-primary-action, a.nex
     outline: 2px solid var(--kodewaves-primary);
     outline-offset: 2px;
 }
+
+body[data-theme] .console-navigation-search .next-sidebar-navigator-viewport,
+.console-sidebar-rail {
+    display: none;
+}
+
+.console-navigation-directory {
+    display: grid;
+    gap: 0.25rem;
+    padding-block: 0.5rem;
+}
+
+.console-navigation-directory :is(.next-nav-item, summary) {
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding-inline: 0.625rem;
+    overflow-wrap: anywhere;
+}
+
+.console-navigation-directory summary {
+    cursor: pointer;
+    font-weight: 650;
+}
+
+.console-navigation-directory summary::after {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-inline-start: auto;
+    flex: none;
+    border: solid currentColor;
+    border-width: 0 1px 1px 0;
+    transform: rotate(-45deg);
+}
+
+.console-navigation-directory details[open] > summary::after {
+    transform: rotate(45deg);
+}
+
+body[data-theme] .console-navigation-directory .console-navigation-group > a.next-nav-item {
+    padding-inline-start: 1.75rem;
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+    body[data-theme] nav.console-workspace-sidebar.sidebar-hidden:has(.console-sidebar-rail button:enabled) {
+        transform: none;
+        margin-right: 0;
+        pointer-events: auto;
+        transition: none;
+    }
+
+    body[data-theme] nav.console-workspace-sidebar.sidebar-hidden:has(.console-sidebar-rail button:enabled):not(:hover, :focus-within) {
+        width: 3rem !important;
+    }
+
+    .console-workspace-sidebar.sidebar-hidden .console-sidebar-rail {
+        display: block;
+    }
+
+    .console-sidebar-rail button {
+        width: 2rem;
+        min-height: 2.5rem;
+        border-radius: 0.625rem;
+        color: inherit;
+    }
+
+    .console-workspace-sidebar.sidebar-hidden:not(:hover, :focus-within) :is(
+        .console-primary-navigation > :not(.console-sidebar-rail),
+        #sidebar-menu-items > :not(:has(.console-sidebar-rail)),
+        .next-sidebar-footer,
+        .gutter
+    ) {
+        visibility: hidden;
+    }
+}

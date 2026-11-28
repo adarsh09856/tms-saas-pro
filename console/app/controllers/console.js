@@ -25,6 +25,7 @@ export default class ConsoleController extends Controller {
     @service intl;
     @service universe;
     @service abilities;
+    @service sidebar;
     @tracked organizations = [];
     @tracked menuItems = [];
     @tracked userMenuItems = [];
@@ -32,6 +33,10 @@ export default class ConsoleController extends Controller {
 
     get currentRouteClass() {
         return dasherize(this.router.currentRouteName.replace(/\./g, ' '));
+    }
+
+    @action expandWorkspaceNavigation() {
+        this.sidebar.toggle();
     }
 
     get mainNavigationItems() {

@@ -1,0 +1,9 @@
+{{#if this.isInr}}
+    {{#if @showCode}}
+        INR
+    {{else}}
+        {{format-currency @value "INR"}}
+    {{/if}}
+{{else}}
+    <span class="text-gray-500 dark:text-gray-400">Source currency review required</span>
+{{/if}}
