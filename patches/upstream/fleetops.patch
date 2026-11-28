@@ -885,7 +885,7 @@ index 6a6f05a96a2cb4dbc9cdf4b09d724ca7b71dd685..7098349106f2c26d674a66778a2fdf47
  
      /**
 diff --git a/server/src/Http/Controllers/Internal/v1/OrderController.php b/server/src/Http/Controllers/Internal/v1/OrderController.php
-index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..1bb2d33a27050457efa2804e1e136bd3ab16f795 100644
+index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..49544c03a2183ac7d29c492aba5706fe59013b37 100644
 --- a/server/src/Http/Controllers/Internal/v1/OrderController.php
 +++ b/server/src/Http/Controllers/Internal/v1/OrderController.php
 @@ -48,6 +48,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -1266,6 +1266,15 @@ index 2bbe6420d661ba9fe8b547d2cf6274c04be6e1a3..1bb2d33a27050457efa2804e1e136bd3
      }
  
      /**
+@@ -1333,7 +1438,7 @@ class OrderController extends FleetOpsController
+     /**
+      * Store a proof photo and create its file record.
+      */
+-    protected function storeProofPhoto(Proof $proof, UploadedFile|string $photo, string $disk, string $bucket): File
++    protected function storeProofPhoto(Proof $proof, UploadedFile|string $photo, string $disk, ?string $bucket): File
+     {
+         $isFile      = $photo instanceof UploadedFile;
+         $contents    = $isFile ? file_get_contents($photo->getRealPath()) : base64_decode(Str::contains($photo, 'base64,') ? Str::after($photo, 'base64,') : $photo);
 diff --git a/server/src/Http/Controllers/Internal/v1/SettingController.php b/server/src/Http/Controllers/Internal/v1/SettingController.php
 index 6f06e0e83bf116322147f0b4bc3d5eb3d224e128..f99f9a329ae888c6c8ef3b8f31acc7b1c12edb51 100644
 --- a/server/src/Http/Controllers/Internal/v1/SettingController.php
