@@ -246,3 +246,163 @@ index 2c8c8e45079309237628b40b5508e5cc569b64dd..f779e48cdbda811641c9b31d111f04b8
          @extension="ledger"
          @leftHeaderWrapperClass="ledger-dashboard-title"
          @rightHeaderWrapperClass="ledger-dashboard-actions"
+diff --git a/server/src/Services/InvoiceService.php b/server/src/Services/InvoiceService.php
+index 37f7277c7667b28c305e48452a30ead8328f59b1..cc3541c4f65f62e3dfdd6bb42825f63a95ce3eb0 100644
+--- a/server/src/Services/InvoiceService.php
++++ b/server/src/Services/InvoiceService.php
+@@ -363,8 +363,9 @@ class InvoiceService
+     public function recordPayment(Invoice $invoice, int $amount, array $options = []): Invoice
+     {
+         return DB::transaction(function () use ($invoice, $amount, $options) {
+-            $cashAccount = $this->getCashAccount($invoice->company_uuid);
+-            $arAccount   = $this->getAccountsReceivableAccount($invoice->company_uuid);
++            $currency    = strtoupper($invoice->currency ?? 'INR');
++            $cashAccount = $this->getCashAccount($invoice->company_uuid, $currency);
++            $arAccount   = $this->getAccountsReceivableAccount($invoice->company_uuid, $currency);
+ 
+             // Create the authoritative Transaction record first so it appears in the Transactions list.
+             // direction = 'credit' — money flows IN to the company (a receipt, not a disbursement).
+@@ -385,7 +386,7 @@ class InvoiceService
+                 'payee_type'         => \Fleetbase\Models\Company::class,
+                 'amount'             => $amount,
+                 'net_amount'         => $amount,
+-                'currency'           => $invoice->currency ?? 'INR',
++                'currency'           => $currency,
+                 'description'        => "Payment for invoice {$invoice->number}",
+                 'type'               => 'invoice_payment',
+                 // credit = inbound money (company receives funds from the customer)
+@@ -396,7 +397,7 @@ class InvoiceService
+                 'reference'          => $reference,
+                 'settled_at'         => now(),
+                 'settled_amount'     => $amount,
+-                'settled_currency'   => $invoice->currency ?? 'INR',
++                'settled_currency'   => $currency,
+                 'subject_uuid'       => $invoice->uuid,
+                 'subject_type'       => Invoice::class,
+                 'context_uuid'       => $invoice->uuid,
+@@ -411,7 +412,7 @@ class InvoiceService
+                 "Payment for invoice {$invoice->number}",
+                 array_merge($options, [
+                     'company_uuid'     => $invoice->company_uuid,
+-                    'currency'         => $invoice->currency,
++                    'currency'         => $currency,
+                     'type'             => 'invoice_payment',
+                     'transaction_uuid' => $transaction->uuid,
+                     'subject_uuid'     => $invoice->uuid,
+@@ -443,13 +444,12 @@ class InvoiceService
+     /**
+      * Get or create the default cash account for a company.
+      */
+-    protected function getCashAccount(string $companyUuid): Account
++    protected function getCashAccount(string $companyUuid, string $currency): Account
+     {
+-        return Account::updateOrCreate(
+-            [
+-                'company_uuid' => $companyUuid,
+-                'code'         => 'CASH-DEFAULT',
+-            ],
++        return $this->invoiceAccount(
++            $companyUuid,
++            'CASH',
++            $currency,
+             [
+                 'name'              => 'Cash',
+                 'type'              => 'asset',
+@@ -463,13 +463,12 @@ class InvoiceService
+     /**
+      * Get or create the default accounts receivable account for a company.
+      */
+-    protected function getAccountsReceivableAccount(string $companyUuid): Account
++    protected function getAccountsReceivableAccount(string $companyUuid, string $currency): Account
+     {
+-        return Account::updateOrCreate(
+-            [
+-                'company_uuid' => $companyUuid,
+-                'code'         => 'AR-DEFAULT',
+-            ],
++        return $this->invoiceAccount(
++            $companyUuid,
++            'AR',
++            $currency,
+             [
+                 'name'              => 'Accounts Receivable',
+                 'type'              => 'asset',
+@@ -483,13 +482,12 @@ class InvoiceService
+     /**
+      * Get or create the default revenue account for a company.
+      */
+-    protected function getRevenueAccount(string $companyUuid): Account
++    protected function getRevenueAccount(string $companyUuid, string $currency): Account
+     {
+-        return Account::updateOrCreate(
+-            [
+-                'company_uuid' => $companyUuid,
+-                'code'         => 'REV-DEFAULT',
+-            ],
++        return $this->invoiceAccount(
++            $companyUuid,
++            'REV',
++            $currency,
+             [
+                 'name'              => 'Sales Revenue',
+                 'type'              => Account::TYPE_REVENUE,
+@@ -500,6 +498,19 @@ class InvoiceService
+         );
+     }
+ 
++    private function invoiceAccount(string $companyUuid, string $code, string $currency, array $attributes): Account
++    {
++        $attributes['currency'] = $currency;
++        $account = Account::firstOrCreate(['company_uuid' => $companyUuid, 'code' => $code . '-DEFAULT'], $attributes);
++
++        if (strtoupper((string) $account->currency) === $currency) {
++            return $account;
++        }
++
++        // Preserve the balance and currency of the account used by historical entries.
++        return Account::firstOrCreate(['company_uuid' => $companyUuid, 'code' => $code . '-' . $currency], $attributes);
++    }
++
+     /**
+      * Recognise revenue for an invoice.
+      *
+@@ -516,8 +527,9 @@ class InvoiceService
+             return;
+         }
+ 
+-        $arAccount      = $this->getAccountsReceivableAccount($invoice->company_uuid);
+-        $revenueAccount = $this->getRevenueAccount($invoice->company_uuid);
++        $currency       = strtoupper($invoice->currency ?? 'INR');
++        $arAccount      = $this->getAccountsReceivableAccount($invoice->company_uuid, $currency);
++        $revenueAccount = $this->getRevenueAccount($invoice->company_uuid, $currency);
+ 
+         $this->ledgerService->createJournalEntry(
+             $arAccount,
+@@ -526,7 +538,7 @@ class InvoiceService
+             "Revenue recognition for invoice {$invoice->number}",
+             [
+                 'company_uuid' => $invoice->company_uuid,
+-                'currency'     => $invoice->currency,
++                'currency'     => $currency,
+                 'journal_type' => 'revenue_recognition',
+                 'meta'         => [
+                     'invoice_uuid'  => $invoice->uuid,
+diff --git a/server/tests/Services/InvoiceServiceTest.php b/server/tests/Services/InvoiceServiceTest.php
+index 853064ac25fb0126d7fa2f628f65541ea082dc09..8cbbcb4f98912bfedbcc63653be1a4f7f1eadf18 100644
+--- a/server/tests/Services/InvoiceServiceTest.php
++++ b/server/tests/Services/InvoiceServiceTest.php
+@@ -459,7 +459,13 @@ test('invoice payment transactions use the invoice currency or default to INR wh
+     expect($foreignCurrencyTransaction->currency)->toBe('BTN')
+         ->and($foreignCurrencyTransaction->settled_currency)->toBe('BTN')
+         ->and($fallbackTransaction->currency)->toBe('INR')
+-        ->and($fallbackTransaction->settled_currency)->toBe('INR');
++        ->and($fallbackTransaction->settled_currency)->toBe('INR')
++        ->and(Account::query()->pluck('currency', 'code')->sortKeys()->all())->toBe([
++            'AR-DEFAULT' => 'BTN',
++            'AR-INR' => 'INR',
++            'CASH-DEFAULT' => 'BTN',
++            'CASH-INR' => 'INR',
++        ]);
+ });
+ 
+ test('revenue recognition provisions accounts and skips zero value invoices', function () {
