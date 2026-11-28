@@ -295,3 +295,16 @@ img.kodewaves-console-mark {
     .auth-shell-footer-inner { flex-wrap: wrap; gap: 0.25rem 0.75rem; }
     .auth-license-link { margin-left: 0; }
 }
+.auth-workspace-form {
+    border-radius: 24px;
+    box-shadow: 8px 12px 28px rgb(42 66 112 / 14%), inset 2px 2px 5px #fff, inset -3px -4px 8px rgb(121 152 213 / 16%);
+}
+.auth-workspace-story { border-radius: 24px; }
+.auth-login-field input {
+    border-radius: 12px;
+    box-shadow: inset 2px 3px 6px rgb(46 78 136 / 12%);
+}
+.auth-login-form button.btn-primary {
+    border-radius: 14px;
+    box-shadow: 0 4px 9px rgb(24 59 128 / 22%), inset 0 2px 3px rgb(255 255 255 / 24%), inset 0 -3px 6px rgb(17 37 77 / 22%);
+}

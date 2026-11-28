@@ -2108,3 +2108,32 @@ body[data-theme] .next-map-container-view-switch > button:focus-visible {
         max-width: calc(100vw - 1.25rem);
     }
 }
+
+/* Shared workspace depth. Keep tabular content and nested rows flat. */
+body[data-theme] {
+    --td-clay-raised: 4px 6px 16px rgb(42 66 112 / 12%), inset 1px 2px 4px #fff, inset -2px -3px 6px rgb(121 152 213 / 13%);
+    --td-clay-inset: inset 2px 3px 6px rgb(46 78 136 / 14%), inset -1px -2px 4px #fff;
+}
+body[data-theme='dark'] {
+    --td-clay-raised: 4px 6px 16px rgb(0 0 0 / 28%), inset 1px 2px 3px rgb(178 202 255 / 12%), inset -2px -3px 5px rgb(0 0 0 / 22%);
+    --td-clay-inset: inset 2px 3px 6px rgb(0 0 0 / 30%), inset -1px -2px 3px rgb(178 202 255 / 8%);
+}
+body[data-theme] :is(.console-dashboard-widget, .admin-dashboard-widget, .fleet-ops-control-hub-kpi, .fleet-ops-control-hub-card, .next-content-card, .modal .modal-content) {
+    border-radius: 1rem;
+    box-shadow: var(--td-clay-raised);
+}
+body[data-theme='light'] :is(.console-dashboard-widget, .admin-dashboard-widget, .fleet-ops-control-hub-kpi) {
+    background: #f5f8ff;
+}
+body[data-theme] .next-view-container > nav.next-sidebar a.next-nav-item:is(.active, [aria-current='page']) {
+    border-radius: 0.75rem;
+    box-shadow: var(--td-clay-inset);
+}
+body[data-theme] :is(.next-sidebar-navigator-primary-action, .btn-primary) {
+    border-radius: 0.75rem;
+    box-shadow: 0 3px 7px rgb(24 59 128 / 22%), inset 0 2px 3px rgb(255 255 255 / 24%), inset 0 -2px 4px rgb(17 37 77 / 26%);
+}
+body[data-theme] :is(.btn-primary, .next-sidebar-navigator-primary-action, a.next-nav-item):focus-visible {
+    outline: 2px solid var(--kodewaves-primary);
+    outline-offset: 2px;
+}

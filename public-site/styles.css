@@ -725,3 +725,35 @@ body { background: #fbfbf7; }
 .walkthrough-status { min-height: 1.5em; margin: 0; font-size: .875rem; }
 .walkthrough-status[data-error="true"] { color: #9d3127; }
 .walkthrough-form button:disabled { cursor: wait; opacity: .7; }
+
+/* Soft, opaque surfaces for the Transport Diary public site. */
+:root {
+  --td-clay-blue: #eef3ff;
+  --td-clay-surface: #f7f9ff;
+  --td-clay-lift: 6px 8px 20px #233d701b, inset 2px 2px 4px #fff, inset -3px -4px 8px #aec2ee42;
+  --td-clay-press: inset 2px 3px 7px #7991bd35, inset -2px -2px 5px #fff;
+}
+
+.hero, .page-hero, .workbench-section { background: var(--td-clay-blue); }
+:is(.route-card, .workbench-preview, .contact-box, .feature, .dash-stat, .float-chip) {
+  background: var(--td-clay-surface);
+  border-radius: 20px;
+  box-shadow: var(--td-clay-lift);
+}
+.feature-grid {
+  gap: clamp(12px, 2vw, 22px);
+  overflow: visible;
+  border: 0;
+  background: none;
+}
+.feature:nth-child(3n + 2) { background: #edf7f4; }
+.feature:nth-child(3n + 3) { background: #f5f0fd; }
+:is(.feature-icon, .workbench-record, .walkthrough-form input:not([type="checkbox"])) {
+  border-radius: 12px;
+  box-shadow: var(--td-clay-press);
+}
+.button, .workbench-tabs button { border-radius: 14px; }
+.button:not(.outline), .workbench-tabs button[aria-selected="true"] {
+  box-shadow: 0 4px 9px #183b8029, inset 0 2px 3px #ffffff42, inset 0 -3px 6px #10295538;
+}
+:is(.button, .workbench-tabs button):active { transform: translateY(1px); }
