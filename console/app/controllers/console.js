@@ -39,6 +39,18 @@ export default class ConsoleController extends Controller {
         this.sidebar.toggle();
     }
 
+    @action setupWorkspaceSidebar(context) {
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            context.hideNow();
+        }
+    }
+
+    @action closeMobileWorkspaceNavigation(event) {
+        if (window.matchMedia('(max-width: 767px)').matches && event.target.closest('a[href]')) {
+            this.sidebar.hide();
+        }
+    }
+
     get mainNavigationItems() {
         const visibleItems = [];
 
